@@ -32,7 +32,7 @@
       --font: 'Epilogue', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }
 
     body {
       font-family: var(--font);
@@ -586,9 +586,9 @@
     <span></span><span></span><span></span>
   </button>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#dla-kogo">Usługi</a></li>
-    <li><a href="#o-nas">O nas</a></li>
+    <li><a href="#" data-target="home">Home</a></li>
+    <li><a href="#" data-target="dla-kogo">Usługi</a></li>
+    <li><a href="#" data-target="o-nas">O nas</a></li>
     <li><a href="mailto:kjankowski@sirk.cloud" class="nav-cta">Kontakt</a></li>
   </ul>
 </nav>
@@ -606,7 +606,7 @@
       Bez straszenia technologią, bez niepotrzebnych komplikacji.
     </p>
     <div class="hero-actions">
-      <a href="#dla-kogo" class="btn btn-primary">Sprawdź ofertę</a>
+      <a href="#" data-target="dla-kogo" class="btn btn-primary">Sprawdź ofertę</a>
       <a href="mailto:kjankowski@sirk.cloud" class="btn btn-outline">Napisz do nas</a>
     </div>
     <div class="hero-meta">
@@ -742,6 +742,17 @@
 </footer>
 
 <script>
+  // Smooth scroll bez zmiany URL
+  document.querySelectorAll('[data-target]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.getElementById(this.dataset.target);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
   // Progress bar
   window.addEventListener('scroll', () => {
     const doc = document.documentElement;
