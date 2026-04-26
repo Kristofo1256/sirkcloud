@@ -594,7 +594,7 @@
 </nav>
 
 <!-- HERO -->
-<section id="home">
+<section data-id="home">
   <div class="hero-inner">
     <span class="hero-tag">Outsourcing IT · Łódź & cała Polska</span>
     <h1 class="hero-title">
@@ -629,7 +629,7 @@
 </div>
 
 <!-- DLA KOGO -->
-<section id="dla-kogo">
+<section data-id="dla-kogo">
   <div class="container">
     <p class="section-label fade-in">Dla kogo</p>
     <h2 class="section-title fade-in">Dla kogo jest ta usługa?</h2>
@@ -655,7 +655,7 @@
 </section>
 
 <!-- O NAS -->
-<section id="o-nas">
+<section data-id="o-nas">
   <div class="container">
     <div class="o-nas-grid">
       <div class="o-nas-image fade-in">
@@ -704,7 +704,7 @@
 
 
 <!-- OUTSOURCING IT -->
-<section id="outsourcing" style="background: var(--dark2); padding: 6rem 2rem;">
+<section data-id="outsourcing" style="background: var(--dark2); padding: 6rem 2rem;">
   <div class="container">
     <div class="o-nas-grid">
       <div class="o-nas-image fade-in">
@@ -746,7 +746,7 @@
   document.querySelectorAll('[data-target]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
-      const target = document.getElementById(this.dataset.target);
+      const target = document.querySelector("[data-id='" + this.dataset.target + "']");
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
