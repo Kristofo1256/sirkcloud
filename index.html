@@ -160,10 +160,10 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- SPERSONALIZOWANY TERMINAL REAL-TIME SSH --- */
+        /* --- ZAAWANSOWANY SYSTEMOWY TERMINAL --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
-            width: 100%; max-width: 480px; min-height: 350px;
+            width: 100%; max-width: 480px; min-height: 310px;
             background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #38bdf8;
@@ -176,46 +176,29 @@
         .term-dot.yellow { background: #eab308; }
         .term-dot.green { background: #22c55e; }
 
-        /* Klasyczny mrugający kursor tekstowy */
-        .t-cursor::after {
-            content: '_';
-            animation: terminalCursor 0.8s infinite steps(1);
+        /* Mrugający kursor terminala */
+        .term-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #38bdf8;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blinkCursor 0.8s infinite steps(1);
         }
-        @keyframes terminalCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-        .term-line {
-            opacity: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            margin-bottom: 12px;
-            width: 0;
+        /* Układ linii logów systemowych (zarządzany bezpiecznie z poziomu JS) */
+        .log-output {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-
+        .term-row { display: block; line-height: 1.4; }
+        
         .t-bold { font-weight: bold; color: var(--text-main); }
         .t-success { color: #22c55e; font-weight: bold; }
         .t-warn { color: #eab308; }
-
-        /* TIMELINE: 5 sekund autoryzacji SSH, potem błyskawiczna egzekucja skryptu */
-        .ssh-1 { animation: typeAndShow 1.5s steps(30) forwards; animation-delay: 0.2s; }
-        .ssh-2 { animation: typeAndShow 1.5s steps(30) forwards; animation-delay: 1.8s; }
-        .ssh-3 { animation: typeAndShow 1.0s steps(35) forwards; animation-delay: 3.5s; color: #22c55e; }
-        
-        /* 5.0s - Pojawia się prompt i zaczyna się pisać komenda rozruchu */
-        .ln-1 { animation: typeAndShow 1.5s steps(35) forwards; animation-delay: 5.0s; }
-        
-        /* Od tego momentu reszta dzieje się CIUT PRZYSPIESZONA, płynnie linia po linii */
-        .ln-2 { animation: typeAndShow 1.2s steps(45) forwards; animation-delay: 7.0s; color: #a7f3d0; }
-        .ln-3 { animation: typeAndShow 0.8s steps(20) forwards; animation-delay: 8.4s; }
-        .ln-4 { animation: typeAndShow 0.8s steps(25) forwards; animation-delay: 9.4s; }
-        .ln-5 { animation: typeAndShow 0.8s steps(30) forwards; animation-delay: 10.4s; }
-        .ln-6 { animation: typeAndShow 1.0s steps(30) forwards; animation-delay: 11.4s; }
-        .ln-7 { animation: typeAndShow 0.8s steps(15) forwards; animation-delay: 12.6s; color: var(--text-main); }
-
-        @keyframes typeAndShow {
-            0% { opacity: 0; width: 0; }
-            1% { opacity: 1; width: 0; }
-            100% { opacity: 1; width: 100%; }
-        }
 
         /* Sekcja nagłówków dolnych */
         .section-header { margin-bottom: 44px; max-width: 700px; }
@@ -227,7 +210,7 @@
         .layout-3-col { grid-template-columns: repeat(3, 1fr); }
         .layout-2-col { grid-template-columns: repeat(2, 1fr); }
 
-        /* Karty "Dla kogo" */
+        /* Karty */
         .interactive-card {
             background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); padding: 36px; border-radius: 8px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform var(--transition-linear), border-color var(--transition-linear);
         }
@@ -278,10 +261,6 @@
             .main-nav { display: none; }
             .hero-actions { flex-direction: column; }
             .btn { width: 100%; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .scroll-animate-trigger, .stagger-node { opacity: 1 !important; transform: none !important; transition: none !important; }
-            .term-line { opacity: 1 !important; width: 100% !important; animation: none !important; }
         }
     </style>
 </head>
@@ -336,7 +315,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z zaawansowaną sekwencją startową SSH (5s handshak-u) -->
+                <!-- Terminal z realistycznym wpisywaniem przez JS -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -345,19 +324,10 @@
                             <div class="term-dot green"></div>
                         </div>
                         
-                        <!-- Etap 1: Inicjalizacja bezpiecznego połączenia przez admina (0s - 5s) -->
-                        <div class="term-line ssh-1">ssh admin@sirk-cloud-core</div>
-                        <div class="term-line ssh-2">&gt; Establishing secure shell handshake...</div>
-                        <div class="term-line ssh-3">&gt; Authenticated via SSH Key. Welcome admin.</div>
-                        
-                        <!-- Etap 2: Komenda wpisuje się automatycznie po 5 sekundach i wykonuje ekspresowo -->
-                        <div class="term-line ln-1"><span class="t-bold">root@sirk-cloud:~#</span> booting up support --force</div>
-                        <div class="term-line ln-2">&gt; [████████████████████████████████] 100%</div>
-                        <div class="term-line ln-3">&gt; Infrastruktura zoptymalizowana.</div>
-                        <div class="term-line ln-4">&gt; Services status: <span class="t-success">[0] Active / Running</span></div>
-                        <div class="term-line ln-5">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></div>
-                        <div class="term-line ln-6">&gt; Mission completed. All systems are stable.</div>
-                        <div class="term-line ln-7 t-cursor"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</div>
+                        <div id="terminalBody" class="log-output">
+                            <!-- Pierwsza linijka generowana od startu ze stałym promptem -->
+                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span id="commandLine"></span><span id="liveCursor" class="term-cursor"></span></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -505,12 +475,76 @@
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+            // --- REALISTYCZNY MECHANIZM WPISYWANIA W TERMINALU (KURSOR 5S + LUDZKIE TEMPO) ---
+            const runTerminalSimulation = () => {
+                if (prefersReducedMotion) {
+                    // Jeśli użytkownik ma wyłączone animacje, od razu pokazujemy kompletny stan terminala
+                    document.getElementById('terminalBody').innerHTML = `
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> booting up support --force</span>
+                        <span class="term-row" style="color: #a7f3d0;">&gt; [████████████████████████████████] 100%</span>
+                        <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
+                        <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
+                        <span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>
+                        <span class="term-row">&gt; Mission completed. All systems are stable.</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</span>
+                    `;
+                    return;
+                }
+
+                const commandText = "booting up support --force";
+                const cmdContainer = document.getElementById('commandLine');
+                const cursor = document.getElementById('liveCursor');
+                const terminal = document.getElementById('terminalBody');
+
+                let charIndex = 0;
+
+                // Funkcja symulująca ludzkie pisanie (losowe mikro-odstępy między znakami)
+                function typeCharacter() {
+                    if (charIndex < commandText.length) {
+                        cmdContainer.textContent += commandText.charAt(charIndex);
+                        charIndex++;
+                        // Naturalne wahania prędkości pisania człowieka (od 40ms do 130ms)
+                        setTimeout(typeCharacter, Math.random() * 90 + 40);
+                    } else {
+                        // Komenda wpisana – po krótkiej chwili wciskamy "Enter" i wypluwamy resztę logów systemowych
+                        setTimeout(triggerSystemLogs, 400);
+                    }
+                }
+
+                // Generowanie gotowych logów systemowych po wykonaniu polecenia
+                function triggerSystemLogs() {
+                    // Przenosimy kursor ze starej linii komendy na sam dół
+                    cursor.remove();
+
+                    const logs = [
+                        { text: `&gt; [████████████████████████████████] 100%`, color: '#a7f3d0', delay: 400 },
+                        { text: `&gt; Infrastruktura zoptymalizowana.`, color: '', delay: 900 },
+                        { text: `&gt; Services status: <span class="t-success">[0] Active / Running</span>`, color: '', delay: 1400 },
+                        { text: `&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`, color: '', delay: 1900 },
+                        { text: `&gt; Mission completed. All systems are stable.`, color: '', delay: 2400 },
+                        { text: `<span class="t-bold">root@sirk-cloud:~#</span> exit 0<span class="term-cursor"></span>`, color: '', delay: 3000 }
+                    ];
+
+                    logs.forEach(log => {
+                        setTimeout(() => {
+                            const row = document.createElement('span');
+                            row.className = 'term-row';
+                            if (log.color) row.style.color = log.color;
+                            row.innerHTML = log.text;
+                            terminal.appendChild(row);
+                        }, log.delay);
+                    });
+                }
+
+                // Start: Kursor czeka sztywno 5 sekund (5000ms), po czym wywoływana jest funkcja pisania
+                setTimeout(typeCharacter, 5000);
+            };
+
             // Błyskawiczny, natychmiastowy przeskok nawigacji menu
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetElement = document.querySelector(this.getAttribute('href'));
-                    
                     if (targetElement) {
                         window.scrollTo({
                             top: targetElement.getBoundingClientRect().top + window.pageYOffset - 80,
@@ -520,13 +554,12 @@
                 });
             });
 
-            // 1. INTRO ANIMACJA GSAP
+            // INTRO ANIMACJA GSAP
             const runHeroIntro = () => {
                 if (prefersReducedMotion) return;
 
                 if (typeof gsap !== 'undefined') {
                     const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
-                    
                     tl.from('.main-header', { opacity: 0, y: -25 })
                       .from('.hero-title', { opacity: 0, y: 40, duration: 1.1 }, '-=0.5')
                       .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
@@ -536,17 +569,15 @@
                 }
             };
 
-            // 2. KASKADOWY OBSERWATOR DOLNYCH SEKĆJI
+            // OBSERWATOR KASKADOWY DOLNYCH SEKĆJI
             const initScrollReveal = () => {
                 if (prefersReducedMotion) return;
 
                 const sections = document.querySelectorAll('.scroll-animate-trigger');
-                
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('active');
-                            
                             if (typeof gsap !== 'undefined') {
                                 const nodes = entry.target.querySelectorAll('.stagger-node');
                                 if (nodes.length > 0) {
@@ -566,6 +597,7 @@
 
             runHeroIntro();
             initScrollReveal();
+            runTerminalSimulation();
         });
     </script>
 </body>
