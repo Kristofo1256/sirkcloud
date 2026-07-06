@@ -155,7 +155,7 @@
         .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 36px; max-width: 600px; }
         .hero-meta { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
         .meta-item {
-            display: flex; align-items: center; gap: 10px; color: var(--textMain); font-size: 0.95rem;
+            display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem;
             background: rgba(17, 26, 46, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 18px; border-radius: 20px;
         }
         .hero-actions { display: flex; gap: 16px; }
@@ -166,7 +166,7 @@
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
             background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 22px;
-            font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
             text-align: left; position: relative; cursor: text; overflow-y: auto;
         }
 
@@ -177,7 +177,14 @@
         .term-dot.green { background: #22c55e; }
 
         .log-output { display: flex; flex-direction: column; gap: 8px; }
-        .term-row { display: block; line-height: 1.4; word-break: break-all; }
+        
+        /* ZOPTYMALIZOWANE INTELIGENTNE ZAWIJANIE SŁÓW */
+        .term-row { 
+            display: block; 
+            line-height: 1.4; 
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
 
         .admin-input { color: #f1f5f9; font-weight: 500; }
 
@@ -616,7 +623,7 @@
                         appendStaticLog(`&gt; Connection closed.`);
                         await delay(600);
 
-                        // MODYFIKACJA: Po connection closed logi zostają na ekranie NA STALE i od razu pojawia się wolny monit
+                        // Po connection closed logi zostają na ekranie NA STAŁE
                         isUserActive = true; 
                         createInteractivePromptLine();
 
@@ -680,7 +687,7 @@
                             return;
                         }
 
-                        // Bezpieczny komunikat o braku uprawnień
+                        // Bezpieczny komunikat o braku uprawnień (ZOPTYMALIZOWANE ZAWIJANIE TEKSTU)
                         setTimeout(() => {
                             appendStaticLog(`<span class="t-danger">bash: command not found: "${userCmd}". Permission denied. Admin access required.</span>`);
                             createInteractivePromptLine();
