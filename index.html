@@ -39,7 +39,7 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            /* Usunięte css-smooth dla pełnej kontroli przez JS */
             font-family: var(--font-primary);
             background-color: var(--bg-main);
             color: var(--text-main);
@@ -136,7 +136,6 @@
             text-decoration: none;
         }
 
-        /* POPRAWKA: Powiększone logo w prawym górnym rogu z 34px na 46px */
         .logo-img {
             height: 46px;
             width: auto;
@@ -218,8 +217,8 @@
 
         .hero-container {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 60px;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
             align-items: center;
         }
 
@@ -262,63 +261,65 @@
         .meta-item svg { color: var(--accent-cyan); }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* POPRAWKA: NOWA TRANSMISYJNA ANIMACJA IT — CHMURA SERWEROWA (Zamiast bańki) */
+        /* POPRAWKA: ZNACZNE POWIĘKSZENIE CAŁEJ ANIMACJI CHMURY SERWEROWEJ */
         .hero-visual {
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            height: 340px;
+            height: 460px;
         }
 
         .server-rack-matrix {
             position: relative;
-            width: 280px;
-            height: 280px;
-            background: rgba(11, 17, 30, 0.6);
-            border: 1px solid rgba(6, 182, 212, 0.15);
-            border-radius: 12px;
+            width: 410px; /* Zwiększone z 280px */
+            height: 410px; /* Zwiększone z 280px */
+            background: rgba(11, 17, 30, 0.7);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        /* Stałe obwody sieciowe serwera */
+        /* Obwody sieciowe serwera */
         .server-circuit-line {
             position: absolute;
-            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.25), transparent);
             height: 1px;
-            width: 90%;
+            width: 92%;
         }
         .server-circuit-line.v {
             transform: rotate(90deg);
         }
 
-        /* Węzły sieciowe (Diodowe kropki serwera stale pulsujące operacjami) */
+        /* Węzły sieciowe (Większe diody aktywności) */
         .server-node {
             position: absolute;
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background-color: var(--accent-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-cyan);
-            animation: nodeActivity 2s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: nodeActivity 1.8s infinite ease-in-out;
         }
-        .node-tl { top: 20px; left: 20px; animation-delay: 0.2s; }
-        .node-tr { top: 20px; right: 20px; animation-delay: 0.6s; }
-        .node-bl { bottom: 20px; left: 20px; animation-delay: 1.1s; }
-        .node-br { bottom: 20px; right: 20px; animation-delay: 1.4s; }
+        .node-tl { top: 28px; left: 28px; animation-delay: 0.1s; }
+        .node-tr { top: 28px; right: 28px; animation-delay: 0.5s; }
+        .node-bl { bottom: 28px; left: 28px; animation-delay: 0.9s; }
+        .node-br { bottom: 28px; right: 28px; animation-delay: 1.3s; }
 
+        /* Większy rdzeń centralny dla wyeksponowania Logo */
         .server-core-hub {
             z-index: 5;
             background: #0d1527;
-            padding: 16px;
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            border-radius: 8px;
-            max-width: 200px;
-            box-shadow: 0 0 25px rgba(37, 99, 235, 0.2);
-            animation: corePulse 4s infinite ease-in-out;
+            padding: 24px; /* Zwiększone */
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            border-radius: 12px;
+            max-width: 300px; /* Zwiększone z 200px */
+            width: 80%;
+            box-shadow: 0 0 35px rgba(37, 99, 235, 0.25);
+            animation: corePulse 3.5s infinite ease-in-out;
         }
 
         .hero-logo-display {
@@ -327,7 +328,7 @@
             object-fit: contain;
         }
 
-        /* Efekty przesyłu pakietów danych (Data Packets) */
+        /* Szybszy przesył pakietów danych */
         .data-packet-bus {
             position: absolute;
             width: 100%;
@@ -337,24 +338,24 @@
 
         .data-pulse {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             background-color: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #ffffff;
+            box-shadow: 0 0 12px #ffffff;
         }
 
-        .dp-1 { top: 50%; left: 0; animation: pulseX 3.5s infinite linear; }
-        .dp-2 { left: 50%; top: 0; animation: pulseY 4s infinite linear; animation-delay: 1.5s; }
+        .dp-1 { top: 50%; left: 0; animation: pulseX 2.8s infinite linear; }
+        .dp-2 { left: 50%; top: 0; animation: pulseY 3.2s infinite linear; animation-delay: 1.2s; }
 
         @keyframes nodeActivity {
-            0%, 100% { opacity: 0.3; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 12px var(--accent-cyan); }
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 14px var(--accent-cyan); }
         }
 
         @keyframes corePulse {
-            0%, 100% { border-color: rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(37, 99, 235, 0.15); }
-            50% { border-color: rgba(6, 182, 212, 0.7); box-shadow: 0 0 35px rgba(6, 182, 212, 0.3); }
+            0%, 100% { border-color: rgba(6, 182, 212, 0.3); box-shadow: 0 0 25px rgba(37, 99, 235, 0.2); }
+            50% { border-color: rgba(6, 182, 212, 0.8); box-shadow: 0 0 45px rgba(6, 182, 212, 0.4); }
         }
 
         @keyframes pulseX {
@@ -487,7 +488,7 @@
         }
 
         .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
-        .method-value { font-weight: 700; font-size: 1.1rem; }
+        .method-value { font-weight: 700; font-size: 1.15rem; }
 
         .contact-cta-box {
             background: linear-gradient(145deg, var(--bg-surface) 0%, #152033 100%);
@@ -551,7 +552,8 @@
         /* RWD */
         @media (max-width: 1024px) {
             .hero-container, .contact-container { grid-template-columns: 1fr; gap: 44px; }
-            .hero-visual { order: -1; }
+            .hero-visual { order: -1; height: auto; }
+            .server-rack-matrix { width: 320px; height: 320px; }
             .layout-3-col, .layout-2-col { grid-template-columns: 1fr; }
         }
 
@@ -732,7 +734,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy Ci pomóc.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowości. Sprawdźmy, jak możemy Ci pomóc.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -788,6 +790,27 @@
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+            // POPRAWKA: Ultraszybki i zoptymalizowany system nawigacji menu (Zastępuje wolne CSS)
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const headerOffset = 80; // Wysokość zamrożonego menu górnego
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        // Płynny zjazd kontrolowany programistycznie (Szybki i dynamiczny)
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'auto' // Błyskawiczny przeskok bez sztucznego opóźnienia
+                        });
+                    }
+                });
+            });
+
             // 1. INTRO ANIMACJA
             const runHeroIntro = () => {
                 if (prefersReducedMotion) return;
@@ -804,7 +827,7 @@
                 }
             };
 
-            // 2. SCROLL REVEAL SEKĆJI
+            // 2. OBSERWATOR SCROLLOWANIA
             const initScrollReveal = () => {
                 if (prefersReducedMotion) return;
 
