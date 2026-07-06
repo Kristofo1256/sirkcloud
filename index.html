@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SirK Cloud | Kompleksowa opieka IT — Wersja 3</title>
+    <title>SirK Cloud | Kompleksowa opieka IT</title>
     
     <!-- Fonty: Epilogue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,8 +59,9 @@
             padding: 0 24px;
         }
 
+        /* POPRAWKA: Zmniejszone odstępy pionowe między sekcjami z 140px do 70px */
         .section {
-            padding: 140px 0;
+            padding: 70px 0;
             position: relative;
             z-index: 2;
         }
@@ -240,8 +241,8 @@
 
         /* Hero Sekcja */
         .hero-section {
-            padding-top: 220px;
-            padding-bottom: 160px;
+            padding-top: 200px;
+            padding-bottom: 100px;
         }
 
         .hero-container {
@@ -291,12 +292,12 @@
         .meta-item svg { color: var(--accent-glow); }
         .hero-actions { display: flex; gap: 20px; }
 
-        /* NOWY SYGNATUROWY ELEMENT: Dedykowana Interaktywna Prezentacja Logo */
+        /* Sygnaturowy element: Prezentacja Logo */
         .hero-visual {
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px; /* Przestrzeń 3D dla ruchów logo */
+            perspective: 1000px; 
         }
 
         .logo-interactive-portal {
@@ -312,27 +313,22 @@
             will-change: transform;
         }
 
+        /* POPRAWKA: Stała, stonowana poświata — brak rozbłysku/powiększania na hover */
         .portal-glow {
             position: absolute;
             width: 120%;
             height: 120%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(37, 99, 235, 0.04) 50%, transparent 70%);
             border-radius: 50%;
             filter: blur(20px);
             z-index: 1;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             pointer-events: none;
-        }
-
-        .logo-interactive-portal:hover .portal-glow {
-            transform: scale(1.25);
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.28) 0%, rgba(37, 99, 235, 0.1) 50%, transparent 70%);
         }
 
         .animated-logo-frame {
             position: relative;
             z-index: 2;
-            transform: translateZ(30px); /* Wyciągnięcie logo przed tło w 3D */
+            transform: translateZ(30px); 
             transition: transform 0.3s ease;
         }
 
@@ -341,12 +337,7 @@
             height: auto;
             max-width: 280px;
             object-fit: contain;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
-            transition: filter 0.3s ease;
-        }
-
-        .logo-interactive-portal:hover .hero-logo-display {
-            filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.6));
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.08));
         }
 
         /* Pionowe strumienie danych w tle logo */
@@ -391,7 +382,7 @@
 
         /* Nagłówki sekcji */
         .section-header {
-            margin-bottom: 70px;
+            margin-bottom: 50px;
             max-width: 750px;
         }
 
@@ -683,7 +674,7 @@
                     </div>
                 </div>
                 
-                <!-- NOWY AKCENT WIZUALNY: Twoje Logo otoczone energetyczną chmurą sieciową -->
+                <!-- Sygnaturowy Akcent Wizualny z Logo -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="data-stream-container">
                         <div class="data-stream-line"></div>
@@ -859,7 +850,7 @@
                       .from('.hero-actions .btn', { opacity: 0, y: 15, duration: 0.6, stagger: 0.15 }, '-=0.4')
                       .from('.hero-visual', { opacity: 0, scale: 0.95, duration: 1 }, '-=0.6');
                       
-                    // Efekt delikatnego stałego lewitowania (float) logotypu po zakończeniu intro
+                    // Efekt stałego lewitowania logotypu
                     gsap.to('.animated-logo-frame', {
                         y: 12,
                         duration: 3,
@@ -870,7 +861,7 @@
                 }
             };
 
-            // 2. INTERAKCJA 3D TILT NA LOGO (Śledzenie ruchów myszy w Hero)
+            // 2. INTERAKCJA 3D TILT NA LOGO
             const initLogo3DEffect = () => {
                 if (prefersReducedMotion) return;
 
@@ -882,7 +873,6 @@
                     const x = e.clientX - rect.left - rect.width / 2;
                     const y = e.clientY - rect.top - rect.height / 2;
                     
-                    // Konwersja wektora na delikatne wychylenie osi w przestrzeni trójwymiarowej
                     const tiltX = (y / rect.height) * -25; 
                     const tiltY = (x / rect.width) * 25;
 
@@ -894,7 +884,7 @@
                 });
             };
 
-            // 3. AMBIENT MOUSE MOVEMENT (Główne tło)
+            // 3. AMBIENT MOUSE MOVEMENT
             const initAmbientParallax = () => {
                 if (prefersReducedMotion) return;
 
@@ -924,7 +914,7 @@
                 });
             };
 
-            // 5. OBSERWATOR SCROLLOWANIA (Płynne wyłanianie sekcji z kaskadą)
+            // 5. OBSERWATOR SCROLLOWANIA
             const initScrollReveal = () => {
                 if (prefersReducedMotion) return;
 
