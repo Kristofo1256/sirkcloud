@@ -160,7 +160,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- STYLIZACJA TERMINALA --- */
+        /* --- POTĘŻNY INŻYNIERSKI TERMINAL --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 310px;
@@ -179,12 +179,15 @@
         .log-output { display: flex; flex-direction: column; gap: 10px; }
         .term-row { display: block; line-height: 1.4; }
 
+        /* Dedykowany, czysty biały kolor dla wpisów administratora */
+        .admin-input { color: #f1f5f9; font-weight: 500; }
+
         /* Mrugający kursor tekstowy */
         .term-cursor {
             display: inline-block;
             width: 8px;
             height: 15px;
-            background-color: #38bdf8;
+            background-color: #f1f5f9;
             margin-left: 2px;
             vertical-align: middle;
             animation: blinkCursor 0.8s infinite steps(1);
@@ -310,7 +313,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z zaawansowaną asynchroniczną osią czasu (JS Timeline) -->
+                <!-- Terminal z zaawansowaną asynchroniczną osią czasu oraz separacją kolorów (JS Timeline) -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -320,8 +323,8 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output">
-                            <!-- Stały prompt startowy z wywołaniem funkcji dynamicznej -->
-                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span id="commandLine"></span><span id="liveCursor" class="term-cursor"></span></span>
+                            <!-- Prompt startowy admina z wydzieloną osobną klasą kolorystyczną admin-input -->
+                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span id="commandLine" class="admin-input"></span><span id="liveCursor" class="term-cursor"></span></span>
                         </div>
                     </div>
                 </div>
@@ -479,21 +482,20 @@
 
                 if (prefersReducedMotion) {
                     terminal.innerHTML = `
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input">run sirk-business-support-core</span></span>
                         <span class="term-row" style="color: #a7f3d0;">&gt; [████████████████████████████████] 100%</span>
                         <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
                         <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
                         <span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>
                         <span class="term-row">&gt; Mission completed. All systems are stable.</span>
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input">exit 0</span></span>
                     `;
                     return;
                 }
 
-                // Pomocnicza funkcja generująca opóźnienie (Promise)
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                // KROK 1: Pisanie komendy wejściowej (Rozpoczęcie po sztywnych 5 sekundach)
+                // KROK 1: Pisanie komendy wejściowej jako admin (Start po 5 sekundach czekania)
                 const typeCommand = () => {
                     return new Promise((resolve) => {
                         let charIndex = 0;
@@ -501,7 +503,7 @@
                             if (charIndex < commandText.length) {
                                 cmdContainer.textContent += commandText.charAt(charIndex);
                                 charIndex++;
-                                // Wolniejsze, bardzo naturalne tempo wpisywania (od 60ms do 160ms)
+                                // Wolne, ludzkie tempo uderzeń w klawiaturę (60ms - 160ms)
                                 setTimeout(type, Math.random() * 100 + 60);
                             } else {
                                 resolve();
@@ -511,17 +513,17 @@
                     });
                 };
 
-                // KROK 2: Dynamiczny Progress Bar idący równe 3 sekundy (3000ms)
+                // KROK 2: Dynamiczny Progress Bar trwający równe 3 sekundy
                 const runProgressBar = () => {
                     return new Promise((resolve) => {
                         const row = document.createElement('span');
                         row.className = 'term-row';
-                        row.style.color = '#a7f3d0';
+                        row.style.color = '#a7f3d0'; // Zielonkawy kolor ładowania
                         terminal.appendChild(row);
 
-                        const totalBlocks = 32; // Całkowita długość paska wizualnego
-                        const duration = 3000; // Czas trwania animacji w milisekundach
-                        const intervalTime = duration / totalBlocks; // Interwał dla jednej klatki paska
+                        const totalBlocks = 32;
+                        const duration = 3000;
+                        const intervalTime = duration / totalBlocks;
                         let currentBlock = 0;
 
                         function updateBar() {
@@ -540,7 +542,6 @@
                     });
                 };
 
-                // Funkcja pomocnicza do renderowania pojedynczej linii logu systemowego
                 const printLogLine = (htmlText) => {
                     const row = document.createElement('span');
                     row.className = 'term-row';
@@ -548,21 +549,21 @@
                     terminal.appendChild(row);
                 };
 
-                // --- GŁÓWNY SILNIK OSI CZASU TERMINALA ---
+                // --- GŁÓWNA ORKIESTRACJA SYSTEMOWA ---
                 async function startTimeline() {
-                    // Czekamy pierwsze 5 sekund z samym mrugającym kursorem
+                    // Oczekiwanie startowe (Kursor miga przez 5s)
                     await delay(5000);
                     
-                    // Wpisujemy powoli komendę
+                    // Admin powoli wpisuje swoją komendę (biała czcionka)
                     await typeCommand();
-                    cursor.remove(); // Usuwamy stary kursor z linii poleceń
+                    cursor.remove(); // Usuwamy kursor z pierwszej linii
                     await delay(500);
 
-                    // Odpalamy progress bar, który trwa dokładnie 3 sekundy
+                    // Odpala się progress bar (3 sekundy)
                     await runProgressBar();
-                    await delay(450); // Przerwa systemowa po ładowaniu
+                    await delay(450);
 
-                    // Wypluwamy kolejne logi techniczne w wyraźnych odstępach czasu
+                    // Kolejne logi systemowe pojawiają się w odstępach (niebieska czcionka domyślna)
                     printLogLine(`&gt; Infrastruktura zoptymalizowana.`);
                     await delay(700);
 
@@ -575,7 +576,8 @@
                     printLogLine(`&gt; Mission completed. All systems are stable.`);
                     await delay(1100);
 
-                    printLogLine(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0<span class="term-cursor"></span>`);
+                    // Komenda wyjściowa również z zachowaniem klasy admin-input (biały kolor wpisu)
+                    printLogLine(`<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input">exit 0</span><span class="term-cursor" style="background-color: #f1f5f9;"></span>`);
                 }
 
                 startTimeline();
