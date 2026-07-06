@@ -183,7 +183,7 @@
 
         /* RWD */
         @media (max-width: 1024px) {
-            .hero-container, .contact-container { grid-template-columns: 1fr; gap: 44px; }
+            .hero-container, .contact-container { grid-template-columns: 1.1fr; gap: 44px; }
             .hero-visual { order: -1; }
             .production-terminal { max-width: 100%; }
             .layout-3-col, .layout-2-col { grid-template-columns: 1fr; }
@@ -413,6 +413,7 @@
                 row.innerHTML = html;
                 terminalBody.appendChild(row);
                 terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                return row;
             };
 
             const createInteractivePromptLine = () => {
@@ -426,7 +427,7 @@
             };
 
             const runAutoSequence = async () => {
-                // Początkowa linia z migającym kursorem (symulacja oczekiwania na zalogowanie)
+                // Początkowa linia z migającym kursorem
                 const row = document.createElement('span');
                 row.className = 'term-row';
                 row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
@@ -435,25 +436,34 @@
                 // Oczekiwanie 3.2 sekundy
                 await new Promise(r => setTimeout(r, 3200));
                 
-                // Usunięcie kursora tymczasowego, żeby pisać bezbłędnie znak po znaku
                 const textContainer = row.querySelector('.term-text-container');
-                const tempCursor = row.querySelector('.term-cursor');
                 
-                // Efekt pisania komendy znak po znaku (typewriter effect)
+                // Efekt pisania komendy znak po znaku
                 const commandText = "run sirk-business-support-core";
                 for (let i = 0; i < commandText.length; i++) {
                     textContainer.textContent += commandText[i];
                     await new Promise(r => setTimeout(r, 80));
                 }
                 
-                // Schowanie starego sztucznego wiersza i dodanie pełnego stanu, zachowując kursor
                 row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core`;
                 
-                // Wyświetlanie logów systemowych z przerwami czasowymi
-                await new Promise(r => setTimeout(r, 1000));
-                appendLog(`<span style="color:#a7f3d0;">&gt; [████████████████████] 100%</span>`);
-                await new Promise(r => setTimeout(r, 1000));
+                // Animacja progresowania paska ładowania znak po znaku
+                await new Promise(r => setTimeout(r, 600));
+                const progressRow = appendLog(`<span style="color:#a7f3d0;">&gt; [</span><span class="progress-bar-fill" style="color:#a7f3d0;"></span><span style="color:#a7f3d0;">] 0%</span>`);
+                const progressBarFill = progressRow.querySelector('.progress-bar-fill');
                 
+                const totalBlocks = 20;
+                for (let i = 1; i <= totalBlocks; i++) {
+                    progressBarFill.textContent += "█";
+                    // Wyliczanie procentów w locie
+                    const percentage = Math.round((i / totalBlocks) * 100);
+                    progressRow.lastChild.textContent = `] ${percentage}%`;
+                    // Szybkość progresu paska ładowania (łącznie ok. 1 sekundy)
+                    await new Promise(r => setTimeout(r, 50));
+                }
+
+                // Dalsze logi systemowe z przerwami czasowymi
+                await new Promise(r => setTimeout(r, 600));
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
                 await new Promise(r => setTimeout(r, 1200));
                 appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
@@ -468,7 +478,7 @@
                 appendLog(`&gt; Connection closed.`);
                 await new Promise(r => setTimeout(r, 400));
                 
-                // Całkowite odblokowanie wpisywania z klawiatury dla użytkownika
+                // Całkowite odblokowanie konsoli interaktywnej
                 isInteractiveEnabled = true;
                 createInteractivePromptLine();
             };
