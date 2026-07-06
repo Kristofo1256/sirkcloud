@@ -29,7 +29,7 @@
             font-family: var(--font-primary); 
             background-color: var(--bg-main); 
             color: var(--text-main);
-            scroll-behavior: smooth; /* Natywne, ultra-szybkie przewijanie bez zewnętrznych bibliotek */
+            scroll-behavior: smooth;
         }
         body { overflow-x: hidden; position: relative; background-color: var(--bg-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
@@ -66,7 +66,6 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
-        /* POPRAWIONY LINK: Brak jakichkolwiek linii na hover. Czysto i profesjonalnie. */
         .nav-link { 
             color: var(--text-muted); 
             text-decoration: none; 
@@ -78,7 +77,6 @@
         }
         .nav-link:hover { color: var(--text-main); }
         
-        /* Kreska aktywnej sekcji: Pojawia się TYLKO gdy sekcja jest aktywna (ScrollSpy) */
         .nav-link::after { 
             content: ''; 
             position: absolute; 
@@ -127,7 +125,7 @@
         .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 36px; max-width: 600px; }
         .hero-meta { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
         .meta-item {
-            display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem;
+            display: inline-flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem;
             background: rgba(17, 26, 46, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 18px; border-radius: 20px;
         }
         .hero-actions { display: flex; gap: 16px; }
@@ -174,7 +172,7 @@
         .t-warn { color: #eab308; }
         .t-danger { color: #ef4444; font-weight: bold; }
 
-        /* Sekcja nagłówków dolnych */
+        /* Sekcja nagłówków */
         .section-header { margin-bottom: 44px; max-width: 700px; }
         .section-tag { display: inline-block; color: var(--accent-cyan); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
         .section-title { font-size: 2.4rem; font-weight: 700; }
@@ -217,22 +215,36 @@
         .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #020305; position: relative; z-index: 2; }
         .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
-        /* Szybki, sprzętowy Scroll Reveal (Bez JS) */
+        /* Szybki Reveal Elementów */
         .scroll-animate-trigger { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: transform, opacity; }
         .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
 
-        /* RWD */
+        /* --- MEDIAPROF (RESPONSYWNOŚĆ MOBILNA) --- */
         @media (max-width: 1024px) {
-            .hero-container, .contact-container { grid-template-columns: 1.1fr; gap: 44px; }
-            .hero-visual { order: -1; }
-            .production-terminal { max-width: 100%; }
+            .hero-container, .contact-container { grid-template-columns: 1fr; gap: 40px; }
+            .hero-visual { order: -1; margin-bottom: 20px; }
             .layout-3-col, .layout-2-col { grid-template-columns: 1fr; }
         }
+
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; }
-            .main-nav { display: none; }
-            .hero-actions { flex-direction: column; }
+            .section { padding: 60px 0; }
+            #o-nas { padding: 60px 0; }
+            .hero-section { padding-top: 140px; padding-bottom: 60px; }
+            .hero-title { font-size: 2.3rem; text-align: center; }
+            .hero-subtitle { font-size: 1.05rem; text-align: center; margin-bottom: 24px; }
+            .hero-meta { justify-content: center; gap: 12px; }
+            .hero-actions { flex-direction: column; width: 100%; gap: 12px; }
             .btn { width: 100%; }
+            .main-header { padding: 10px 0; }
+            .main-nav { display: none; } /* Na mobile chowamy desktopowe menu, zapobiegając konfliktom */
+            
+            /* Całkowite ukrycie basha na mobile chroni przed fatalnym łamaniem wierszy i psuciem layoutu */
+            .hero-visual { display: none; } 
+            
+            .section-title { font-size: 1.8rem; }
+            .filar-item { flex-direction: column; gap: 12px; border-left: none; border-top: 3px solid rgba(37, 99, 235, 0.3); padding: 20px; border-radius: 0 0 6px 6px; }
+            .contact-cta-box { padding: 24px; }
+            .footer-container { flex-direction: column; text-align: center; gap: 12px; }
         }
     </style>
 </head>
@@ -296,7 +308,6 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output"></div>
-                        
                         <input type="text" id="terminalHiddenInput" autocomplete="off">
                     </div>
                 </div>
@@ -389,7 +400,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -447,111 +458,120 @@
             const hiddenInput = document.getElementById('terminalHiddenInput');
             let isInteractiveEnabled = false;
 
-            const appendLog = (html) => {
-                const row = document.createElement('span');
-                row.className = 'term-row';
-                row.innerHTML = html;
-                terminalBody.appendChild(row);
-                while (terminalBody.children.length > 11) {
-                    terminalBody.removeChild(terminalBody.firstChild);
-                }
-                return row;
-            };
+            // Logika terminala wykonuje się tylko na komputerach stacjonarnych (ochrona wydajności mobile)
+            if (window.innerWidth > 768 && terminalWindow) {
+                const appendLog = (html) => {
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = html;
+                    terminalBody.appendChild(row);
+                    while (terminalBody.children.length > 11) {
+                        terminalBody.removeChild(terminalBody.firstChild);
+                    }
+                    return row;
+                };
 
-            const createInteractivePromptLine = () => {
-                const row = document.createElement('span');
-                row.className = 'term-row';
-                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
-                terminalBody.appendChild(row);
-                while (terminalBody.children.length > 11) {
-                    terminalBody.removeChild(terminalBody.firstChild);
-                }
-                hiddenInput.value = "";
-                hiddenInput.focus();
-            };
+                const createInteractivePromptLine = () => {
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
+                    terminalBody.appendChild(row);
+                    while (terminalBody.children.length > 11) {
+                        terminalBody.removeChild(terminalBody.firstChild);
+                    }
+                    hiddenInput.value = "";
+                    hiddenInput.focus();
+                };
 
-            // Superszybka sekwencja powitalna terminala (Natywne JS Async)
-            const runAutoSequence = async () => {
-                const row = document.createElement('span');
-                row.className = 'term-row';
-                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
-                terminalBody.appendChild(row);
-                
-                await new Promise(r => setTimeout(r, 600));
-                const textContainer = row.querySelector('.term-text-container');
-                const commandText = "run sirk-business-support-core";
-                
-                for (let i = 0; i < commandText.length; i++) {
-                    textContainer.textContent += commandText[i];
-                    await new Promise(r => setTimeout(r, 30));
-                }
-                
-                await new Promise(r => setTimeout(r, 200));
-                const progressRow = appendLog(`
-                    <div class="progress-row-layout" style="color:#a7f3d0;">
-                        <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill"></span>]</span>
-                        <span class="progress-percentage-val">0%</span>
-                    </div>
-                `);
-                
-                const progressBarFill = progressRow.querySelector('.progress-bar-fill');
-                const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
-                
-                for (let i = 1; i <= 20; i++) {
-                    progressBarFill.textContent += "█";
-                    progressPercentageVal.textContent = `${Math.round((i / 20) * 100)}%`;
-                    await new Promise(r => setTimeout(r, 20));
-                }
+                const runAutoSequence = async () => {
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
+                    terminalBody.appendChild(row);
+                    
+                    await new Promise(r => setTimeout(r, 600));
+                    const textContainer = row.querySelector('.term-text-container');
+                    const commandText = "run sirk-business-support-core";
+                    
+                    for (let i = 0; i < commandText.length; i++) {
+                        textContainer.textContent += commandText[i];
+                        await new Promise(r => setTimeout(r, 30));
+                    }
+                    
+                    await new Promise(r => setTimeout(r, 200));
+                    const progressRow = appendLog(`
+                        <div class="progress-row-layout" style="color:#a7f3d0;">
+                            <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill"></span>]</span>
+                            <span class="progress-percentage-val">0%</span>
+                        </div>
+                    `);
+                    
+                    const progressBarFill = progressRow.querySelector('.progress-bar-fill');
+                    const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
+                    
+                    for (let i = 1; i <= 20; i++) {
+                        progressBarFill.textContent += "█";
+                        progressPercentageVal.textContent = `${Math.round((i / 20) * 100)}%`;
+                        await new Promise(r => setTimeout(r, 20));
+                    }
 
-                appendLog(`&gt; Infrastruktura zoptymalizowana.`);
-                await new Promise(r => setTimeout(r, 150));
-                appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
-                appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
-                await new Promise(r => setTimeout(r, 200));
-                appendLog(`&gt; Mission completed. All systems are stable.`);
+                    appendLog(`&gt; Infrastruktura zoptymalizowana.`);
+                    await new Promise(r => setTimeout(r, 150));
+                    appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
+                    appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                    await new Promise(r => setTimeout(r, 200));
+                    appendLog(`&gt; Mission completed. All systems are stable.`);
 
-                appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
-                await new Promise(r => setTimeout(r, 200));
-                appendLog(`&gt; Connection closed.`);
-                
-                isInteractiveEnabled = true;
-                createInteractivePromptLine();
-            };
+                    appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
+                    await new Promise(r => setTimeout(r, 200));
+                    appendLog(`&gt; Connection closed.`);
+                    
+                    isInteractiveEnabled = true;
+                    createInteractivePromptLine();
+                };
 
-            terminalWindow.addEventListener('click', () => { if(isInteractiveEnabled) hiddenInput.focus(); });
-            hiddenInput.addEventListener('input', (e) => {
-                if(!isInteractiveEnabled) return;
-                const rows = terminalBody.querySelectorAll('.term-row');
-                if(rows.length > 0) {
-                    const span = rows[rows.length - 1].querySelector('.admin-input');
-                    if(span) span.textContent = e.target.value;
-                }
-            });
-
-            hiddenInput.addEventListener('keydown', (e) => {
-                if(e.key === 'Enter' && isInteractiveEnabled) {
-                    const val = hiddenInput.value.trim();
+                terminalWindow.addEventListener('click', () => { if(isInteractiveEnabled) hiddenInput.focus(); });
+                hiddenInput.addEventListener('input', (e) => {
+                    if(!isInteractiveEnabled) return;
                     const rows = terminalBody.querySelectorAll('.term-row');
                     if(rows.length > 0) {
-                        const lastCursor = rows[rows.length - 1].querySelector('.term-cursor');
-                        if(lastCursor) lastCursor.remove();
+                        const span = rows[rows.length - 1].querySelector('.admin-input');
+                        if(span) span.textContent = e.target.value;
                     }
-                    if(val === 'clear' || val === 'exit') terminalBody.innerHTML = "";
-                    else if(val !== "") appendLog(`<span class="t-danger">bash: "${val}": command not found</span>`);
-                    createInteractivePromptLine();
-                }
-            });
+                });
 
-            // --- KLASYCZNY, BŁYSKAWICZNY I STABILNY SYSTEM SCROLLSPY ---
+                hiddenInput.addEventListener('keydown', (e) => {
+                    if(e.key === 'Enter' && isInteractiveEnabled) {
+                        const val = hiddenInput.value.trim();
+                        const rows = terminalBody.querySelectorAll('.term-row');
+                        if(rows.length > 0) {
+                            const lastCursor = rows[rows.length - 1].querySelector('.term-cursor');
+                            if(lastCursor) lastCursor.remove();
+                        }
+                        if(val === 'clear' || val === 'exit') terminalBody.innerHTML = "";
+                        else if(val !== "") appendLog(`<span class="t-danger">bash: "${val}": command not found</span>`);
+                        createInteractivePromptLine();
+                    }
+                });
+
+                runAutoSequence();
+            }
+
+            // --- SPRAWDZONY SYSTEM SCROLLSPY (BEZ BŁĘDU PRZESKAKIWANIA) ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
-            const menuOffset = 90;
+            const menuOffset = 95;
 
             const updateActiveMenuLink = () => {
+                // Jeśli menu nie jest widoczne (ekrany mobilne), nie przetwarzaj funkcji
+                if (window.innerWidth <= 768) return;
+
                 let currentActiveId = "oferta";
-                const scrollPosition = window.scrollY + menuOffset + 20;
-                const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60;
+                const scrollPosition = window.scrollY + menuOffset + 10;
+                
+                // SKORYGOWANE: Zmniejszony margines z 60px do 15px uniemożliwia przedwczesny skok na Konsultację
+                const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 15;
 
                 sections.forEach(section => {
                     if (scrollPosition >= section.offsetTop) {
@@ -574,10 +594,9 @@
                 }
             };
 
-            // Skrócone opóźnienie sprawdzania pozycji przy przewijaniu
             window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
 
-            // --- NATYWNY REVEAL ELEMENTÓW (ZAMIAST GSAP) ---
+            // --- NATYWNY INTERSECTION OBSERVER DLA SEKCJI ---
             const initScrollReveal = () => {
                 const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
                 const observer = new IntersectionObserver((entries) => {
@@ -591,8 +610,6 @@
                 sectionsToObserve.forEach(sec => observer.observe(sec));
             };
 
-            // Start systemów
-            runAutoSequence();
             initScrollReveal();
             updateActiveMenuLink();
         });
