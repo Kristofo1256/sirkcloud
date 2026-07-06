@@ -160,7 +160,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- ZAAWANSOWANY SYSTEMOWY TERMINAL --- */
+        /* --- STYLIZACJA TERMINALA --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 310px;
@@ -176,7 +176,10 @@
         .term-dot.yellow { background: #eab308; }
         .term-dot.green { background: #22c55e; }
 
-        /* Mrugający kursor terminala */
+        .log-output { display: flex; flex-direction: column; gap: 10px; }
+        .term-row { display: block; line-height: 1.4; }
+
+        /* Mrugający kursor tekstowy */
         .term-cursor {
             display: inline-block;
             width: 8px;
@@ -187,9 +190,6 @@
             animation: blinkCursor 0.8s infinite steps(1);
         }
         @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-
-        .log-output { display: flex; flex-direction: column; gap: 10px; }
-        .term-row { display: block; line-height: 1.4; }
         
         .t-bold { font-weight: bold; color: var(--text-main); }
         .t-success { color: #22c55e; font-weight: bold; }
@@ -310,7 +310,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z realistyczną, 5-sekundową zwłoką i ludzkim wpisywaniem przez JS -->
+                <!-- Terminal z zaawansowaną asynchroniczną osią czasu (JS Timeline) -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -320,7 +320,7 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output">
-                            <!-- Pierwsza linijka generowana od startu ze stałym promptem -->
+                            <!-- Stały prompt startowy z wywołaniem funkcji dynamicznej -->
                             <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span id="commandLine"></span><span id="liveCursor" class="term-cursor"></span></span>
                         </div>
                     </div>
@@ -414,7 +414,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -465,15 +465,20 @@
         </div>
     </footer>
 
-    <!-- Logika JavaScript -->
+    <!-- Zaawansowana logika sterująca osią czasu terminala -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // --- OPERACYJNY MECHANIZM WPISYWANIA (KURSOR 5S + LUDZKIE TEMPO) ---
+            // --- SEKWENCYJNY ASYNCHRONICZNY SILNIK TERMINALA (JS TIMELINE) ---
             const runTerminalSimulation = () => {
+                const terminal = document.getElementById('terminalBody');
+                const cmdContainer = document.getElementById('commandLine');
+                const cursor = document.getElementById('liveCursor');
+                const commandText = "run sirk-business-support-core";
+
                 if (prefersReducedMotion) {
-                    document.getElementById('terminalBody').innerHTML = `
+                    terminal.innerHTML = `
                         <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
                         <span class="term-row" style="color: #a7f3d0;">&gt; [████████████████████████████████] 100%</span>
                         <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
@@ -485,52 +490,98 @@
                     return;
                 }
 
-                // Przypisanie nowej wybranej komendy z 'run'
-                const commandText = "run sirk-business-support-core";
-                const cmdContainer = document.getElementById('commandLine');
-                const cursor = document.getElementById('liveCursor');
-                const terminal = document.getElementById('terminalBody');
+                // Pomocnicza funkcja generująca opóźnienie (Promise)
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                let charIndex = 0;
-
-                function typeCharacter() {
-                    if (charIndex < commandText.length) {
-                        cmdContainer.textContent += commandText.charAt(charIndex);
-                        charIndex++;
-                        setTimeout(typeCharacter, Math.random() * 70 + 40);
-                    } else {
-                        setTimeout(triggerSystemLogs, 350);
-                    }
-                }
-
-                function triggerSystemLogs() {
-                    cursor.remove();
-
-                    const logs = [
-                        { text: `&gt; [████████████████████████████████] 100%`, color: '#a7f3d0', delay: 350 },
-                        { text: `&gt; Infrastruktura zoptymalizowana.`, color: '', delay: 800 },
-                        { text: `&gt; Services status: <span class="t-success">[0] Active / Running</span>`, color: '', delay: 1250 },
-                        { text: `&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`, color: '', delay: 1700 },
-                        { text: `&gt; Mission completed. All systems are stable.`, color: '', delay: 2150 },
-                        { text: `<span class="t-bold">root@sirk-cloud:~#</span> exit 0<span class="term-cursor"></span>`, color: '', delay: 2700 }
-                    ];
-
-                    logs.forEach(log => {
-                        setTimeout(() => {
-                            const row = document.createElement('span');
-                            row.className = 'term-row';
-                            if (log.color) row.style.color = log.color;
-                            row.innerHTML = log.text;
-                            terminal.appendChild(row);
-                        }, log.delay);
+                // KROK 1: Pisanie komendy wejściowej (Rozpoczęcie po sztywnych 5 sekundach)
+                const typeCommand = () => {
+                    return new Promise((resolve) => {
+                        let charIndex = 0;
+                        function type() {
+                            if (charIndex < commandText.length) {
+                                cmdContainer.textContent += commandText.charAt(charIndex);
+                                charIndex++;
+                                // Wolniejsze, bardzo naturalne tempo wpisywania (od 60ms do 160ms)
+                                setTimeout(type, Math.random() * 100 + 60);
+                            } else {
+                                resolve();
+                            }
+                        }
+                        type();
                     });
+                };
+
+                // KROK 2: Dynamiczny Progress Bar idący równe 3 sekundy (3000ms)
+                const runProgressBar = () => {
+                    return new Promise((resolve) => {
+                        const row = document.createElement('span');
+                        row.className = 'term-row';
+                        row.style.color = '#a7f3d0';
+                        terminal.appendChild(row);
+
+                        const totalBlocks = 32; // Całkowita długość paska wizualnego
+                        const duration = 3000; // Czas trwania animacji w milisekundach
+                        const intervalTime = duration / totalBlocks; // Interwał dla jednej klatki paska
+                        let currentBlock = 0;
+
+                        function updateBar() {
+                            if (currentBlock <= totalBlocks) {
+                                const filled = '█'.repeat(currentBlock);
+                                const empty = '░'.repeat(totalBlocks - currentBlock);
+                                const percentage = Math.round((currentBlock / totalBlocks) * 100);
+                                row.innerHTML = `&gt; [${filled}${empty}] ${percentage}%`;
+                                currentBlock++;
+                                setTimeout(updateBar, intervalTime);
+                            } else {
+                                resolve();
+                            }
+                        }
+                        updateBar();
+                    });
+                };
+
+                // Funkcja pomocnicza do renderowania pojedynczej linii logu systemowego
+                const printLogLine = (htmlText) => {
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = htmlText;
+                    terminal.appendChild(row);
+                };
+
+                // --- GŁÓWNY SILNIK OSI CZASU TERMINALA ---
+                async function startTimeline() {
+                    // Czekamy pierwsze 5 sekund z samym mrugającym kursorem
+                    await delay(5000);
+                    
+                    // Wpisujemy powoli komendę
+                    await typeCommand();
+                    cursor.remove(); // Usuwamy stary kursor z linii poleceń
+                    await delay(500);
+
+                    // Odpalamy progress bar, który trwa dokładnie 3 sekundy
+                    await runProgressBar();
+                    await delay(450); // Przerwa systemowa po ładowaniu
+
+                    // Wypluwamy kolejne logi techniczne w wyraźnych odstępach czasu
+                    printLogLine(`&gt; Infrastruktura zoptymalizowana.`);
+                    await delay(700);
+
+                    printLogLine(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
+                    await delay(750);
+
+                    printLogLine(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                    await delay(800);
+
+                    printLogLine(`&gt; Mission completed. All systems are stable.`);
+                    await delay(1100);
+
+                    printLogLine(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0<span class="term-cursor"></span>`);
                 }
 
-                // Początkowe mruganie na pustym monicie przez dokładnie 5 sekund przed wpisaniem
-                setTimeout(typeCharacter, 5000);
+                startTimeline();
             };
 
-            // Błyskawiczny, natychmiastowy przeskok nawigacji menu
+            // Błyskawiczny przeskok nawigacji menu
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
