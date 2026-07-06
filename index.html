@@ -84,21 +84,8 @@
             opacity: 0.28;
         }
 
-        .aurora-1 {
-            width: 650px;
-            height: 650px;
-            background: var(--accent-blue);
-            top: -10%;
-            right: -5%;
-        }
-
-        .aurora-2 {
-            width: 550px;
-            height: 550px;
-            background: var(--accent-purple);
-            bottom: 5%;
-            left: -10%;
-        }
+        .aurora-1 { width: 650px; height: 650px; background: var(--accent-blue); top: -10%; right: -5%; }
+        .aurora-2 { width: 550px; height: 550px; background: var(--accent-purple); bottom: 5%; left: -10%; }
 
         .tech-grid-overlay {
             position: absolute;
@@ -123,47 +110,14 @@
             padding: 14px 0;
         }
 
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            height: 46px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .logo-fallback {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--text-main);
-        }
-
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 46px; width: auto; object-fit: contain; }
+        .logo-fallback { font-weight: 800; font-size: 1.5rem; color: var(--text-main); }
         .accent-text { color: var(--accent-cyan); }
 
-        .main-nav ul {
-            display: flex;
-            list-style: none;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-
+        .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
         .nav-link:hover { color: var(--text-main); }
 
         /* Przyciski */
@@ -180,143 +134,93 @@
             cursor: pointer;
             transition: transform var(--transition-linear), background-color var(--transition-linear);
         }
-
         .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
-
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-indigo) 100%);
-            color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.1);
+            color: #ffffff; border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, var(--accent-blue) 30%, var(--accent-purple) 100%);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.03);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.07);
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-        }
-
+        .btn-primary:hover { transform: translateY(-2px); background: linear-gradient(135deg, var(--accent-blue) 30%, var(--accent-purple) 100%); }
+        .btn-secondary { background-color: rgba(255, 255, 255, 0.03); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .btn-secondary:hover { background-color: rgba(255, 255, 255, 0.07); border-color: var(--accent-cyan); transform: translateY(-2px); }
         .btn-full { width: 100%; }
 
         /* Hero Sekcja */
-        .hero-section {
-            padding-top: 210px;
-            padding-bottom: 110px;
-        }
-
-        .hero-container {
-            display: grid;
-            grid-template-columns: 1.10fr 0.90fr;
-            gap: 50px;
-            align-items: center;
-        }
-
+        .hero-section { padding-top: 210px; padding-bottom: 110px; }
+        .hero-container { display: grid; grid-template-columns: 1.10fr 0.90fr; gap: 50px; align-items: center; }
         .hero-title {
-            font-size: 3.6rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            line-height: 1.15;
+            font-size: 3.6rem; font-weight: 800; margin-bottom: 20px; line-height: 1.15;
             background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 36px;
-            max-width: 600px;
-        }
-
-        .hero-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
+        .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 36px; max-width: 600px; }
+        .hero-meta { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
         .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            background: rgba(17, 26, 46, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 8px 18px;
-            border-radius: 20px;
+            display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem;
+            background: rgba(17, 26, 46, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 18px; border-radius: 20px;
         }
-
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- POTĘŻNY TERMINAL INŻYNIERSKI (FINALNY ELEMENT WIZUALNY HERO) --- */
-        .hero-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
+        /* --- ZMODYFIKOWANY TERMINAL REAL-TIME IT --- */
+        .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
-            width: 100%;
-            max-width: 460px;
-            min-height: 280px;
-            background: #020408;
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 8px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            padding: 20px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;
-            color: #38bdf8;
-            text-align: left;
-            position: relative;
+            width: 100%; max-width: 480px; min-height: 310px;
+            background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 22px;
+            font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #38bdf8;
+            text-align: left; position: relative;
         }
 
-        /* Belka górna terminala systemowego */
-        .terminal-header {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            padding-bottom: 10px;
-        }
-        .term-dot { width: 10px; height: 10px; border-radius: 50%; background: #1e293b; }
+        .terminal-header { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 10px; }
+        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
         .term-dot.red { background: #ef4444; }
         .term-dot.yellow { background: #eab308; }
         .term-dot.green { background: #22c55e; }
 
-        /* Sekwencja linii kodu terminala */
+        /* Układ promptu startowego, który czeka 3 sekundy */
+        .terminal-welcome-prompt {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        /* Dyskretny, migający kursor czekający na akcję */
+        .terminal-welcome-prompt::after {
+            content: '_';
+            animation: terminalCursor 0.8s infinite steps(1);
+        }
+
+        @keyframes terminalCursor {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Wyłączamy kursor powitalny w momencie, gdy główna animacja rusza (po 3s) */
+        .terminal-welcome-prompt.writing-started::after {
+            display: none;
+        }
+
         .term-line {
             opacity: 0;
             white-space: nowrap;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             width: 0;
         }
 
-        /* Stylizacja specyficznych słów w logach dla realizmu IT */
         .t-bold { font-weight: bold; color: var(--text-main); }
         .t-success { color: #22c55e; font-weight: bold; }
         .t-warn { color: #eab308; }
 
-        /* Animacja pętli pisania (CSS Timeline Control) */
-        .ln-1 { animation: typeAndShow 3.5s steps(30) forwards; animation-delay: 0.5s; }
-        .ln-2 { animation: typeAndShow 2.5s steps(40) forwards; animation-delay: 2.2s; color: #a7f3d0; }
-        .ln-3 { animation: typeAndShow 2s steps(25) forwards; animation-delay: 3.8s; }
-        .ln-4 { animation: typeAndShow 2s steps(30) forwards; animation-delay: 5.0s; }
-        .ln-5 { animation: typeAndShow 3s steps(35) forwards; animation-delay: 6.2s; }
-        .ln-6 { animation: typeAndShow 1.5s steps(15) forwards; animation-delay: 8.2s; color: var(--text-main); }
+        /* ZWOLNIONA I DOPASOWANA TIMELINE ANIMACJI */
+        /* Start pisania po 3s oczekiwania, wydłużone czasy pisania linii (duration) */
+        .ln-1 { animation: typeAndShow 4.5s steps(35) forwards; animation-delay: 3.0s; }
+        .ln-2 { animation: typeAndShow 3.5s steps(45) forwards; animation-delay: 8.0s; color: #a7f3d0; } /* Sam Progress Bar */
+        .ln-3 { animation: typeAndShow 2.5s steps(20) forwards; animation-delay: 12.0s; } /* Potwierdzenie pod spodem */
+        .ln-4 { animation: typeAndShow 2.5s steps(30) forwards; animation-delay: 15.0s; } 
+        .ln-5 { animation: typeAndShow 2.5s steps(30) forwards; animation-delay: 18.0s; }
+        .ln-6 { animation: typeAndShow 3.5s steps(40) forwards; animation-delay: 21.0s; }
+        .ln-7 { animation: typeAndShow 2.0s steps(15) forwards; animation-delay: 25.0s; color: var(--text-main); }
 
         @keyframes typeAndShow {
             0% { opacity: 0; width: 0; }
@@ -324,17 +228,9 @@
             100% { opacity: 1; width: 100%; }
         }
 
-        /* Nagłówki sekcji */
+        /* Sekcja nagłówków dolnych */
         .section-header { margin-bottom: 44px; max-width: 700px; }
-        .section-tag {
-            display: inline-block;
-            color: var(--accent-cyan);
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
+        .section-tag { display: inline-block; color: var(--accent-cyan); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
         .section-title { font-size: 2.4rem; font-weight: 700; }
 
         /* Siatki */
@@ -344,158 +240,42 @@
 
         /* Karty "Dla kogo" */
         .interactive-card {
-            background-color: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 36px;
-            border-radius: 8px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform var(--transition-linear), border-color var(--transition-linear);
+            background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); padding: 36px; border-radius: 8px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform var(--transition-linear), border-color var(--transition-linear);
         }
-
-        .interactive-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(6, 182, 212, 0.3);
-        }
-
-        .card-icon {
-            color: var(--accent-cyan);
-            margin-bottom: 20px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(6, 182, 212, 0.05);
-            border-radius: 6px;
-        }
-
+        .interactive-card:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.3); }
+        .card-icon { color: var(--accent-cyan); margin-bottom: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.05); border-radius: 6px; }
         .interactive-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
         .interactive-card p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Filary "O Nas" */
-        .filar-item {
-            display: flex;
-            gap: 24px;
-            background: rgba(17, 26, 46, 0.4);
-            border-left: 3px solid rgba(37, 99, 235, 0.3);
-            padding: 28px;
-            border-radius: 0 6px 6px 0;
-            transition: border-left-color var(--transition-linear), background-color var(--transition-linear);
-        }
-
-        .filar-item:hover {
-            border-left-color: var(--accent-cyan);
-            background-color: rgba(17, 26, 46, 0.7);
-        }
-
-        .filar-number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--accent-cyan);
-            line-height: 1;
-        }
-
+        .filar-item { display: flex; gap: 24px; background: rgba(17, 26, 46, 0.4); border-left: 3px solid rgba(37, 99, 235, 0.3); padding: 28px; border-radius: 0 6px 6px 0; transition: border-left-color var(--transition-linear), background-color var(--transition-linear); }
+        .filar-item:hover { border-left-color: var(--accent-cyan); background-color: rgba(17, 26, 46, 0.7); }
+        .filar-number { font-size: 1.6rem; font-weight: 800; color: var(--accent-cyan); line-height: 1; }
         .filar-content h3 { font-size: 1.3rem; margin-bottom: 8px; }
         .filar-content p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Sekcja Kontakt */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 50px;
-            align-items: center;
-        }
-
+        .contact-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
         .contact-lead { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
         .contact-details { display: flex; flex-direction: column; gap: 16px; }
-
-        .contact-method {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-decoration: none;
-            color: var(--text-main);
-            padding: 16px;
-            background: rgba(17, 26, 46, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            border-radius: 6px;
-            transition: border-color var(--transition-linear), background var(--transition-linear);
-        }
-
-        .contact-method:hover {
-            border-color: rgba(6, 182, 212, 0.2);
-            background: rgba(17, 26, 46, 0.6);
-        }
-
-        .method-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 6px;
-            background: rgba(6, 182, 212, 0.08);
-            color: var(--accent-cyan);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .contact-method { display: flex; align-items: center; gap: 20px; text-decoration: none; color: var(--text-main); padding: 16px; background: rgba(17, 26, 46, 0.3); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 6px; transition: border-color var(--transition-linear), background var(--transition-linear); }
+        .contact-method:hover { border-color: rgba(6, 182, 212, 0.2); background: rgba(17, 26, 46, 0.6); }
+        .method-icon { width: 44px; height: 44px; border-radius: 6px; background: rgba(6, 182, 212, 0.08); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; }
         .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
         .method-value { font-weight: 700; font-size: 1.15rem; }
-
-        .contact-cta-box {
-            background: linear-gradient(145deg, var(--bg-surface) 0%, #152033 100%);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 44px;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
+        .contact-cta-box { background: linear-gradient(145deg, var(--bg-surface) 0%, #152033 100%); border: 1px solid rgba(255, 255, 255, 0.04); padding: 44px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .contact-cta-box h3 { font-size: 1.6rem; margin-bottom: 12px; }
         .contact-cta-box p { color: var(--text-muted); margin-bottom: 28px; font-size: 0.95rem; }
 
         /* Stopka */
-        .main-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 40px 0;
-            background-color: #020305;
-            position: relative;
-            z-index: 2;
-        }
-
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #020305; position: relative; z-index: 2; }
+        .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
         /* System przejść scrolla */
-        .scroll-animate-trigger {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform, opacity;
-        }
-
-        .scroll-animate-trigger.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .stagger-node {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .scroll-animate-trigger.active .stagger-node {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .scroll-animate-trigger { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
+        .stagger-node { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .scroll-animate-trigger.active .stagger-node { opacity: 1; transform: translateY(0); }
         .scroll-animate-trigger.active .stagger-node:nth-child(1) { transition-delay: 0.05s; }
         .scroll-animate-trigger.active .stagger-node:nth-child(2) { transition-delay: 0.18s; }
         .scroll-animate-trigger.active .stagger-node:nth-child(3) { transition-delay: 0.31s; }
@@ -508,19 +288,16 @@
             .production-terminal { max-width: 100%; }
             .layout-3-col, .layout-2-col { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 768px) {
             .hero-title { font-size: 2.5rem; }
-            .section-title { font-size: 1.8rem; }
             .main-nav { display: none; }
             .hero-actions { flex-direction: column; }
             .btn { width: 100%; }
         }
-
         @media (prefers-reduced-motion: reduce) {
             .scroll-animate-trigger, .stagger-node { opacity: 1 !important; transform: none !important; transition: none !important; }
             .term-line { opacity: 1 !important; width: 100% !important; animation: none !important; }
-            .aurora-glow, .btn, .interactive-card, .filar-item { transform: none !important; transition: none !important; }
+            .terminal-welcome-prompt::after { display: none; }
         }
     </style>
 </head>
@@ -575,7 +352,7 @@
                     </div>
                 </div>
                 
-                <!-- Autentyczny, duży terminal diagnostyczny skryptu IT -->
+                <!-- Terminal z symulacją 3s zwłoki wejścia inżyniera -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -583,12 +360,18 @@
                             <div class="term-dot yellow"></div>
                             <div class="term-dot green"></div>
                         </div>
-                        <div class="term-line ln-1"><span class="t-bold">root@sirk-cloud:~#</span> booting up support --force</div>
-                        <div class="term-line ln-2">&gt; [████████████████████████████████] 100% zoptymalizowano</div>
-                        <div class="term-line ln-3">&gt; Services status: <span class="t-success">[0] Active / Running</span></div>
-                        <div class="term-line ln-4">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></div>
-                        <div class="term-line ln-5">&gt; Mission completed. All systems are stable.</div>
-                        <div class="term-line ln-6"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</div>
+                        
+                        <!-- Pusty Monit startowy czeka na akcję -->
+                        <div id="welcomePrompt" class="terminal-welcome-prompt">root@sirk-cloud:~#</div>
+                        
+                        <!-- Sekwencja uruchomieniowa rusza po 3 sekundach -->
+                        <div class="term-line ln-1">booting up support --force</div>
+                        <div class="term-line ln-2">&gt; [████████████████████████████████] 100%</div>
+                        <div class="term-line ln-3">&gt; Infrastruktura zoptymalizowana.</div>
+                        <div class="term-line ln-4">&gt; Services status: <span class="t-success">[0] Active / Running</span></div>
+                        <div class="term-line ln-5">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></div>
+                        <div class="term-line ln-6">&gt; Mission completed. All systems are stable.</div>
+                        <div class="term-line ln-7"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</div>
                     </div>
                 </div>
             </div>
@@ -736,20 +519,23 @@
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // Błyskawiczny, natychmiastowy przeskok nawigacji menu (Zastępuje wolny smooth-scroll)
+            // Logika wyłączenia kursora powitalnego w terminalu dokładnie po 3 sekundach (gdy rusza wpisywanie)
+            setTimeout(() => {
+                const welcomePrompt = document.getElementById('welcomePrompt');
+                if (welcomePrompt) {
+                    welcomePrompt.classList.add('writing-started');
+                }
+            }, 3000);
+
+            // Błyskawiczny, natychmiastowy przeskok nawigacji menu
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+                    const targetElement = document.querySelector(this.getAttribute('href'));
                     
                     if (targetElement) {
-                        const headerOffset = 80;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
                         window.scrollTo({
-                            top: offsetPosition,
+                            top: targetElement.getBoundingClientRect().top + window.pageYOffset - 80,
                             behavior: 'auto'
                         });
                     }
