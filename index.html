@@ -160,7 +160,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- INTERAKTYWNY TERMINAL --- */
+        /* --- TERMINAL INTERAKTYWNY --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -181,12 +181,12 @@
 
         .admin-input { color: #f1f5f9; font-weight: 500; }
 
-        /* Ukryty input do przechwytywania fizycznej klawiatury użytkownika */
+        /* Ukryty input do obsługi klawiatury fizycznej i mobilnej */
         #terminalHiddenInput {
             position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;
         }
 
-        /* Mrugający kursor tekstowy HTML/JS */
+        /* Mrugający kursor tekstowy */
         .term-cursor {
             display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9;
             margin-left: 2px; vertical-align: middle; animation: blinkCursor 0.8s infinite steps(1);
@@ -322,11 +322,11 @@
                             <div class="term-dot green"></div>
                         </div>
                         
-                        <!-- Kontener na logi sterowany przez JS -->
+                        <!-- Kontener na logi sterowany przez precyzyjny silnik JS -->
                         <div id="terminalBody" class="log-output"></div>
                         
-                        <!-- Ukryte pole input łapiące kliknięcia klawiatury na desktopie/mobile -->
-                        <input type="text" id="terminalHiddenInput" autocomplete="off" autofocus>
+                        <!-- Ukryte pole input łapiące kliknięcia klawiatury -->
+                        <input type="text" id="terminalHiddenInput" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -405,7 +405,7 @@
                         <div class="filar-number">04</div>
                         <div class="filar-content">
                             <h3>Obsługa zdalna i lokalna</h3>
-                            <p>Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
+                            <p>Łączymy elastyczność i szybkość wsparła online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
                         </div>
                     </div>
                 </div>
@@ -469,40 +469,38 @@
         </div>
     </footer>
 
-    <!-- Zaawansowany Silnik Pętli i Interaktywności Terminala -->
+    <!-- Zaawansowany, całkowicie izolowany silnik interaktywnego terminala -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // --- SEKWENCYJNY SILNIK INTERAKTYWNEGO TERMINALA ---
-            const initTerminalTerminalSystem = () => {
+            const initTerminalSystem = () => {
                 const terminalWindow = document.getElementById('clickableTerminal');
                 const terminalBody = document.getElementById('terminalBody');
                 const hiddenInput = document.getElementById('terminalHiddenInput');
 
-                let isUserTypingActive = false;
-                let automationTimeoutToken = null;
-                let currentActiveLineSpan = null;
-                let currentActiveCursorSpan = null;
+                let isUserActive = false; 
+                let inactivityTimer = null;
+                let currentLineTarget = null;
+                let currentCursorTarget = null;
+                let activeLoopId = 0; // Token do anulowania starych procesów w tle
 
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                // Tworzenie czystego wiersza promptu systemowego
-                const createNewPromptLine = () => {
+                // Tworzy czysty wiersz promptu dla użytkownika
+                const createInteractivePromptLine = () => {
                     const row = document.createElement('span');
                     row.className = 'term-row';
                     row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
                     terminalBody.appendChild(row);
                     terminalWindow.scrollTop = terminalWindow.scrollHeight;
 
-                    // Przypisanie referencji do aktualnie edytowanych spandów
-                    currentActiveLineSpan = row.querySelector('.admin-input');
-                    currentActiveCursorSpan = row.querySelector('.term-cursor');
+                    currentLineTarget = row.querySelector('.admin-input');
+                    currentCursorTarget = row.querySelector('.term-cursor');
                     hiddenInput.value = "";
                 };
 
-                // Dodawanie pojedynczych wierszy logów
-                const appendSystemLog = (htmlText) => {
+                const appendStaticLog = (htmlText) => {
                     const row = document.createElement('span');
                     row.className = 'term-row';
                     row.innerHTML = htmlText;
@@ -510,26 +508,26 @@
                     terminalWindow.scrollTop = terminalWindow.scrollHeight;
                 };
 
-                // Funkcja symulacji automatycznego wpisywania tekstu komendy
-                const simulateAutomationTyping = (textToType) => {
+                // Automatyczne pisanie wyizolowane lokalnie
+                const simulateAutoTyping = (targetSpan, textToType, myLoopId) => {
                     return new Promise((resolve, reject) => {
-                        let idx = 0;
-                        function step() {
-                            if (isUserTypingActive) { reject('Interrupted'); return; }
-                            if (idx < textToType.length) {
-                                currentActiveLineSpan.textContent += textToType.charAt(idx);
-                                idx++;
-                                setTimeout(step, Math.random() * 90 + 60);
+                        let i = 0;
+                        function type() {
+                            if (isUserActive || myLoopId !== activeLoopId) { reject(); return; }
+                            if (i < textToType.length) {
+                                targetSpan.textContent += textToType.charAt(i);
+                                i++;
+                                setTimeout(type, Math.random() * 80 + 50);
                             } else {
                                 resolve();
                             }
                         }
-                        step();
+                        type();
                     });
                 };
 
-                // Funkcja symulacji paska ładowania
-                const simulateAutomationProgressBar = () => {
+                // Automatyczny pasek ładowania wyizolowany lokalnie
+                const simulateAutoProgressBar = (myLoopId) => {
                     return new Promise((resolve, reject) => {
                         const row = document.createElement('span');
                         row.className = 'term-row';
@@ -538,10 +536,10 @@
 
                         const totalBlocks = 32;
                         let currentBlock = 0;
-                        const intervalTime = 3000 / totalBlocks;
+                        const interval = 3000 / totalBlocks;
 
-                        function progress() {
-                            if (isUserTypingActive) { reject('Interrupted'); return; }
+                        function step() {
+                            if (isUserActive || myLoopId !== activeLoopId) { reject(); return; }
                             if (currentBlock <= totalBlocks) {
                                 const filled = '█'.repeat(currentBlock);
                                 const empty = '░'.repeat(totalBlocks - currentBlock);
@@ -549,134 +547,169 @@
                                 row.innerHTML = `&gt; [${filled}${empty}] ${percentage}%`;
                                 currentBlock++;
                                 terminalWindow.scrollTop = terminalWindow.scrollHeight;
-                                setTimeout(progress, intervalTime);
+                                setTimeout(step, interval);
                             } else {
                                 resolve();
                             }
                         }
-                        progress();
+                        step();
                     });
                 };
 
-                // PĘTLA GŁÓWNA AUTOMATU (ZAPĘTLONY WORKFLOW)
-                const executeAutomationLoopCycle = async () => {
-                    if (isUserTypingActive) return;
+                // GŁÓWNA PĘTLA PREZENTACYJNA
+                const runPresentationLoop = async () => {
+                    if (isUserActive) return;
+                    
+                    activeLoopId++; // Unieważnienie ewentualnych wiszących wątków
+                    const myLoopId = activeLoopId;
+                    
+                    terminalBody.innerHTML = "";
+                    
                     try {
-                        terminalBody.innerHTML = "";
-                        createNewPromptLine();
+                        // KROK 1: Pierwsza linia promptu
+                        const row1 = document.createElement('span');
+                        row1.className = 'term-row';
+                        row1.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
+                        terminalBody.appendChild(row1);
                         
-                        await delay(3500);
-                        if (isUserTypingActive) return;
+                        const textSpan1 = row1.querySelector('.admin-input');
+                        const cursorSpan1 = row1.querySelector('.term-cursor');
+                        
+                        await delay(5000); // 5s czekania z mrugającym kursorem na start
+                        if (isUserActive || myLoopId !== activeLoopId) return;
 
-                        await simulateAutomationTyping("run sirk-business-support-core");
-                        if (currentActiveCursorSpan) currentActiveCursorSpan.remove();
+                        await simulateAutoTyping(textSpan1, "run sirk-business-support-core", myLoopId);
+                        if (cursorSpan1) cursorSpan1.remove();
                         await delay(600);
 
-                        await simulateAutomationProgressBar();
-                        await delay(800);
+                        // KROK 2: Progress bar (3 sekundy)
+                        await simulateAutoProgressBar(myLoopId);
+                        await delay(1000);
 
-                        appendSystemLog(`&gt; Infrastruktura zoptymalizowana.`);
-                        await delay(1100);
-
-                        appendSystemLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
+                        // KROK 3: Wyświetlanie raportów
+                        if (isUserActive || myLoopId !== activeLoopId) return;
+                        appendStaticLog(`&gt; Infrastruktura zoptymalizowana.`);
                         await delay(1200);
 
-                        appendSystemLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                        if (isUserActive || myLoopId !== activeLoopId) return;
+                        appendStaticLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
                         await delay(1300);
 
-                        appendSystemLog(`&gt; Mission completed. All systems are stable.`);
-                        
-                        // Modyfikacja: Natychmiastowe wyplucie nowego znaku zachęty z kursorem przed przerwą
-                        createNewPromptLine();
-                        await delay(2500); 
+                        if (isUserActive || myLoopId !== activeLoopId) return;
+                        appendStaticLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                        await delay(1400);
 
-                        await simulateAutomationTyping("exit 0");
-                        if (currentActiveCursorSpan) currentActiveCursorSpan.remove();
+                        if (isUserActive || myLoopId !== activeLoopId) return;
+                        appendStaticLog(`&gt; Mission completed. All systems are stable.`);
+
+                        // KROK 4: Natychmiastowy kolejny prompt przed wpisaniem exit 0
+                        const row2 = document.createElement('span');
+                        row2.className = 'term-row';
+                        row2.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
+                        terminalBody.appendChild(row2);
+                        terminalWindow.scrollTop = terminalWindow.scrollHeight;
+
+                        const textSpan2 = row2.querySelector('.admin-input');
+                        const cursorSpan2 = row2.querySelector('.term-cursor');
+
+                        await delay(2500); // Czekamy 2.5 sekundy, kursor mruga
+                        if (isUserActive || myLoopId !== activeLoopId) return;
+
+                        await simulateAutoTyping(textSpan2, "exit 0", myLoopId);
+                        if (cursorSpan2) cursorSpan2.remove();
                         await delay(800);
 
-                        // Reset pętli i odpalenie od nowa po 3 sekundach czystego ekranu
-                        appendSystemLog(`&gt; Connection closed.`);
+                        // KROK 5: Zamknięcie sesji i restart pętli
+                        appendStaticLog(`&gt; Connection closed.`);
                         await delay(3000);
                         
-                        if (!isUserTypingActive) {
-                            executeAutomationLoopCycle();
+                        if (!isUserActive && myLoopId === activeLoopId) {
+                            runPresentationLoop();
                         }
-                    } catch (err) {
-                        // Przerwano przez aktywność użytkownika
+                    } catch(e) {
+                        // Przerwano przez interakcję użytkownika
                     }
                 };
 
-                // OBSŁUGA MANUALNEGO WPISYWANIA PRZEZ UŻYTKOWNIKA
-                const breakAutomationAndGiveControl = () => {
-                    isUserTypingActive = true;
-                    clearTimeout(automationTimeoutToken);
-                    if (currentActiveCursorSpan && !currentActiveCursorSpan.parentElement) {
-                        // Bezpiecznik struktury
-                    }
-                };
-
-                const setInactivityTimeoutToRestartLoop = () => {
-                    clearTimeout(automationTimeoutToken);
-                    automationTimeoutToken = setTimeout(() => {
-                        isUserTypingActive = false;
-                        executeAutomationLoopCycle();
-                    }, 8000); // 8 sekund bezczynności resetuje terminal do auto-prezentacji
-                };
-
-                // Nasłuchiwanie kliknięcia na kontener terminala
-                terminalWindow.addEventListener('click', () => {
+                // PRZEJŚCIE W TRYB INTERAKTYWNY (KONTROLA DLA UŻYTKOWNIKA)
+                const activateInteractiveMode = () => {
+                    if (isUserActive) return;
+                    isUserActive = true;
+                    activeLoopId++; // Natychmiastowe ubicie wątków automatycznych
+                    
+                    clearTimeout(inactivityTimer);
+                    terminalBody.innerHTML = "";
+                    appendStaticLog(`&gt; Tryb interaktywny aktywny. Wpisz komendę i zatwierdź Enterem...`);
+                    createInteractivePromptLine();
                     hiddenInput.focus();
-                    if (!isUserTypingActive) {
-                        breakAutomationAndGiveControl();
-                        terminalBody.innerHTML = "";
-                        appendSystemLog(`&gt; Tryb interaktywny aktywowany. Wpisz polecenie...`);
-                        createNewPromptLine();
-                    }
+                };
+
+                const startInactivityTimer = () => {
+                    clearTimeout(inactivityTimer);
+                    inactivityTimer = setTimeout(() => {
+                        isUserActive = false;
+                        runPresentationLoop();
+                    }, 12000); // Po 12 sekundach bezczynności terminal wraca do auto-prezentacji
+                };
+
+                // Nasłuchiwanie kliknięcia myszką na okno terminala
+                terminalWindow.addEventListener('click', () => {
+                    activateInteractiveMode();
+                    hiddenInput.focus();
                 });
 
-                // Reakcja na fizyczne wpisywanie znaków
+                // Renderowanie wpisywanych znaków w locie
                 hiddenInput.addEventListener('input', (e) => {
-                    if (!isUserTypingActive) breakAutomationAndGiveControl();
-                    if (currentActiveLineSpan) {
-                        currentActiveLineSpan.textContent = e.target.value;
+                    if (!isUserActive) activateInteractiveMode();
+                    if (currentLineTarget) {
+                        currentLineTarget.textContent = e.target.value;
                     }
-                    setInactivityTimeoutToRestartLoop();
+                    startInactivityTimer();
                 });
 
-                // Reakcja na kliknięcie klawisza Enter
+                // Obsługa klawisza Enter oraz błędów administratora
                 hiddenInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
-                        const inputCmd = hiddenInput.value.trim();
-                        if (currentActiveCursorSpan) currentActiveCursorSpan.remove();
+                        const rawCommand = hiddenInput.value.trim();
+                        if (currentCursorTarget) currentCursorTarget.remove();
 
-                        if (inputCmd === "") {
-                            createNewPromptLine();
+                        if (rawCommand === "") {
+                            createInteractivePromptLine();
                             return;
                         }
 
-                        // Reakcja na komendy wyjściowe użytkownika
-                        if (inputCmd.toLowerCase() === 'exit' || inputCmd.toLowerCase() === 'exit 0' || inputCmd.toLowerCase() === 'clear') {
+                        // Komendy czyszczące / resetujące
+                        if (rawCommand.toLowerCase() === 'exit' || rawCommand.toLowerCase() === 'exit 0' || rawCommand.toLowerCase() === 'clear') {
                             terminalBody.innerHTML = "";
-                            appendSystemLog(`&gt; Konsola wyczyszczona.`);
-                            createNewPromptLine();
-                            hiddenInput.value = "";
-                            setInactivityTimeoutToRestartLoop();
+                            appendStaticLog(`&gt; Konsola wyczyszczona.`);
+                            createInteractivePromptLine();
+                            startInactivityTimer();
                             return;
                         }
 
-                        // Wyplucie komunikatu błędu o braku uprawnień admina
+                        // Wypluwanie komunikatu o braku admina
                         setTimeout(() => {
-                            appendSystemLog(`<span class="t-danger">bash: command not found: "${inputCmd}". Permission denied. Admin access required.</span>`);
-                            createNewPromptLine();
-                        }, 150);
+                            appendStaticLog(`<span class="t-danger">bash: command not found: "${rawCommand}". Permission denied. Admin access required.</span>`);
+                            createInteractivePromptLine();
+                        }, 100);
 
-                        hiddenInput.value = "";
-                        setInactivityTimeoutToRestartLoop();
+                        startInactivityTimer();
                     }
                 });
 
-                // Uruchomienie pierwszej automatycznej sesji
-                executeAutomationLoopCycle();
+                if (prefersReducedMotion) {
+                    terminalBody.innerHTML = `
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input">run sirk-business-support-core</span></span>
+                        <span class="term-row" style="color: #a7f3d0;">&gt; [████████████████████████████████] 100%</span>
+                        <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
+                        <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
+                        <span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>
+                        <span class="term-row">&gt; Mission completed. All systems are stable.</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input">exit 0</span></span>
+                    `;
+                } else {
+                    runPresentationLoop();
+                }
             };
 
             // Błyskawiczny przeskok nawigacji menu
@@ -736,7 +769,7 @@
 
             runHeroIntro();
             initScrollReveal();
-            initTerminalTerminalSystem();
+            initTerminalSystem();
         });
     </script>
 </body>
