@@ -426,19 +426,34 @@
             };
 
             const runAutoSequence = async () => {
+                // Początkowa linia z migającym kursorem (symulacja oczekiwania na zalogowanie)
                 const row = document.createElement('span');
                 row.className = 'term-row';
-                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span>`;
+                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
                 terminalBody.appendChild(row);
                 
+                // Oczekiwanie 3.2 sekundy
                 await new Promise(r => setTimeout(r, 3200));
+                
+                // Usunięcie kursora tymczasowego, żeby pisać bezbłędnie znak po znaku
+                const textContainer = row.querySelector('.term-text-container');
+                const tempCursor = row.querySelector('.term-cursor');
+                
+                // Efekt pisania komendy znak po znaku (typewriter effect)
+                const commandText = "run sirk-business-support-core";
+                for (let i = 0; i < commandText.length; i++) {
+                    textContainer.textContent += commandText[i];
+                    await new Promise(r => setTimeout(r, 80));
+                }
+                
+                // Schowanie starego sztucznego wiersza i dodanie pełnego stanu, zachowując kursor
                 row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core`;
                 
+                // Wyświetlanie logów systemowych z przerwami czasowymi
                 await new Promise(r => setTimeout(r, 1000));
                 appendLog(`<span style="color:#a7f3d0;">&gt; [████████████████████] 100%</span>`);
                 await new Promise(r => setTimeout(r, 1000));
                 
-                // PRZYWRÓCONE LOGI SYSTEMOWE
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
                 await new Promise(r => setTimeout(r, 1200));
                 appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
@@ -453,6 +468,7 @@
                 appendLog(`&gt; Connection closed.`);
                 await new Promise(r => setTimeout(r, 400));
                 
+                // Całkowite odblokowanie wpisywania z klawiatury dla użytkownika
                 isInteractiveEnabled = true;
                 createInteractivePromptLine();
             };
