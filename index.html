@@ -31,6 +31,9 @@
         body { overflow-x: hidden; position: relative; background-color: var(--bg-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
         .section { padding: 85px 0; position: relative; z-index: 2; }
+        
+        /* Zwiększona wysokość sekcji O Nas dla lepszego i dłuższego skupienia ScrollSpy */
+        #o-nas { padding: 125px 0; }
 
         /* Tło Aurora & Grid */
         .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; }
@@ -61,15 +64,13 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
-        /* Klasyczny link menu z dynamicznym kierunkiem podkreślenia */
+        /* Optymalizacja renderowania linii podświetlenia pod kątem Safari */
         .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; padding: 4px 0; }
         .nav-link:hover, .nav-link.active { color: var(--text-main); }
         
-        /* Domyślnie linia rysuje się od lewej do prawej */
-        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1); }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
         .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
         
-        /* Klasa zmieniająca punkt startowy na prawą stronę przy cofaniu */
         .nav-link.reverse-direction::after { transform-origin: right; }
         .nav-link.active.reverse-direction::after { transform-origin: right; }
 
@@ -83,7 +84,6 @@
         .btn-secondary { background-color: rgba(255, 255, 255, 0.03); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
         .btn-secondary:hover { background-color: rgba(255, 255, 255, 0.07); border-color: var(--accent-cyan); transform: translateY(-2px); }
         
-        /* Aktywne podświetlenie przycisku Konsultacja na dole strony */
         .btn-secondary.consultation-active {
             border-color: var(--accent-cyan);
             background-color: rgba(6, 182, 212, 0.15);
@@ -122,7 +122,7 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 0 22px 22px 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
             text-align: left; position: relative; cursor: text; 
-            overflow: hidden; /* CAŁKOWITE USUNIĘCIE OPCJI SCROLLOWANIA */
+            overflow: hidden;
         }
 
         .terminal-header { 
@@ -324,7 +324,7 @@
             </div>
         </section>
 
-        <!-- Sekcja: O nas -->
+        <!-- Sekcja: O nas (Zoptymalizowana wysokość) -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -379,7 +379,7 @@
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
                             <div class="method-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m10 10-1.5 1.5L7 10"/><path d="m15 14-1.5 1.5L12 14"/></svg>
                             </div>
                             <div>
                                 <span class="method-label">Telefon (Pon–Pt 8:00–18:00)</span>
@@ -487,12 +487,13 @@
                 const progressBarFill = progressRow.querySelector('.progress-bar-fill');
                 const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
                 
-                const totalBlocks = 20;
+                // WYDŁUŻENIE PASKA: zwiększono liczbę bloków z 20 na 32 dla idealnych proporcji
+                const totalBlocks = 32;
                 for (let i = 1; i <= totalBlocks; i++) {
                     progressBarFill.textContent += "█";
                     const percentage = Math.round((i / totalBlocks) * 100);
                     progressPercentageVal.textContent = `${percentage}%`;
-                    await new Promise(r => setTimeout(r, 50));
+                    await new Promise(r => setTimeout(r, 40));
                 }
 
                 await new Promise(r => setTimeout(r, 600));
@@ -549,10 +550,10 @@
             });
 
 
-            // --- NAPRAWIONY I PRECYZYJNY SYSTEM DETEKCJI KIERUNKU KRESKI W MENU ---
+            // --- SYSTEM SCROLLOWANIA GSAP Z DETEKCJĄ KIERUNKU KRESKI ---
             const menuOffset = 80;
-            let currentActiveIndex = 1; // 1 = Oferta, 2 = Dla kogo, 3 = O nas
-            let isScrollingByClick = false; // flaga blokująca ScrollSpy podczas animacji kliknięcia
+            let currentActiveIndex = 1; 
+            let isScrollingByClick = false; 
 
             const setLinesDirection = (targetIndex) => {
                 const navLinks = document.querySelectorAll('.nav-link');
@@ -567,7 +568,7 @@
             };
 
             const scrollToTarget = (targetY, targetIndex) => {
-                isScrollingByClick = true; // blokada scrolla na czas przejazdu
+                isScrollingByClick = true; 
                 setLinesDirection(targetIndex);
 
                 gsap.to(window, {
@@ -575,14 +576,12 @@
                     duration: 0.5,
                     ease: "power2.out",
                     onComplete: () => {
-                        // Po zakończeniu animacji upewniamy się, że linki mają nadany odpowiedni stan aktywacji
                         updateActiveMenuLink();
-                        isScrollingByClick = false; // odblokowanie scrolla
+                        isScrollingByClick = false; 
                     }
                 });
             };
 
-            // Kliknięcia w linki nawigacji górnej i sekcji Hero
             document.querySelectorAll('.main-nav a[href^="#"], .hero-actions a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -590,31 +589,28 @@
                     const targetSection = document.querySelector(href);
                     if (targetSection) {
                         const targetY = targetSection.getBoundingClientRect().top + window.pageYOffset - menuOffset;
-                        // Mapowanie indeksów na podstawie atrybutu lub domyślnej wartości dla kontaktu
                         const targetIndex = parseInt(this.getAttribute('data-index') || (href === "#kontakt" ? "4" : "1"));
                         scrollToTarget(targetY, targetIndex);
                     }
                 });
             });
 
-            // Kliknięcie w LOGO (Zawsze traktowane jako powrót na indeks 0 -> od prawej do lewej)
             document.getElementById('logoToTop').addEventListener('click', (e) => {
                 e.preventDefault();
                 scrollToTarget(0, 0);
             });
 
 
-            // --- SYSTEM SCROLLSPY Z WYKRYWANIEM KIERUNKU PODCZAS SCROLLOWANIA MYSZKĄ ---
+            // --- ULEPSZONY SCROLLSPY (ZWIĘKSZONA CZUŁOŚĆ I PŁYNNOŚĆ WYGŁADZANIA) ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
 
             const updateActiveMenuLink = () => {
-                // Jeśli użytkownik kliknął w menu, ignorujemy zdarzenia natywnego scrolla do czasu ukończenia podróży
                 if (isScrollingByClick) return;
 
                 let currentActiveId = "";
-                const scrollPosition = window.scrollY + menuOffset + 130;
+                const scrollPosition = window.scrollY + menuOffset + 140;
                 const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60;
 
                 sections.forEach(section => {
@@ -634,10 +630,7 @@
                         const linkHref = link.getAttribute('href');
                         if (linkHref === `#${currentActiveId}`) {
                             const newIndex = parseInt(link.getAttribute('data-index') || "1");
-                            
-                            // Dynamiczna zmiana kierunku linii na podstawie swobodnego scrollowania myszką
                             setLinesDirection(newIndex);
-                            
                             link.classList.add('active');
                         } else {
                             link.classList.remove('active');
