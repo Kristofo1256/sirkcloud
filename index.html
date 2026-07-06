@@ -64,7 +64,7 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
-        /* NOWE: Ultra-płynne renderowanie linii bez użycia transformacji, odporne na jittering */
+        /* Renderowanie linii bez użycia transformacji, odporne na jittering */
         .nav-link { 
             color: var(--text-muted); 
             text-decoration: none; 
@@ -399,7 +399,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -579,19 +579,21 @@
             let currentActiveIndex = 1; 
             let isScrollingByClick = false; 
 
+            // NAPRAWIONE: Funkcja precyzyjnie reaguje na kierunek, sprawdzając stan PRZED przypisaniem nowego indeksu
             const setLinesDirection = (targetIndex) => {
-                // Zapobiega zbędnemu nadpisywaniu klas jeśli stan indeksu się nie zmienił
                 if (targetIndex === currentActiveIndex) return;
 
                 const navLinks = document.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
                     if (targetIndex < currentActiveIndex) {
+                        // Idziemy w górę -> od prawej do lewej
                         link.classList.add('reverse-direction');
                     } else {
+                        // Idziemy w dół -> od lewej do prawej
                         link.classList.remove('reverse-direction');
                     }
                 });
-                currentActiveIndex = targetIndex;
+                currentActiveIndex = targetIndex; // Aktualizacja indeksu następuje PO weryfikacji kierunku
             };
 
             const scrollToTarget = (targetY, targetIndex) => {
@@ -628,12 +630,12 @@
             });
 
 
-            // --- NAPRAWIONY, PŁYNNY SYSTEM SCROLLSPY (BEZ SZARPANIA / DEBOUNCED) ---
+            // --- CAŁKOWICIE ZSYNCHRONIZOWANY, PŁYNNY SYSTEM SCROLLSPY ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
             
-            let lastDetectedId = ""; // Pamięć podręczna ostatnio wybranej sekcji
+            let lastDetectedId = ""; 
 
             const updateActiveMenuLink = () => {
                 if (isScrollingByClick) return;
@@ -660,7 +662,6 @@
                 } else {
                     consultationBtn.classList.remove('consultation-active');
                     
-                    // GŁÓWNA OPTYMALIZACJA: Logika wykonuje się TYLKO wtedy, gdy faktycznie przekroczyliśmy granicę sekcji
                     if (currentActiveId && currentActiveId !== lastDetectedId) {
                         lastDetectedId = currentActiveId;
                         
@@ -678,7 +679,6 @@
                 }
             };
 
-            // Użycie requestAnimationFrame do idealnej synchronizacji z częstotliwością odświeżania ekranu (60Hz/120Hz)
             let isTicking = false;
             window.addEventListener('scroll', () => {
                 if (!isTicking) {
