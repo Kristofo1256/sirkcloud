@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
+    <!-- Pobieranie czcionki bez blokowania renderowania strony -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS Core Reset */
+        /* CSS Core Reset & Smooth Scroll */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
@@ -24,10 +23,14 @@
             --text-main: #f8fafc; --text-muted: #94a3b8;
             --container-max: 1200px;
             --font-primary: 'Epilogue', sans-serif;
-            --transition-linear: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        html { font-family: var(--font-primary); background-color: var(--bg-main); color: var(--text-main); }
+        html { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-main); 
+            color: var(--text-main);
+            scroll-behavior: smooth; /* Natywne, ultra-szybkie przewijanie bez zewnętrznych bibliotek */
+        }
         body { overflow-x: hidden; position: relative; background-color: var(--bg-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
         .section { padding: 85px 0; position: relative; z-index: 2; }
@@ -63,18 +66,19 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
-        /* NOWY SYSTEM LINII: Pojawia się od lewej, chowa (wymazuje) do prawej. Zero skakania i drżenia. */
+        /* POPRAWIONY LINK: Brak jakichkolwiek linii na hover. Czysto i profesjonalnie. */
         .nav-link { 
             color: var(--text-muted); 
             text-decoration: none; 
             font-weight: 500; 
             font-size: 0.95rem; 
             position: relative; 
-            padding: 4px 0;
-            transition: color 0.3s ease;
+            padding: 6px 0;
+            transition: color 0.2s ease;
         }
-        .nav-link:hover, .nav-link.active { color: var(--text-main); }
+        .nav-link:hover { color: var(--text-main); }
         
+        /* Kreska aktywnej sekcji: Pojawia się TYLKO gdy sekcja jest aktywna (ScrollSpy) */
         .nav-link::after { 
             content: ''; 
             position: absolute; 
@@ -84,21 +88,16 @@
             height: 2px; 
             background-color: var(--accent-cyan); 
             transform: scaleX(0); 
-            transform-origin: right; /* Kiedy się chowa, zwija się do prawej strony */
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform;
+            transition: transform 0.25s ease-in-out;
         }
-        
-        .nav-link:hover::after, .nav-link.active::after { 
-            transform: scaleX(1); 
-            transform-origin: left; /* Kiedy się pojawia, rozwija się od lewej strony */
-        }
+        .nav-link.active { color: var(--text-main); }
+        .nav-link.active::after { transform: scaleX(1); }
 
         /* Przyciski */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px;
             font-family: var(--font-primary); font-size: 0.95rem; font-weight: 700; text-decoration: none;
-            border-radius: 6px; cursor: pointer; transition: transform var(--transition-linear), background-color var(--transition-linear), box-shadow 0.3s ease, border-color 0.3s ease;
+            border-radius: 6px; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
         .btn-secondary { background-color: rgba(255, 255, 255, 0.03); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
@@ -108,7 +107,6 @@
             border-color: var(--accent-cyan);
             background-color: rgba(6, 182, 212, 0.15);
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-            transform: translateY(-1px);
         }
 
         .btn-primary {
@@ -188,7 +186,7 @@
 
         /* Karty */
         .interactive-card {
-            background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); padding: 36px; border-radius: 8px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform var(--transition-linear), border-color var(--transition-linear);
+            background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); padding: 36px; border-radius: 8px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.4s ease, border-color 0.4s ease;
         }
         .interactive-card:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.3); }
         .card-icon { color: var(--accent-cyan); margin-bottom: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.05); border-radius: 6px; }
@@ -196,7 +194,7 @@
         .interactive-card p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Filary "O Nas" */
-        .filar-item { display: flex; gap: 24px; background: rgba(17, 26, 46, 0.4); border-left: 3px solid rgba(37, 99, 235, 0.3); padding: 28px; border-radius: 0 6px 6px 0; transition: border-left-color var(--transition-linear), background-color var(--transition-linear); }
+        .filar-item { display: flex; gap: 24px; background: rgba(17, 26, 46, 0.4); border-left: 3px solid rgba(37, 99, 235, 0.3); padding: 28px; border-radius: 0 6px 6px 0; transition: border-left-color 0.4s ease, background-color 0.4s ease; }
         .filar-item:hover { border-left-color: var(--accent-cyan); background-color: rgba(17, 26, 46, 0.7); }
         .filar-number { font-size: 1.6rem; font-weight: 800; color: var(--accent-cyan); line-height: 1; }
         .filar-content h3 { font-size: 1.3rem; margin-bottom: 8px; }
@@ -206,7 +204,7 @@
         .contact-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
         .contact-lead { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
         .contact-details { display: flex; flex-direction: column; gap: 16px; }
-        .contact-method { display: flex; align-items: center; gap: 20px; text-decoration: none; color: var(--text-main); padding: 16px; background: rgba(17, 26, 46, 0.3); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 6px; transition: border-color var(--transition-linear), background var(--transition-linear); }
+        .contact-method { display: flex; align-items: center; gap: 20px; text-decoration: none; color: var(--text-main); padding: 16px; background: rgba(17, 26, 46, 0.3); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 6px; transition: border-color 0.4s ease, background 0.4s ease; }
         .contact-method:hover { border-color: rgba(6, 182, 212, 0.2); background: rgba(17, 26, 46, 0.6); }
         .method-icon { width: 44px; height: 44px; border-radius: 6px; background: rgba(6, 182, 212, 0.08); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; }
         .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
@@ -219,11 +217,9 @@
         .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #020305; position: relative; z-index: 2; }
         .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
-        /* System przejść scrolla */
-        .scroll-animate-trigger { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        /* Szybki, sprzętowy Scroll Reveal (Bez JS) */
+        .scroll-animate-trigger { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: transform, opacity; }
         .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
-        .stagger-node { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .scroll-animate-trigger.active .stagger-node { opacity: 1; transform: translateY(0); }
 
         /* RWD */
         @media (max-width: 1024px) {
@@ -248,9 +244,10 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
+    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
-            <a id="logoToTop" class="logo-container" aria-label="Przewiń na górę strony">
+            <a href="#" class="logo-container" aria-label="Przewiń na górę strony">
                 <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="SirK Cloud Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <span class="logo-fallback" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
             </a>
@@ -266,6 +263,7 @@
     </header>
 
     <main>
+        <!-- Sekcja Hero (Oferta) -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -305,6 +303,7 @@
             </div>
         </section>
 
+        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -313,7 +312,7 @@
                 </div>
                 
                 <div class="cards-grid layout-3-col">
-                    <div class="interactive-card stagger-node">
+                    <div class="interactive-card">
                         <div class="card-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
@@ -321,7 +320,7 @@
                         <p>Zdejmujemy z Twoich barków administrowanie sprzętem, konfigurację sieci, wykonywanie kopii zapasowych i usuwanie bieżących awarii.</p>
                     </div>
 
-                    <div class="interactive-card stagger-node">
+                    <div class="interactive-card">
                         <div class="card-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         </div>
@@ -329,7 +328,7 @@
                         <p>Gdy technologia zawodzi, liczy się każda minuta. Oferujemy natychmiastowe wsparcie zdalne i sprawne działanie, eliminując przestoje w pracy.</p>
                     </div>
 
-                    <div class="interactive-card stagger-node">
+                    <div class="interactive-card">
                         <div class="card-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m10 10-1.5 1.5L7 10"/><path d="m15 14-1.5 1.5L12 14"/></svg>
                         </div>
@@ -340,6 +339,7 @@
             </div>
         </section>
 
+        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -348,7 +348,7 @@
                 </div>
 
                 <div class="cards-grid layout-2-col">
-                    <div class="filar-item stagger-node">
+                    <div class="filar-item">
                         <div class="filar-number">01</div>
                         <div class="filar-content">
                             <h3>Partner nie helpdesk</h3>
@@ -356,7 +356,7 @@
                         </div>
                     </div>
 
-                    <div class="filar-item stagger-node">
+                    <div class="filar-item">
                         <div class="filar-number">02</div>
                         <div class="filar-content">
                             <h3>IT na którym możesz polegać</h3>
@@ -364,7 +364,7 @@
                         </div>
                     </div>
 
-                    <div class="filar-item stagger-node">
+                    <div class="filar-item">
                         <div class="filar-number">03</div>
                         <div class="filar-content">
                             <h3>Normalne IT dla firm</h3>
@@ -372,7 +372,7 @@
                         </div>
                     </div>
 
-                    <div class="filar-item stagger-node">
+                    <div class="filar-item">
                         <div class="filar-number">04</div>
                         <div class="filar-content">
                             <h3>Obsługa zdalna i lokalna</h3>
@@ -383,12 +383,13 @@
             </div>
         </section>
 
+        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -403,7 +404,7 @@
 
                         <a href="mailto:kjankowski@sirk.cloud" class="contact-method" aria-label="Wyślij wiadomość e-mail na adres kjankowski@sirk.cloud">
                             <div class="method-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                             </div>
                             <div>
                                 <span class="method-label">Napisz bezpośrednio</span>
@@ -423,7 +424,7 @@
                     </div>
                 </div>
 
-                <div class="contact-cta-box stagger-node">
+                <div class="contact-cta-box">
                     <h3>Gotowy uprościć swoje systemy IT?</h3>
                     <p>Wybierz najwygodniejszą formę kontaktu. Otrzymasz rzetelną wiedzę i profesjonalne wsparcie bez branżowego owijania w bawełnę.</p>
                     <a href="mailto:kjankowski@sirk.cloud?subject=Bezp%C5%82atna%20konsultacja%20IT" class="btn btn-primary btn-full">Zarezerwuj bezpłatną konsultację</a>
@@ -451,7 +452,6 @@
                 row.className = 'term-row';
                 row.innerHTML = html;
                 terminalBody.appendChild(row);
-                
                 while (terminalBody.children.length > 11) {
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
@@ -463,34 +463,30 @@
                 row.className = 'term-row';
                 row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
                 terminalBody.appendChild(row);
-                
                 while (terminalBody.children.length > 11) {
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
-                
                 hiddenInput.value = "";
                 hiddenInput.focus();
             };
 
+            // Superszybka sekwencja powitalna terminala (Natywne JS Async)
             const runAutoSequence = async () => {
                 const row = document.createElement('span');
                 row.className = 'term-row';
                 row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
                 terminalBody.appendChild(row);
                 
-                await new Promise(r => setTimeout(r, 3200));
+                await new Promise(r => setTimeout(r, 600));
                 const textContainer = row.querySelector('.term-text-container');
-                
                 const commandText = "run sirk-business-support-core";
+                
                 for (let i = 0; i < commandText.length; i++) {
                     textContainer.textContent += commandText[i];
-                    await new Promise(r => setTimeout(r, 80));
+                    await new Promise(r => setTimeout(r, 30));
                 }
                 
-                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core`;
-                
-                await new Promise(r => setTimeout(r, 600));
-                
+                await new Promise(r => setTimeout(r, 200));
                 const progressRow = appendLog(`
                     <div class="progress-row-layout" style="color:#a7f3d0;">
                         <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill"></span>]</span>
@@ -501,43 +497,33 @@
                 const progressBarFill = progressRow.querySelector('.progress-bar-fill');
                 const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
                 
-                const totalBlocks = 32;
-                for (let i = 1; i <= totalBlocks; i++) {
+                for (let i = 1; i <= 20; i++) {
                     progressBarFill.textContent += "█";
-                    const percentage = Math.round((i / totalBlocks) * 100);
-                    progressPercentageVal.textContent = `${percentage}%`;
-                    await new Promise(r => setTimeout(r, 40));
+                    progressPercentageVal.textContent = `${Math.round((i / 20) * 100)}%`;
+                    await new Promise(r => setTimeout(r, 20));
                 }
 
-                await new Promise(r => setTimeout(r, 600));
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
-                await new Promise(r => setTimeout(r, 1200));
+                await new Promise(r => setTimeout(r, 150));
                 appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
-                await new Promise(r => setTimeout(r, 1300));
                 appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
-                await new Promise(r => setTimeout(r, 1400));
+                await new Promise(r => setTimeout(r, 200));
                 appendLog(`&gt; Mission completed. All systems are stable.`);
-                await new Promise(r => setTimeout(r, 1100));
 
                 appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
-                await new Promise(r => setTimeout(r, 600));
+                await new Promise(r => setTimeout(r, 200));
                 appendLog(`&gt; Connection closed.`);
-                await new Promise(r => setTimeout(r, 400));
                 
                 isInteractiveEnabled = true;
                 createInteractivePromptLine();
             };
 
-            terminalWindow.addEventListener('click', () => {
-                if(isInteractiveEnabled) hiddenInput.focus();
-            });
-
+            terminalWindow.addEventListener('click', () => { if(isInteractiveEnabled) hiddenInput.focus(); });
             hiddenInput.addEventListener('input', (e) => {
                 if(!isInteractiveEnabled) return;
                 const rows = terminalBody.querySelectorAll('.term-row');
                 if(rows.length > 0) {
-                    const lastRow = rows[rows.length - 1];
-                    const span = lastRow.querySelector('.admin-input');
+                    const span = rows[rows.length - 1].querySelector('.admin-input');
                     if(span) span.textContent = e.target.value;
                 }
             });
@@ -545,81 +531,30 @@
             hiddenInput.addEventListener('keydown', (e) => {
                 if(e.key === 'Enter' && isInteractiveEnabled) {
                     const val = hiddenInput.value.trim();
-                    
                     const rows = terminalBody.querySelectorAll('.term-row');
                     if(rows.length > 0) {
                         const lastCursor = rows[rows.length - 1].querySelector('.term-cursor');
                         if(lastCursor) lastCursor.remove();
                     }
-
-                    if(val === 'clear' || val === 'exit') {
-                        terminalBody.innerHTML = "";
-                    } else if(val !== "") {
-                        appendLog(`<span class="t-danger">bash: "${val}": command not found</span>`);
-                    }
-                    
+                    if(val === 'clear' || val === 'exit') terminalBody.innerHTML = "";
+                    else if(val !== "") appendLog(`<span class="t-danger">bash: "${val}": command not found</span>`);
                     createInteractivePromptLine();
                 }
             });
 
-
-            // --- CAŁKOWICIE NOWY, PROSTY I NIEZAWODNY MECHANIZM PRZEWIJANIA STRONY ---
-            const menuOffset = 80;
-            let isScrollingByClick = false; 
-
-            const scrollToTarget = (targetY) => {
-                if (typeof gsap === 'undefined') {
-                    window.scrollTo({ top: targetY, behavior: 'smooth' });
-                    return;
-                }
-
-                isScrollingByClick = true; 
-
-                gsap.to(window, {
-                    scrollTo: { y: targetY, autoKill: false },
-                    duration: 0.5,
-                    ease: "power2.out",
-                    onComplete: () => {
-                        updateActiveMenuLink();
-                        setTimeout(() => { isScrollingByClick = false; }, 50);
-                    }
-                });
-            };
-
-            document.querySelectorAll('.main-nav a[href^="#"], .hero-actions a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const href = this.getAttribute('href');
-                    const targetSection = document.querySelector(href);
-                    if (targetSection) {
-                        const targetY = targetSection.getBoundingClientRect().top + window.pageYOffset - menuOffset;
-                        scrollToTarget(targetY);
-                    }
-                });
-            });
-
-            document.getElementById('logoToTop').addEventListener('click', (e) => {
-                e.preventDefault();
-                scrollToTarget(0);
-            });
-
-
-            // --- PŁYNNY, KLASYCZNY SYSTEM SCROLLSPY ---
+            // --- KLASYCZNY, BŁYSKAWICZNY I STABILNY SYSTEM SCROLLSPY ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
+            const menuOffset = 90;
 
             const updateActiveMenuLink = () => {
-                if (isScrollingByClick) return;
-
-                let currentActiveId = "";
-                const scrollPosition = window.scrollY + menuOffset + 140;
+                let currentActiveId = "oferta";
+                const scrollPosition = window.scrollY + menuOffset + 20;
                 const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60;
 
                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    if (scrollPosition >= section.offsetTop) {
                         currentActiveId = section.getAttribute('id');
                     }
                 });
@@ -629,86 +564,37 @@
                     consultationBtn.classList.add('consultation-active');
                 } else {
                     consultationBtn.classList.remove('consultation-active');
-                    
-                    if (currentActiveId) {
-                        navLinks.forEach(link => {
-                            if (link.getAttribute('href') === `#${currentActiveId}`) {
-                                link.classList.add('active');
-                            } else {
-                                link.classList.remove('active');
-                            }
-                        });
-                    }
-                }
-            };
-
-            let isTicking = false;
-            window.addEventListener('scroll', () => {
-                if (!isTicking) {
-                    window.requestAnimationFrame(() => {
-                        updateActiveMenuLink();
-                        isTicking = false;
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${currentActiveId}`) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
                     });
-                    isTicking = true;
                 }
-            }, { passive: true });
-
-
-            // Definicje introskopii
-            const runHeroIntro = () => {
-                if (typeof gsap === 'undefined') return;
-                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                if (prefersReducedMotion) return;
-
-                const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
-                tl.from('.main-header', { opacity: 0, y: -25 })
-                  .from('.hero-title', { opacity: 0, y: 40, duration: 1.1 }, '-=0.5')
-                  .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
-                  .from('.meta-item', { opacity: 0, scale: 0.93, stagger: 0.12, duration: 0.6 }, '-=0.6')
-                  .from('.hero-actions .btn', { opacity: 0, y: 20, stagger: 0.15 }, '-=0.5')
-                  .from('.production-terminal', { opacity: 0, scale: 0.95, duration: 1 }, '-=0.7');
             };
 
+            // Skrócone opóźnienie sprawdzania pozycji przy przewijaniu
+            window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
+
+            // --- NATYWNY REVEAL ELEMENTÓW (ZAMIAST GSAP) ---
             const initScrollReveal = () => {
                 const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
-                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                
-                if (prefersReducedMotion) {
-                    sectionsToObserve.forEach(el => el.classList.add('active'));
-                    return;
-                }
-
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('active');
-                            if (typeof gsap !== 'undefined') {
-                                const nodes = entry.target.querySelectorAll('.stagger-node');
-                                if (nodes.length > 0) {
-                                    gsap.fromTo(nodes, 
-                                        { opacity: 0, y: 30, scale: 0.98 },
-                                        { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.14, ease: 'power3.out', overwrite: 'auto' }
-                                    );
-                                }
-                            }
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.1 });
-
+                }, { threshold: 0.05 });
                 sectionsToObserve.forEach(sec => observer.observe(sec));
             };
 
+            // Start systemów
             runAutoSequence();
             initScrollReveal();
             updateActiveMenuLink();
-
-            const checkGsapReady = setInterval(() => {
-                if (typeof gsap !== 'undefined') {
-                    clearInterval(checkGsapReady);
-                    runHeroIntro();
-                }
-            }, 50);
         });
     </script>
 </body>
