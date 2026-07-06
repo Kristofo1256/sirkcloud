@@ -188,12 +188,7 @@
         }
         @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-        /* Układ linii logów systemowych (zarządzany bezpiecznie z poziomu JS) */
-        .log-output {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .log-output { display: flex; flex-direction: column; gap: 10px; }
         .term-row { display: block; line-height: 1.4; }
         
         .t-bold { font-weight: bold; color: var(--text-main); }
@@ -315,7 +310,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z realistycznym wpisywaniem przez JS -->
+                <!-- Terminal z realistyczną, 5-sekundową zwłoką i ludzkim wpisywaniem przez JS -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -475,12 +470,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // --- REALISTYCZNY MECHANIZM WPISYWANIA W TERMINALU (KURSOR 5S + LUDZKIE TEMPO) ---
+            // --- OPERACYJNY MECHANIZM WPISYWANIA (KURSOR 5S + LUDZKIE TEMPO) ---
             const runTerminalSimulation = () => {
                 if (prefersReducedMotion) {
-                    // Jeśli użytkownik ma wyłączone animacje, od razu pokazujemy kompletny stan terminala
                     document.getElementById('terminalBody').innerHTML = `
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> booting up support --force</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
                         <span class="term-row" style="color: #a7f3d0;">&gt; [████████████████████████████████] 100%</span>
                         <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
                         <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
@@ -491,38 +485,34 @@
                     return;
                 }
 
-                const commandText = "booting up support --force";
+                // Przypisanie nowej wybranej komendy z 'run'
+                const commandText = "run sirk-business-support-core";
                 const cmdContainer = document.getElementById('commandLine');
                 const cursor = document.getElementById('liveCursor');
                 const terminal = document.getElementById('terminalBody');
 
                 let charIndex = 0;
 
-                // Funkcja symulująca ludzkie pisanie (losowe mikro-odstępy między znakami)
                 function typeCharacter() {
                     if (charIndex < commandText.length) {
                         cmdContainer.textContent += commandText.charAt(charIndex);
                         charIndex++;
-                        // Naturalne wahania prędkości pisania człowieka (od 40ms do 130ms)
-                        setTimeout(typeCharacter, Math.random() * 90 + 40);
+                        setTimeout(typeCharacter, Math.random() * 70 + 40);
                     } else {
-                        // Komenda wpisana – po krótkiej chwili wciskamy "Enter" i wypluwamy resztę logów systemowych
-                        setTimeout(triggerSystemLogs, 400);
+                        setTimeout(triggerSystemLogs, 350);
                     }
                 }
 
-                // Generowanie gotowych logów systemowych po wykonaniu polecenia
                 function triggerSystemLogs() {
-                    // Przenosimy kursor ze starej linii komendy na sam dół
                     cursor.remove();
 
                     const logs = [
-                        { text: `&gt; [████████████████████████████████] 100%`, color: '#a7f3d0', delay: 400 },
-                        { text: `&gt; Infrastruktura zoptymalizowana.`, color: '', delay: 900 },
-                        { text: `&gt; Services status: <span class="t-success">[0] Active / Running</span>`, color: '', delay: 1400 },
-                        { text: `&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`, color: '', delay: 1900 },
-                        { text: `&gt; Mission completed. All systems are stable.`, color: '', delay: 2400 },
-                        { text: `<span class="t-bold">root@sirk-cloud:~#</span> exit 0<span class="term-cursor"></span>`, color: '', delay: 3000 }
+                        { text: `&gt; [████████████████████████████████] 100%`, color: '#a7f3d0', delay: 350 },
+                        { text: `&gt; Infrastruktura zoptymalizowana.`, color: '', delay: 800 },
+                        { text: `&gt; Services status: <span class="t-success">[0] Active / Running</span>`, color: '', delay: 1250 },
+                        { text: `&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`, color: '', delay: 1700 },
+                        { text: `&gt; Mission completed. All systems are stable.`, color: '', delay: 2150 },
+                        { text: `<span class="t-bold">root@sirk-cloud:~#</span> exit 0<span class="term-cursor"></span>`, color: '', delay: 2700 }
                     ];
 
                     logs.forEach(log => {
@@ -536,7 +526,7 @@
                     });
                 }
 
-                // Start: Kursor czeka sztywno 5 sekund (5000ms), po czym wywoływana jest funkcja pisania
+                // Początkowe mruganie na pustym monicie przez dokładnie 5 sekund przed wpisaniem
                 setTimeout(typeCharacter, 5000);
             };
 
