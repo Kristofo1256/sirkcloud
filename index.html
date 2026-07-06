@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Optymalizacja pobierania fontów (Preconnect) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-    <!-- Asynchroniczne, nieblokujące ładowanie skryptów animacji (DEFER) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js" defer></script>
 
@@ -66,6 +63,7 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
+        /* NOWY SYSTEM LINII: Pojawia się od lewej, chowa (wymazuje) do prawej. Zero skakania i drżenia. */
         .nav-link { 
             color: var(--text-muted); 
             text-decoration: none; 
@@ -73,7 +71,7 @@
             font-size: 0.95rem; 
             position: relative; 
             padding: 4px 0;
-            transition: color 0.25s ease;
+            transition: color 0.3s ease;
         }
         .nav-link:hover, .nav-link.active { color: var(--text-main); }
         
@@ -86,18 +84,15 @@
             height: 2px; 
             background-color: var(--accent-cyan); 
             transform: scaleX(0); 
-            transform-origin: left; 
-            transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1); 
+            transform-origin: right; /* Kiedy się chowa, zwija się do prawej strony */
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: transform;
         }
         
-        .nav-link.active::after { 
+        .nav-link:hover::after, .nav-link.active::after { 
             transform: scaleX(1); 
-            transform-origin: left; 
+            transform-origin: left; /* Kiedy się pojawia, rozwija się od lewej strony */
         }
-        
-        .nav-link.reverse-direction::after { transform-origin: right; }
-        .nav-link.active.reverse-direction::after { transform-origin: right; }
 
         /* Przyciski */
         .btn {
@@ -253,7 +248,6 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
-    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
             <a id="logoToTop" class="logo-container" aria-label="Przewiń na górę strony">
@@ -262,9 +256,9 @@
             </a>
             <nav class="main-nav" aria-label="Nawigacja główna">
                 <ul>
-                    <li><a href="#oferta" class="nav-link" data-index="1">Oferta</a></li>
-                    <li><a href="#dla-kogo" class="nav-link" data-index="2">Dla kogo</a></li>
-                    <li><a href="#o-nas" class="nav-link" data-index="3">O nas</a></li>
+                    <li><a href="#oferta" class="nav-link">Oferta</a></li>
+                    <li><a href="#dla-kogo" class="nav-link">Dla kogo</a></li>
+                    <li><a href="#o-nas" class="nav-link">O nas</a></li>
                     <li><a href="#kontakt" id="consultationBtn" class="btn btn-secondary btn-sm">Konsultacja</a></li>
                 </ul>
             </nav>
@@ -272,7 +266,6 @@
     </header>
 
     <main>
-        <!-- Sekcja Hero (Oferta) -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -291,8 +284,8 @@
                     </div>
 
                     <div class="hero-actions">
-                        <a href="#dla-kogo" class="btn btn-primary" data-index="2">Sprawdź ofertę</a>
-                        <a href="#kontakt" class="btn btn-secondary" data-index="4">Napisz do nas</a>
+                        <a href="#dla-kogo" class="btn btn-primary">Sprawdź ofertę</a>
+                        <a href="#kontakt" class="btn btn-secondary">Napisz do nas</a>
                     </div>
                 </div>
                 
@@ -312,7 +305,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -348,7 +340,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -392,7 +383,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
@@ -573,32 +563,17 @@
             });
 
 
-            // --- SYSTEM KIERUNKU KRESKI (MATEMATYCZNY) ---
+            // --- CAŁKOWICIE NOWY, PROSTY I NIEZAWODNY MECHANIZM PRZEWIJANIA STRONY ---
             const menuOffset = 80;
-            let currentActiveIndex = 1; 
             let isScrollingByClick = false; 
 
-            const setForceDirection = (isGoingUp) => {
-                const navLinks = document.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    if (isGoingUp) {
-                        link.classList.add('reverse-direction');
-                    } else {
-                        link.classList.remove('reverse-direction');
-                    }
-                });
-            };
-
-            const scrollToTarget = (targetY, targetIndex) => {
-                // Sprawdzenie czy GSAP zdążył się asynchronicznie załadować
+            const scrollToTarget = (targetY) => {
                 if (typeof gsap === 'undefined') {
                     window.scrollTo({ top: targetY, behavior: 'smooth' });
                     return;
                 }
 
                 isScrollingByClick = true; 
-                setForceDirection(targetIndex < currentActiveIndex);
-                currentActiveIndex = targetIndex;
 
                 gsap.to(window, {
                     scrollTo: { y: targetY, autoKill: false },
@@ -606,7 +581,7 @@
                     ease: "power2.out",
                     onComplete: () => {
                         updateActiveMenuLink();
-                        isScrollingByClick = false; 
+                        setTimeout(() => { isScrollingByClick = false; }, 50);
                     }
                 });
             };
@@ -618,24 +593,21 @@
                     const targetSection = document.querySelector(href);
                     if (targetSection) {
                         const targetY = targetSection.getBoundingClientRect().top + window.pageYOffset - menuOffset;
-                        const targetIndex = parseInt(this.getAttribute('data-index') || (href === "#kontakt" ? "4" : "1"));
-                        scrollToTarget(targetY, targetIndex);
+                        scrollToTarget(targetY);
                     }
                 });
             });
 
             document.getElementById('logoToTop').addEventListener('click', (e) => {
                 e.preventDefault();
-                scrollToTarget(0, 0);
+                scrollToTarget(0);
             });
 
 
-            // --- SYSTEM SCROLLSPY ---
+            // --- PŁYNNY, KLASYCZNY SYSTEM SCROLLSPY ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
-            
-            let lastDetectedId = ""; 
 
             const updateActiveMenuLink = () => {
                 if (isScrollingByClick) return;
@@ -653,25 +625,14 @@
                 });
 
                 if (isAtBottom) {
-                    if (lastDetectedId !== "kontakt-bottom") {
-                        navLinks.forEach(link => link.classList.remove('active'));
-                        consultationBtn.classList.add('consultation-active');
-                        setForceDirection(false);
-                        currentActiveIndex = 4;
-                        lastDetectedId = "kontakt-bottom";
-                    }
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    consultationBtn.classList.add('consultation-active');
                 } else {
                     consultationBtn.classList.remove('consultation-active');
                     
-                    if (currentActiveId && currentActiveId !== lastDetectedId) {
-                        lastDetectedId = currentActiveId;
-                        
+                    if (currentActiveId) {
                         navLinks.forEach(link => {
-                            const linkHref = link.getAttribute('href');
-                            if (linkHref === `#${currentActiveId}`) {
-                                const newIndex = parseInt(link.getAttribute('data-index') || "1");
-                                setForceDirection(newIndex < currentActiveIndex);
-                                currentActiveIndex = newIndex;
+                            if (link.getAttribute('href') === `#${currentActiveId}`) {
                                 link.classList.add('active');
                             } else {
                                 link.classList.remove('active');
@@ -693,7 +654,7 @@
             }, { passive: true });
 
 
-            // Definicje introskopii (uruchamiane dopiero po upewnieniu się, że GSAP istnieje)
+            // Definicje introskopii
             const runHeroIntro = () => {
                 if (typeof gsap === 'undefined') return;
                 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -738,12 +699,10 @@
                 sectionsToObserve.forEach(sec => observer.observe(sec));
             };
 
-            // Wywołanie startowe niezależne od sieci
             runAutoSequence();
             initScrollReveal();
             updateActiveMenuLink();
 
-            // Bezpieczne sprawdzanie gotowości obiektów zewnętrznych CDNs
             const checkGsapReady = setInterval(() => {
                 if (typeof gsap !== 'undefined') {
                     clearInterval(checkGsapReady);
