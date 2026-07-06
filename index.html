@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
+    <!-- Fonty: Epilogue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
     
+    <!-- Narzędzia animacji GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
 
@@ -153,7 +155,7 @@
         .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 36px; max-width: 600px; }
         .hero-meta { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
         .meta-item {
-            display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem;
+            display: flex; align-items: center; gap: 10px; color: var(--textMain); font-size: 0.95rem;
             background: rgba(17, 26, 46, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 18px; border-radius: 20px;
         }
         .hero-actions { display: flex; gap: 16px; }
@@ -268,6 +270,7 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
+    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
             <a href="#" class="logo-container" aria-label="Strona główna Sirk Cloud">
@@ -286,6 +289,7 @@
     </header>
 
     <main>
+        <!-- Sekcja Hero -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -309,6 +313,7 @@
                     </div>
                 </div>
                 
+                <!-- Terminal z nieskończonym czasem oczekiwania w trybie manualnym -->
                 <div class="hero-visual">
                     <div class="production-terminal" id="clickableTerminal">
                         <div class="terminal-header">
@@ -319,12 +324,14 @@
                         
                         <div id="terminalBody" class="log-output"></div>
                         
+                        <!-- Przechwytywacz klawiatury użytkownika -->
                         <input type="text" id="terminalHiddenInput" autocomplete="off">
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -360,6 +367,7 @@
             </div>
         </section>
 
+        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -396,19 +404,20 @@
                         <div class="filar-number">04</div>
                         <div class="filar-content">
                             <h3>Obsługa zdalna i lokalna</h3>
-                            <p>Łączymy elastyczność i szybkość wsparła online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
+                            <p>Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -459,6 +468,7 @@
         </div>
     </footer>
 
+    <!-- Bezpieczny silnik interaktywnego terminala bez automatycznego resetowania -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const initTerminalSystem = () => {
@@ -469,7 +479,6 @@
                 if (!terminalWindow || !terminalBody || !hiddenInput) return;
 
                 let isUserActive = false; 
-                let inactivityTimer = null;
                 let currentLineTarget = null;
                 let currentCursorTarget = null;
                 let activeLoopId = 0; 
@@ -545,7 +554,7 @@
                     });
                 };
 
-                // GŁÓWNA PĘTLA PREZENTACYJNA (AUTOMAT)
+                // JEDYNA, JEDNORAZOWA SEKWENCJA STARTOWA (BRAK RESETU W PĘTLI)
                 const runPresentationLoop = async () => {
                     if (isUserActive) return;
                     
@@ -562,7 +571,7 @@
                         const textSpan1 = row1.querySelector('.admin-input');
                         const cursorSpan1 = row1.querySelector('.term-cursor');
                         
-                        // ZMIANA: kursor mruga dokładnie 4 razy (4 x 0.8s = 3200ms) zanim cokolwiek zacznie pisać
+                        // Kursor mruga 4 razy przed rozpoczęciem automatycznego pisania
                         await delay(3200); 
                         if (isUserActive || myLoopId !== activeLoopId) return;
 
@@ -571,19 +580,19 @@
                         await delay(500);
 
                         await simulateAutoProgressBar(myLoopId);
-                        await delay(600);
+                        await delay(1000);
 
                         if (isUserActive || myLoopId !== activeLoopId) return;
                         appendStaticLog(`&gt; Infrastruktura zoptymalizowana.`);
-                        await delay(800);
+                        await delay(1200);
 
                         if (isUserActive || myLoopId !== activeLoopId) return;
                         appendStaticLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
-                        await delay(800);
+                        await delay(1300);
 
                         if (isUserActive || myLoopId !== activeLoopId) return;
                         appendStaticLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
-                        await delay(900);
+                        await delay(1400);
 
                         if (isUserActive || myLoopId !== activeLoopId) return;
                         appendStaticLog(`&gt; Mission completed. All systems are stable.`);
@@ -597,43 +606,35 @@
                         const textSpan2 = row2.querySelector('.admin-input');
                         const cursorSpan2 = row2.querySelector('.term-cursor');
 
-                        await delay(2000); 
+                        await delay(2500); 
                         if (isUserActive || myLoopId !== activeLoopId) return;
 
                         await simulateAutoTyping(textSpan2, "exit 0", myLoopId);
                         if (cursorSpan2) cursorSpan2.remove();
-                        await delay(600);
-
-                        appendStaticLog(`&gt; Connection closed.`);
                         await delay(800);
 
+                        appendStaticLog(`&gt; Connection closed.`);
+                        await delay(600);
+
+                        // MODYFIKACJA: Po connection closed logi zostają na ekranie NA STALE i od razu pojawia się wolny monit
+                        isUserActive = true; 
                         createInteractivePromptLine();
-                        startInactivityTimer();
 
                     } catch(e) {
                         // Przerwane przez interakcję użytkownika
                     }
                 };
 
-                // URUCHOMIENIE TRYBU INTERAKTYWNEGO
+                // URUCHOMIENIE TRYBU INTERAKTYWNEGO (GDY USER KLIKNIE W TRAKCIE TRWANIA FILMU)
                 const activateInteractiveMode = () => {
                     if (isUserActive) return;
                     isUserActive = true;
-                    activeLoopId++; 
+                    activeLoopId++; // Natychmiastowe zabicie wątków automatycznych
                     
-                    clearTimeout(inactivityTimer);
                     terminalBody.innerHTML = "";
                     appendStaticLog(`&gt; Tryb interaktywny aktywny. Wpisz komendę i zatwierdź Enterem...`);
                     createInteractivePromptLine();
                     hiddenInput.focus();
-                };
-
-                const startInactivityTimer = () => {
-                    clearTimeout(inactivityTimer);
-                    inactivityTimer = setTimeout(() => {
-                        isUserActive = false;
-                        runPresentationLoop();
-                    }, 12000); 
                 };
 
                 // Kliknięcie w okno terminala
@@ -642,8 +643,6 @@
                         if (currentLineTarget) {
                             isUserActive = true;
                             activeLoopId++;
-                            clearTimeout(inactivityTimer);
-                            startInactivityTimer();
                         } else {
                             activateInteractiveMode();
                         }
@@ -656,12 +655,10 @@
                     if (!isUserActive) {
                         isUserActive = true;
                         activeLoopId++;
-                        clearTimeout(inactivityTimer);
                     }
                     if (currentLineTarget) {
                         currentLineTarget.textContent = e.target.value;
                     }
-                    startInactivityTimer();
                 });
 
                 // Reakcja na Enter
@@ -675,24 +672,23 @@
                             return;
                         }
 
+                        // Obsługa czyszczenia terminala z klawiatury
                         if (userCmd.toLowerCase() === 'exit' || userCmd.toLowerCase() === 'exit 0' || userCmd.toLowerCase() === 'clear') {
                             terminalBody.innerHTML = "";
                             appendStaticLog(`&gt; Konsola wyczyszczona.`);
                             createInteractivePromptLine();
-                            startInactivityTimer();
                             return;
                         }
 
+                        // Bezpieczny komunikat o braku uprawnień
                         setTimeout(() => {
                             appendStaticLog(`<span class="t-danger">bash: command not found: "${userCmd}". Permission denied. Admin access required.</span>`);
                             createInteractivePromptLine();
                         }, 50);
-
-                        startInactivityTimer();
                     }
                 });
 
-                // Zabezpieczenie na wypadek preferencji redukcji ruchu systemu operacyjnego
+                // Wsparcie dla uproszczonego interfejsu systemowego
                 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 if (prefersReducedMotion) {
                     terminalBody.innerHTML = `
@@ -704,6 +700,8 @@
                         <span class="term-row">&gt; Mission completed. All systems are stable.</span>
                         <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input">exit 0</span></span>
                     `;
+                    isUserActive = true;
+                    createInteractivePromptLine();
                 } else {
                     runPresentationLoop();
                 }
@@ -769,7 +767,6 @@
                 sections.forEach(sec => observer.observe(sec));
             };
 
-            // Odpalenie systemów
             initTerminalSystem();
             runHeroIntro();
             initScrollReveal();
