@@ -160,71 +160,43 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- TERMINAL (PIERWOTNY STABILNY LAYOUT) --- */
+        /* --- INTERAKTYWNY TERMINAL --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
-            width: 100%; max-width: 480px; min-height: 310px;
+            width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
             background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #38bdf8;
-            text-align: left; position: relative;
+            text-align: left; position: relative; cursor: text; overflow-y: auto;
         }
 
-        .terminal-header { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 10px; }
+        .terminal-header { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 10px; }
         .term-dot { width: 10px; height: 10px; border-radius: 50%; }
         .term-dot.red { background: #ef4444; }
         .term-dot.yellow { background: #eab308; }
         .term-dot.green { background: #22c55e; }
 
-        /* Mrugający kursor tekstowy */
-        .term-cursor::after {
-            content: '_';
-            animation: blinkCursor 0.8s infinite steps(1);
+        .log-output { display: flex; flex-direction: column; gap: 8px; }
+        .term-row { display: block; line-height: 1.4; word-break: break-all; }
+
+        .admin-input { color: #f1f5f9; font-weight: 500; }
+
+        /* Ukryty input do przechwytywania fizycznej klawiatury użytkownika */
+        #terminalHiddenInput {
+            position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;
+        }
+
+        /* Mrugający kursor tekstowy HTML/JS */
+        .term-cursor {
+            display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9;
+            margin-left: 2px; vertical-align: middle; animation: blinkCursor 0.8s infinite steps(1);
         }
         @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-
-        .term-line {
-            opacity: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            margin-bottom: 12px;
-            width: 0;
-        }
-
-        /* Kolory specyficzne dla admina i logów systemowych */
-        .admin-input { color: #f1f5f9; font-weight: 500; }
+        
         .t-bold { font-weight: bold; color: var(--text-main); }
         .t-success { color: #22c55e; font-weight: bold; }
         .t-warn { color: #eab308; }
-
-        /* PRECYZYJNA OŚ CZASU CSS DLA REALISTYCZNEGO PROCESU */
-        /* Krok 1: Kursor czeka sztywno 5 sekund na pustym monicie (zarządzane klasą startową) */
-        .ln-1 { animation: typeAndShow 4.5s steps(35) forwards; animation-delay: 5.0s; } /* Pisanie komendy (wolno) */
-        
-        /* Krok 2: Progress bar ładuje się równe 3 sekundy */
-        .ln-2 { animation: typeAndShow 3.0s steps(32) forwards; animation-delay: 10.0s; color: #a7f3d0; } 
-        
-        /* Krok 3: Logi serwera wyskakują w realistycznych odstępach czasu */
-        .ln-3 { animation: typeAndShow 1.5s steps(25) forwards; animation-delay: 13.5s; }
-        .ln-4 { animation: typeAndShow 1.5s steps(25) forwards; animation-delay: 15.5s; }
-        .ln-5 { animation: typeAndShow 1.5s steps(30) forwards; animation-delay: 17.5s; }
-        .ln-6 { animation: typeAndShow 2.0s steps(35) forwards; animation-delay: 19.5s; }
-        
-        /* Krok 4: Nowy prompt wyskakuje NATYCHMIAST po podsumowaniu stabilności */
-        .ln-7-prompt { animation: displayPrompt 0.0s forwards; animation-delay: 21.5s; display: inline-block; opacity: 0; }
-        /* Krok 5: Po wyskoczeniu promptu następuje pauza, a potem powoli pisze się exit 0 */
-        .ln-7-text { animation: typeAndShow 1.5s steps(10) forwards; animation-delay: 24.0s; display: inline-block; }
-
-        @keyframes typeAndShow {
-            0% { opacity: 0; width: 0; }
-            1% { opacity: 1; width: 0; }
-            100% { opacity: 1; width: 100%; }
-        }
-
-        @keyframes displayPrompt {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+        .t-danger { color: #ef4444; font-weight: bold; }
 
         /* Sekcja nagłówków dolnych */
         .section-header { margin-bottom: 44px; max-width: 700px; }
@@ -236,7 +208,7 @@
         .layout-3-col { grid-template-columns: repeat(3, 1fr); }
         .layout-2-col { grid-template-columns: repeat(2, 1fr); }
 
-        /* Karty "Dla kogo" */
+        /* Karty */
         .interactive-card {
             background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); padding: 36px; border-radius: 8px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform var(--transition-linear), border-color var(--transition-linear);
         }
@@ -322,7 +294,7 @@
             <div class="container hero-container">
                 <div class="hero-content">
                     <h1 class="hero-title">Kompleksowa opieka IT dla Twojej firmy</h1>
-                    <p class="hero-subtitle">Pomagam firmom ogarzań IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji.</p>
+                    <p class="hero-subtitle">Pomagam firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji.</p>
                     
                     <div class="hero-meta" aria-label="Informacje o usłudze">
                         <div class="meta-item">
@@ -341,29 +313,20 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z czystym, pierwotnym układem CSS (Brak modyfikacji JS struktury) -->
-                <div class="hero-visual" aria-hidden="true">
-                    <div class="production-terminal">
+                <!-- Terminal z zaawansowaną obsługą fizycznej interakcji klawiatury użytkownika -->
+                <div class="hero-visual">
+                    <div class="production-terminal" id="clickableTerminal">
                         <div class="terminal-header">
                             <div class="term-dot red"></div>
                             <div class="term-dot yellow"></div>
                             <div class="term-dot green"></div>
                         </div>
                         
-                        <!-- Stały monit startowy. Przez pierwsze 5 sekund mruga kursor, potem pisze się tekst -->
-                        <div class="term-line ln-1" style="opacity: 1; width: auto;"><span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input term-cursor">run sirk-business-support-core</span></div>
+                        <!-- Kontener na logi sterowany przez JS -->
+                        <div id="terminalBody" class="log-output"></div>
                         
-                        <!-- Logi wyjściowe i operacje systemowe serwera -->
-                        <div class="term-line ln-2">&gt; [████████████████████████████████] 100%</div>
-                        <div class="term-line ln-3">&gt; Infrastruktura zoptymalizowana.</div>
-                        <div class="term-line ln-4">&gt; Services status: <span class="t-success">[0] Active / Running</span></div>
-                        <div class="term-line ln-5">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></div>
-                        <div class="term-line ln-6">&gt; Mission completed. All systems are stable.</div>
-                        
-                        <!-- Wiersz wyjściowy: Prompt wskakuje natychmiast po linii 6, po czym następuje pauza i admin wpisuje exit 0 -->
-                        <div style="margin-bottom: 12px;">
-                            <span class="ln-7-prompt"><span class="t-bold">root@sirk-cloud:~#</span> </span><span class="ln-7-text admin-input term-cursor">exit 0</span>
-                        </div>
+                        <!-- Ukryte pole input łapiące kliknięcia klawiatury na desktopie/mobile -->
+                        <input type="text" id="terminalHiddenInput" autocomplete="off" autofocus>
                     </div>
                 </div>
             </div>
@@ -455,12 +418,12 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
                             <div class="method-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6 l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                             </div>
                             <div>
                                 <span class="method-label">Telefon (Pon–Pt 8:00–18:00)</span>
@@ -506,10 +469,215 @@
         </div>
     </footer>
 
-    <!-- Logika JavaScript -->
+    <!-- Zaawansowany Silnik Pętli i Interaktywności Terminala -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // --- SEKWENCYJNY SILNIK INTERAKTYWNEGO TERMINALA ---
+            const initTerminalTerminalSystem = () => {
+                const terminalWindow = document.getElementById('clickableTerminal');
+                const terminalBody = document.getElementById('terminalBody');
+                const hiddenInput = document.getElementById('terminalHiddenInput');
+
+                let isUserTypingActive = false;
+                let automationTimeoutToken = null;
+                let currentActiveLineSpan = null;
+                let currentActiveCursorSpan = null;
+
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+                // Tworzenie czystego wiersza promptu systemowego
+                const createNewPromptLine = () => {
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
+                    terminalBody.appendChild(row);
+                    terminalWindow.scrollTop = terminalWindow.scrollHeight;
+
+                    // Przypisanie referencji do aktualnie edytowanych spandów
+                    currentActiveLineSpan = row.querySelector('.admin-input');
+                    currentActiveCursorSpan = row.querySelector('.term-cursor');
+                    hiddenInput.value = "";
+                };
+
+                // Dodawanie pojedynczych wierszy logów
+                const appendSystemLog = (htmlText) => {
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = htmlText;
+                    terminalBody.appendChild(row);
+                    terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                };
+
+                // Funkcja symulacji automatycznego wpisywania tekstu komendy
+                const simulateAutomationTyping = (textToType) => {
+                    return new Promise((resolve, reject) => {
+                        let idx = 0;
+                        function step() {
+                            if (isUserTypingActive) { reject('Interrupted'); return; }
+                            if (idx < textToType.length) {
+                                currentActiveLineSpan.textContent += textToType.charAt(idx);
+                                idx++;
+                                setTimeout(step, Math.random() * 90 + 60);
+                            } else {
+                                resolve();
+                            }
+                        }
+                        step();
+                    });
+                };
+
+                // Funkcja symulacji paska ładowania
+                const simulateAutomationProgressBar = () => {
+                    return new Promise((resolve, reject) => {
+                        const row = document.createElement('span');
+                        row.className = 'term-row';
+                        row.style.color = '#a7f3d0';
+                        terminalBody.appendChild(row);
+
+                        const totalBlocks = 32;
+                        let currentBlock = 0;
+                        const intervalTime = 3000 / totalBlocks;
+
+                        function progress() {
+                            if (isUserTypingActive) { reject('Interrupted'); return; }
+                            if (currentBlock <= totalBlocks) {
+                                const filled = '█'.repeat(currentBlock);
+                                const empty = '░'.repeat(totalBlocks - currentBlock);
+                                const percentage = Math.round((currentBlock / totalBlocks) * 100);
+                                row.innerHTML = `&gt; [${filled}${empty}] ${percentage}%`;
+                                currentBlock++;
+                                terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                                setTimeout(progress, intervalTime);
+                            } else {
+                                resolve();
+                            }
+                        }
+                        progress();
+                    });
+                };
+
+                // PĘTLA GŁÓWNA AUTOMATU (ZAPĘTLONY WORKFLOW)
+                const executeAutomationLoopCycle = async () => {
+                    if (isUserTypingActive) return;
+                    try {
+                        terminalBody.innerHTML = "";
+                        createNewPromptLine();
+                        
+                        await delay(3500);
+                        if (isUserTypingActive) return;
+
+                        await simulateAutomationTyping("run sirk-business-support-core");
+                        if (currentActiveCursorSpan) currentActiveCursorSpan.remove();
+                        await delay(600);
+
+                        await simulateAutomationProgressBar();
+                        await delay(800);
+
+                        appendSystemLog(`&gt; Infrastruktura zoptymalizowana.`);
+                        await delay(1100);
+
+                        appendSystemLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
+                        await delay(1200);
+
+                        appendSystemLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                        await delay(1300);
+
+                        appendSystemLog(`&gt; Mission completed. All systems are stable.`);
+                        
+                        // Modyfikacja: Natychmiastowe wyplucie nowego znaku zachęty z kursorem przed przerwą
+                        createNewPromptLine();
+                        await delay(2500); 
+
+                        await simulateAutomationTyping("exit 0");
+                        if (currentActiveCursorSpan) currentActiveCursorSpan.remove();
+                        await delay(800);
+
+                        // Reset pętli i odpalenie od nowa po 3 sekundach czystego ekranu
+                        appendSystemLog(`&gt; Connection closed.`);
+                        await delay(3000);
+                        
+                        if (!isUserTypingActive) {
+                            executeAutomationLoopCycle();
+                        }
+                    } catch (err) {
+                        // Przerwano przez aktywność użytkownika
+                    }
+                };
+
+                // OBSŁUGA MANUALNEGO WPISYWANIA PRZEZ UŻYTKOWNIKA
+                const breakAutomationAndGiveControl = () => {
+                    isUserTypingActive = true;
+                    clearTimeout(automationTimeoutToken);
+                    if (currentActiveCursorSpan && !currentActiveCursorSpan.parentElement) {
+                        // Bezpiecznik struktury
+                    }
+                };
+
+                const setInactivityTimeoutToRestartLoop = () => {
+                    clearTimeout(automationTimeoutToken);
+                    automationTimeoutToken = setTimeout(() => {
+                        isUserTypingActive = false;
+                        executeAutomationLoopCycle();
+                    }, 8000); // 8 sekund bezczynności resetuje terminal do auto-prezentacji
+                };
+
+                // Nasłuchiwanie kliknięcia na kontener terminala
+                terminalWindow.addEventListener('click', () => {
+                    hiddenInput.focus();
+                    if (!isUserTypingActive) {
+                        breakAutomationAndGiveControl();
+                        terminalBody.innerHTML = "";
+                        appendSystemLog(`&gt; Tryb interaktywny aktywowany. Wpisz polecenie...`);
+                        createNewPromptLine();
+                    }
+                });
+
+                // Reakcja na fizyczne wpisywanie znaków
+                hiddenInput.addEventListener('input', (e) => {
+                    if (!isUserTypingActive) breakAutomationAndGiveControl();
+                    if (currentActiveLineSpan) {
+                        currentActiveLineSpan.textContent = e.target.value;
+                    }
+                    setInactivityTimeoutToRestartLoop();
+                });
+
+                // Reakcja na kliknięcie klawisza Enter
+                hiddenInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const inputCmd = hiddenInput.value.trim();
+                        if (currentActiveCursorSpan) currentActiveCursorSpan.remove();
+
+                        if (inputCmd === "") {
+                            createNewPromptLine();
+                            return;
+                        }
+
+                        // Reakcja na komendy wyjściowe użytkownika
+                        if (inputCmd.toLowerCase() === 'exit' || inputCmd.toLowerCase() === 'exit 0' || inputCmd.toLowerCase() === 'clear') {
+                            terminalBody.innerHTML = "";
+                            appendSystemLog(`&gt; Konsola wyczyszczona.`);
+                            createNewPromptLine();
+                            hiddenInput.value = "";
+                            setInactivityTimeoutToRestartLoop();
+                            return;
+                        }
+
+                        // Wyplucie komunikatu błędu o braku uprawnień admina
+                        setTimeout(() => {
+                            appendSystemLog(`<span class="t-danger">bash: command not found: "${inputCmd}". Permission denied. Admin access required.</span>`);
+                            createNewPromptLine();
+                        }, 150);
+
+                        hiddenInput.value = "";
+                        setInactivityTimeoutToRestartLoop();
+                    }
+                });
+
+                // Uruchomienie pierwszej automatycznej sesji
+                executeAutomationLoopCycle();
+            };
 
             // Błyskawiczny przeskok nawigacji menu
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -568,6 +736,7 @@
 
             runHeroIntro();
             initScrollReveal();
+            initTerminalTerminalSystem();
         });
     </script>
 </body>
