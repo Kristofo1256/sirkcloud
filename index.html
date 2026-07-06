@@ -5,135 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-            --bg-main: #04060a; --bg-surface: #0b111e; --bg-card: #111a2e;
-            --accent-blue: #2563eb; --accent-cyan: #06b6d4; --accent-purple: #7c3aed;
-            --text-main: #f8fafc; --text-muted: #94a3b8;
-        }
-        html { font-family: 'Epilogue', sans-serif; background-color: var(--bg-main); color: var(--text-main); }
-        body { overflow-x: hidden; line-height: 1.6; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --bg-main: #04060a; --accent-cyan: #06b6d4; --text-main: #f8fafc; --text-muted: #94a3b8; }
+        body { font-family: 'Epilogue', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .section { padding: 85px 0; }
-
-        /* Nagłówek */
-        .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.04); padding: 14px 0; }
-        .header-container { display: flex; justify-content: space-between; align-items: center; }
-        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
-
-        /* Hero */
-        .hero-section { padding-top: 210px; padding-bottom: 110px; }
-        .hero-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
-        .hero-title { font-size: 3.6rem; font-weight: 800; background: linear-gradient(135deg, #fff 40%, var(--accent-cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
+        
+        /* Layout */
+        header { position: fixed; top: 0; width: 100%; background: rgba(4, 6, 10, 0.85); backdrop-filter: blur(10px); padding: 20px 0; z-index: 100; border-bottom: 1px solid #1e293b; }
+        .hero { padding: 200px 0 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        
         /* Terminal */
-        .production-terminal {
-            width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
-            background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative; overflow-y: auto;
-        }
-        .terminal-header { position: sticky; top: 0; background: #020408; padding: 22px 22px 14px 22px; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 6px; z-index: 10; }
-        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .term-dot.red { background: #ef4444; } .term-dot.yellow { background: #eab308; } .term-dot.green { background: #22c55e; }
-        .log-output { display: flex; flex-direction: column; gap: 8px; padding: 12px 22px 22px 22px; font-family: 'Courier New', monospace; font-size: 12.5px; color: #38bdf8; }
-        .term-row { display: block; line-height: 1.4; overflow-wrap: break-word; }
-        .term-cursor { display: inline-block; width: 8px; height: 15px; background: #f1f5f9; animation: blink 0.8s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-        .t-bold { font-weight: bold; color: var(--text-main); }
-        .t-success { color: #22c55e; }
-        .t-danger { color: #ef4444; }
-        #terminalHiddenInput { position: absolute; opacity: 0; }
-
-        @media (max-width: 1024px) { .hero-container { grid-template-columns: 1fr; } }
+        .terminal { width: 100%; max-width: 500px; height: 350px; background: #020408; border: 1px solid #334155; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+        .term-header { padding: 15px; background: #0f172a; display: flex; gap: 8px; border-bottom: 1px solid #334155; position: sticky; top: 0; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .term-body { padding: 15px; font-family: 'Courier New', monospace; font-size: 13px; color: #38bdf8; overflow-y: auto; flex-grow: 1; }
+        
+        .row { margin-bottom: 5px; display: block; overflow-wrap: break-word; }
+        .cursor { display: inline-block; width: 8px; height: 14px; background: #fff; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        input { position: absolute; opacity: 0; }
+        
+        @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <header class="main-header"><div class="container header-container">
-        <a href="#" style="text-decoration:none; color:white; font-weight:800;">SirK <span style="color:var(--accent-cyan)">Cloud</span></a>
-        <nav><a href="#oferta" class="nav-link">Start</a></nav>
-    </div></header>
+<header><div class="container"><strong>SirK <span style="color:var(--accent-cyan)">Cloud</span></strong></div></header>
 
-    <main><section class="hero-section">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">IT dla Twojej firmy</h1>
-                <p>Profesjonalne wsparcie w zasięgu ręki.</p>
-            </div>
-            <div class="hero-visual">
-                <div class="production-terminal" id="clickableTerminal">
-                    <div class="terminal-header"><div class="term-dot red"></div><div class="term-dot yellow"></div><div class="term-dot green"></div></div>
-                    <div id="terminalBody" class="log-output"></div>
-                    <input type="text" id="terminalHiddenInput">
-                </div>
-            </div>
+<main>
+    <section class="hero"><div class="container">
+        <div><h1>Nowoczesne IT dla Twojej firmy</h1></div>
+        <div class="terminal" id="term">
+            <div class="term-header"><div class="dot" style="background:#ef4444"></div><div class="dot" style="background:#eab308"></div><div class="dot" style="background:#22c55e"></div></div>
+            <div class="term-body" id="body"></div>
+            <input type="text" id="input">
         </div>
-    </section></main>
+    </div></section>
+</main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const terminalBody = document.getElementById('terminalBody');
-            const hiddenInput = document.getElementById('terminalHiddenInput');
-            let isInteractive = false;
+<script>
+    const body = document.getElementById('body');
+    const input = document.getElementById('input');
+    let locked = true;
 
-            const append = (html) => {
-                const row = document.createElement('span');
-                row.className = 'term-row';
-                row.innerHTML = html;
-                terminalBody.appendChild(row);
-                terminalBody.parentElement.scrollTop = terminalBody.parentElement.scrollHeight;
-            };
+    const print = (text, cls = '') => {
+        const span = document.createElement('span');
+        span.className = 'row ' + cls;
+        span.innerHTML = text;
+        body.appendChild(span);
+        body.scrollTop = body.scrollHeight;
+    };
 
-            const run = async () => {
-                const curRow = document.createElement('span');
-                curRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span>`;
-                terminalBody.appendChild(curRow);
-                await new Promise(r => setTimeout(r, 3200));
-                curRow.remove();
+    const init = async () => {
+        // Mruganie kursora startowego
+        const cursorRow = document.createElement('span');
+        cursorRow.innerHTML = `root@sirk:~# <span class="cursor"></span>`;
+        body.appendChild(cursorRow);
+        await new Promise(r => setTimeout(r, 3200));
+        cursorRow.remove();
 
-                append(`<span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core`);
-                await new Promise(r => setTimeout(r, 1000));
-                append(`<span style="color:#a7f3d0;">&gt; [████████████████████] 100%</span>`);
-                await new Promise(r => setTimeout(r, 1000));
-                append(`&gt; <span class="t-success">System stable.</span>`);
-                append(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
-                await new Promise(r => setTimeout(r, 600));
-                
-                isInteractive = true;
-                const row = document.createElement('span');
-                row.className = 'term-row';
-                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
-                terminalBody.appendChild(row);
-                hiddenInput.focus();
-            };
+        // Sekwencja animacji
+        print('root@sirk:~# run sirk-business-support-core');
+        await new Promise(r => setTimeout(r, 1000));
+        print('<span style="color:#22c55e">[OK] System initialized</span>');
+        await new Promise(r => setTimeout(r, 800));
+        print('root@sirk:~# exit 0');
+        await new Promise(r => setTimeout(r, 500));
+        
+        // Odblokowanie
+        locked = false;
+        print('root@sirk:~# <span class="input-line"></span><span class="cursor"></span>');
+        input.focus();
+    };
 
-            hiddenInput.addEventListener('input', (e) => {
-                const s = terminalBody.querySelector('.admin-input:last-child');
-                if (s) s.textContent = e.target.value;
-            });
+    document.getElementById('term').addEventListener('click', () => { if(!locked) input.focus(); });
 
-            hiddenInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && isInteractive) {
-                    const val = hiddenInput.value.trim();
-                    if (val === 'clear' || val === 'exit') {
-                        terminalBody.innerHTML = "";
-                    } else {
-                        append(`<span class="t-danger">bash: "${val}": command not found</span>`);
-                    }
-                    const row = document.createElement('span');
-                    row.className = 'term-row';
-                    row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
-                    terminalBody.appendChild(row);
-                    hiddenInput.value = "";
-                }
-            });
+    input.addEventListener('input', (e) => {
+        if(locked) return;
+        const line = body.querySelector('.input-line');
+        if(line) line.textContent = e.target.value;
+    });
 
-            run();
-        });
-    </script>
+    input.addEventListener('keydown', (e) => {
+        if(locked) return;
+        if(e.key === 'Enter') {
+            const val = input.value.trim();
+            if(val === 'clear' || val === 'exit') { body.innerHTML = ''; }
+            else { print(`bash: ${val}: command not found`, 't-danger'); }
+            
+            print('root@sirk:~# <span class="input-line"></span><span class="cursor"></span>');
+            input.value = '';
+        }
+    });
+
+    init();
+</script>
 </body>
 </html>
