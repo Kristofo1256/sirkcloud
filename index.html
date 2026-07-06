@@ -65,10 +65,11 @@
         .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; padding: 4px 0; }
         .nav-link:hover, .nav-link.active { color: var(--text-main); }
         
+        /* Domyślnie linia rysuje się od lewej do prawej */
         .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1); }
         .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
         
-        /* Klasa wymuszająca rysowanie linii od prawej do lewej przy cofaniu */
+        /* Klasa zmieniająca punkt startowy na prawą stronę przy cofaniu */
         .nav-link.reverse-direction::after { transform-origin: right; }
         .nav-link.active.reverse-direction::after { transform-origin: right; }
 
@@ -266,8 +267,8 @@
                     </div>
 
                     <div class="hero-actions">
-                        <a href="#dla-kogo" class="btn btn-primary">Sprawdź ofertę</a>
-                        <a href="#kontakt" class="btn btn-secondary">Napisz do nas</a>
+                        <a href="#dla-kogo" class="btn btn-primary" data-index="2">Sprawdź ofertę</a>
+                        <a href="#kontakt" class="btn btn-secondary" data-index="4">Napisz do nas</a>
                     </div>
                 </div>
                 
@@ -431,14 +432,12 @@
             const hiddenInput = document.getElementById('terminalHiddenInput');
             let isInteractiveEnabled = false;
 
-            // FUNKCJA DODAJĄCA LOG Z OCHRONĄ PRZED PRZEPEŁNIENIEM (NIGDY NIE POJAWI SIĘ SCROLL)
             const appendLog = (html) => {
                 const row = document.createElement('span');
                 row.className = 'term-row';
                 row.innerHTML = html;
                 terminalBody.appendChild(row);
                 
-                // Trzymamy maksymalnie 11 linii tekstu wewnątrz terminala. Wszystko starsze jest bezpowrotnie usuwane z DOM.
                 while (terminalBody.children.length > 11) {
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
@@ -550,34 +549,40 @@
             });
 
 
-            // --- ULTRASZYBKI I STABILNY SCROLL DLA SAFARI / CHROME PRZEZ GSAP ---
+            // --- NAPRAWIONY I PRECYZYJNY SYSTEM DETEKCJI KIERUNKU KRESKI W MENU ---
             const menuOffset = 80;
-            let currentActiveIndex = 1; // domyślnie "Oferta" ma indeks 1
+            let currentActiveIndex = 1; // 1 = Oferta, 2 = Dla kogo, 3 = O nas
+            let isScrollingByClick = false; // flaga blokująca ScrollSpy podczas animacji kliknięcia
 
-            const scrollToTarget = (targetY, targetIndex) => {
-                // Określamy kierunek animacji paska menu przed przewinięciem ekranu
+            const setLinesDirection = (targetIndex) => {
                 const navLinks = document.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
-                    const linkIndex = parseInt(link.getAttribute('data-index') || "1");
-                    // Jeśli cel ma mniejszy indeks niż obecny, to cofamy się (od prawej do lewej)
                     if (targetIndex < currentActiveIndex) {
                         link.classList.add('reverse-direction');
                     } else {
                         link.classList.remove('reverse-direction');
                     }
                 });
-
                 currentActiveIndex = targetIndex;
+            };
 
-                // Natychmiastowa i płynna animacja okna przeglądarki za pomocą GSAP
+            const scrollToTarget = (targetY, targetIndex) => {
+                isScrollingByClick = true; // blokada scrolla na czas przejazdu
+                setLinesDirection(targetIndex);
+
                 gsap.to(window, {
                     scrollTo: { y: targetY, autoKill: false },
-                    duration: 0.5, // szybki czas przebiegu
-                    ease: "power2.out"
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        // Po zakończeniu animacji upewniamy się, że linki mają nadany odpowiedni stan aktywacji
+                        updateActiveMenuLink();
+                        isScrollingByClick = false; // odblokowanie scrolla
+                    }
                 });
             };
 
-            // Obsługa kliknięć w odnośniki menu
+            // Kliknięcia w linki nawigacji górnej i sekcji Hero
             document.querySelectorAll('.main-nav a[href^="#"], .hero-actions a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -585,27 +590,31 @@
                     const targetSection = document.querySelector(href);
                     if (targetSection) {
                         const targetY = targetSection.getBoundingClientRect().top + window.pageYOffset - menuOffset;
-                        const targetIndex = parseInt(this.getAttribute('data-index') || "4");
+                        // Mapowanie indeksów na podstawie atrybutu lub domyślnej wartości dla kontaktu
+                        const targetIndex = parseInt(this.getAttribute('data-index') || (href === "#kontakt" ? "4" : "1"));
                         scrollToTarget(targetY, targetIndex);
                     }
                 });
             });
 
-            // Kliknięcie w LOGO (Zawsze powrót na samą górę z kierunkiem od prawej do lewej)
+            // Kliknięcie w LOGO (Zawsze traktowane jako powrót na indeks 0 -> od prawej do lewej)
             document.getElementById('logoToTop').addEventListener('click', (e) => {
                 e.preventDefault();
                 scrollToTarget(0, 0);
             });
 
 
-            // --- SYSTEM AKTYWNEGO PODŚWIETLANIA I AKTYWACJI PRZYCISKU KONSULTACJA ---
+            // --- SYSTEM SCROLLSPY Z WYKRYWANIEM KIERUNKU PODCZAS SCROLLOWANIA MYSZKĄ ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
 
             const updateActiveMenuLink = () => {
+                // Jeśli użytkownik kliknął w menu, ignorujemy zdarzenia natywnego scrolla do czasu ukończenia podróży
+                if (isScrollingByClick) return;
+
                 let currentActiveId = "";
-                const scrollPosition = window.scrollY + menuOffset + 120;
+                const scrollPosition = window.scrollY + menuOffset + 130;
                 const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60;
 
                 sections.forEach(section => {
@@ -616,21 +625,20 @@
                     }
                 });
 
-                // REAKCJA NA SAM DÓŁ STRONY
                 if (isAtBottom) {
-                    // Wyłączamy standardowe podświetlenia linków tekstowych
                     navLinks.forEach(link => link.classList.remove('active'));
-                    // Zaświecamy przycisk Konsultacja
                     consultationBtn.classList.add('consultation-active');
                 } else {
-                    // Normalny tryb śledzenia sekcji na stronie
                     consultationBtn.classList.remove('consultation-active');
                     navLinks.forEach(link => {
                         const linkHref = link.getAttribute('href');
                         if (linkHref === `#${currentActiveId}`) {
+                            const newIndex = parseInt(link.getAttribute('data-index') || "1");
+                            
+                            // Dynamiczna zmiana kierunku linii na podstawie swobodnego scrollowania myszką
+                            setLinesDirection(newIndex);
+                            
                             link.classList.add('active');
-                            // Aktualizujemy aktualny indeks podczas swobodnego scrollowania myszką
-                            currentActiveIndex = parseInt(link.getAttribute('data-index') || "1");
                         } else {
                             link.classList.remove('active');
                         }
