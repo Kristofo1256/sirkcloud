@@ -160,7 +160,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- TERMINAL HAKERSKI/INŻYNIERSKI --- */
+        /* --- TERMINAL --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 310px;
@@ -181,7 +181,7 @@
 
         .admin-input { color: #f1f5f9; font-weight: 500; }
 
-        /* Globalna definicja migającego kursora */
+        /* Mrugający kursor tekstowy */
         .term-cursor {
             display: inline-block;
             width: 8px;
@@ -278,7 +278,7 @@
             </a>
             <nav class="main-nav" aria-label="Nawigacja główna">
                 <ul>
-                    <li><a href="#oferta" class="nav-link">Offerta</a></li>
+                    <li><a href="#oferta" class="nav-link">Oferta</a></li>
                     <li><a href="#dla-kogo" class="nav-link">Dla kogo</a></li>
                     <li><a href="#o-nas" class="nav-link">O nas</a></li>
                     <li><a href="#kontakt" class="btn btn-secondary btn-sm">Konsultacja</a></li>
@@ -312,7 +312,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal sterowany zaawansowanym silnikiem obietnic (Async/Await Timeline) -->
+                <!-- Terminal z zaawansowaną asynchroniczną osią czasu -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -322,7 +322,7 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output">
-                            <!-- Pierwszy bazowy wiersz z dynamicznym id dla skryptu JS -->
+                            <!-- Pierwszy bazowy wiersz polecenia -->
                             <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span id="commandLine" class="admin-input"></span><span id="liveCursor" class="term-cursor"></span></span>
                         </div>
                     </div>
@@ -387,7 +387,7 @@
                         <div class="filar-number">02</div>
                         <div class="filar-content">
                             <h3>IT na którym możesz polegać</h3>
-                            <p>Zgenerujemy ciągłość działania. Działamy prewencyjnie – optymalizujemy i weryfikujemy systemy zanim pojawi się problem, trwale zabezpieczając dane Twojej firmy.</p>
+                            <p>Zapewniamy ciągłość działania. Działamy prewencyjnie – optymalizujemy i weryfikujemy systemy zanim pojawi się problem, trwale zabezpieczając dane Twojej firmy.</p>
                         </div>
                     </div>
 
@@ -403,7 +403,7 @@
                         <div class="filar-number">04</div>
                         <div class="filar-content">
                             <h3>Obsługa zdalna i lokalna</h3>
-                            <p>Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
+                            <p>Łączymy elastyczność i szybkość wsparła online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
                         </div>
                     </div>
                 </div>
@@ -467,16 +467,17 @@
         </div>
     </footer>
 
-    <!-- Zaawansowana logika sterująca osią czasu terminala -->
+    <!-- Logika sterująca precyzyjną osią czasu terminala -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // --- ZAAWANSOWANY SILNIK OSI CZASU TERMINALA (ASYNC/AWAIT WORKFLOW) ---
+            // --- SEKWENCYJNY ASYNCHRONICZNY SILNIK TERMINALA (JS TIMELINE) ---
             const runTerminalSimulation = () => {
                 const terminal = document.getElementById('terminalBody');
                 const firstCommandLine = document.getElementById('commandLine');
                 const liveCursor = document.getElementById('liveCursor');
+                const commandText = "run sirk-business-support-core";
 
                 if (prefersReducedMotion) {
                     terminal.innerHTML = `
@@ -491,10 +492,9 @@
                     return;
                 }
 
-                // Funkcja opóźniająca oparta na obietnicach
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                // Funkcja symulująca ludzkie pisanie tekstu w podanym elemencie kontenera
+                // Funkcja symulująca wpisywanie przez człowieka
                 const typeText = (containerElement, textString) => {
                     return new Promise((resolve) => {
                         let charIndex = 0;
@@ -502,7 +502,7 @@
                             if (charIndex < textString.length) {
                                 containerElement.textContent += textString.charAt(charIndex);
                                 charIndex++;
-                                // Wolne, bardzo naturalne uderzenia klawiszy (od 60ms do 170ms)
+                                // Naturalne tempo uderzeń klawiszy (od 60ms do 170ms)
                                 setTimeout(type, Math.random() * 110 + 60);
                             } else {
                                 resolve();
@@ -512,7 +512,7 @@
                     });
                 };
 
-                // Funkcja renderująca dynamiczny, 3-sekundowy pasek postępu
+                // Funkcja renderująca 3-sekundowy pasek postępu
                 const runProgressBar = () => {
                     return new Promise((resolve) => {
                         const row = document.createElement('span');
@@ -521,7 +521,7 @@
                         terminal.appendChild(row);
 
                         const totalBlocks = 32;
-                        const duration = 3000; // Pasek idzie dokładnie 3 sekundy
+                        const duration = 3000; 
                         const intervalTime = duration / totalBlocks;
                         let currentBlock = 0;
 
@@ -541,7 +541,6 @@
                     });
                 };
 
-                // Funkcja pomocnicza do tworzenia natychmiastowych wierszy logów systemowych
                 const printLogLine = (htmlText) => {
                     const row = document.createElement('span');
                     row.className = 'term-row';
@@ -549,34 +548,36 @@
                     terminal.appendChild(row);
                 };
 
-                // --- GŁÓWNA ORKIESTRACJA ASYNCHRONICZNA ---
+                // --- GŁÓWNA ORKIESTRACJA SYSTEMOWA ---
                 async function startTerminalSequence() {
-                    // KROK 1: Kursor czeka bezczynnie przez pierwsze 5 sekund
+                    // 1. Oczekiwanie startowe (kursor mruga 5 sekund)
                     await delay(5000);
                     
-                    // KROK 2: Powolne wpisywanie pierwszej komendy biznesowej (kolor biały)
+                    // 2. Admin powoli wpisuje pierwszą komendę
                     await typeText(firstCommandLine, "run sirk-business-support-core");
-                    liveCursor.remove(); // Trwale usuwamy kursor z pierwszej linii
+                    liveCursor.remove(); 
                     await delay(600);
 
-                    // KROK 3: Ładowanie paska postępu przez równe 3 sekundy
+                    // 3. Ładowanie paska postępu (3 sekundy)
                     await runProgressBar();
-                    await delay(1000); // Spowolniona przerwa po skompletowaniu paska
+                    await delay(1000); 
 
-                    // KROK 4: Wypluwanie logów wyjściowych w wyraźnie spowolnionym tempie serwera
+                    // 4. Kolejne logi systemowe pojawiają się w spowolnionym tempie serwera
                     printLogLine(`&gt; Infrastruktura zoptymalizowana.`);
-                    await delay(1200); // Wolniejsza interakcja (było 700ms)
+                    await delay(1200); 
 
                     printLogLine(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
-                    await delay(1300); // Wolniejsza interakcja (było 750ms)
+                    await delay(1300); 
 
                     printLogLine(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
-                    await delay(1400); // Wolniejsza interakcja (było 800ms)
+                    await delay(1400); 
 
                     printLogLine(`&gt; Mission completed. All systems are stable.`);
-                    await delay(1800); // Dłuższa pauza przed wpisaniem komendy wyjścia
+                    
+                    // 5. ZWIĘKSZONA PAUZA (Czekamy pełne 2.5 sekundy przed rozpoczęciem wpisywania exit 0)
+                    await delay(2500); 
 
-                    // KROK 5: Utworzenie nowego promptu i POWOLNE wpisanie polecenia exit 0 przez admina
+                    // 6. Pokazuje się nowy prompt i powoli wpisujemy exit 0 (kolor biały)
                     const exitRow = document.createElement('span');
                     exitRow.className = 'term-row';
                     exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span id="exitCommandLine" class="admin-input"></span><span id="exitCursor" class="term-cursor"></span>`;
@@ -585,19 +586,18 @@
                     const exitCommandLine = document.getElementById('exitCommandLine');
                     const exitCursor = document.getElementById('exitCursor');
 
-                    // Powolne, ludzkie wpisywanie frazy "exit 0"
                     await typeText(exitCommandLine, "exit 0");
                     await delay(600);
-                    exitCursor.remove(); // Usuwamy kursor z linii exit, by zasymulować naciśnięcie enter
+                    exitCursor.remove(); 
 
-                    // KROK 6: Przejście do nowej, czystej linii końcowej, gdzie kursor mruga już na stałe
+                    // 7. Przejście do nowej, czystej linii końcowej - kursor zostaje na stałe
                     const finalBlankRow = document.createElement('span');
                     finalBlankRow.className = 'term-row';
                     finalBlankRow.innerHTML = `<span class="term-cursor"></span>`;
                     terminal.appendChild(finalBlankRow);
                 }
 
-                document.body.style.pointerEvents = 'none'; // Blokada klikania na czas inicjalizacji
+                document.body.style.pointerEvents = 'none'; 
                 startTerminalSequence().then(() => {
                     document.body.style.pointerEvents = 'auto';
                 });
@@ -617,7 +617,7 @@
                 });
             });
 
-            // INTRO ANIMACJA GSAP (Elementy interfejsu strony)
+            // INTRO ANIMACJA GSAP
             const runHeroIntro = () => {
                 if (prefersReducedMotion) return;
 
