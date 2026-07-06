@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
-    <!-- Fonty: Epilogue -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Optymalizacja pobierania fontów (Preconnect) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Narzędzia animacji GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+    <!-- Asynchroniczne, nieblokujące ładowanie skryptów animacji (DEFER) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js" defer></script>
 
     <style>
         /* CSS Core Reset */
@@ -32,7 +35,6 @@
         .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
         .section { padding: 85px 0; position: relative; z-index: 2; }
         
-        /* Zwiększona wysokość sekcji O Nas dla lepszego i dłuższego skupienia ScrollSpy */
         #o-nas { padding: 125px 0; }
 
         /* Tło Aurora & Grid */
@@ -64,7 +66,6 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
-        /* Renderowanie linii bez użycia transformacji, odporne na jittering */
         .nav-link { 
             color: var(--text-muted); 
             text-decoration: none; 
@@ -95,7 +96,6 @@
             transform-origin: left; 
         }
         
-        /* Zmiana punktu kotwiczenia (kierunku) realizowana czysto i bez szarpnięć */
         .nav-link.reverse-direction::after { transform-origin: right; }
         .nav-link.active.reverse-direction::after { transform-origin: right; }
 
@@ -139,7 +139,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- INTERAKTYWNY TERMINAL BEZ SCROLLOWANIA --- */
+        /* Terminal */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -168,7 +168,6 @@
         .progress-percentage-val { min-width: 40px; text-align: right; font-weight: bold; flex-shrink: 0; }
         
         .admin-input { color: #f1f5f9; font-weight: 500; }
-
         #terminalHiddenInput { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
 
         .term-cursor {
@@ -399,7 +398,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -574,12 +573,11 @@
             });
 
 
-            // --- SYSTEM SCROLLOWANIA GSAP Z DETEKCJĄ KIERUNKU KRESKI ---
+            // --- SYSTEM KIERUNKU KRESKI (MATEMATYCZNY) ---
             const menuOffset = 80;
             let currentActiveIndex = 1; 
             let isScrollingByClick = false; 
 
-            // Nadawanie klasy na podstawie jawnego kierunku (wymuszenie)
             const setForceDirection = (isGoingUp) => {
                 const navLinks = document.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
@@ -592,6 +590,12 @@
             };
 
             const scrollToTarget = (targetY, targetIndex) => {
+                // Sprawdzenie czy GSAP zdążył się asynchronicznie załadować
+                if (typeof gsap === 'undefined') {
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    return;
+                }
+
                 isScrollingByClick = true; 
                 setForceDirection(targetIndex < currentActiveIndex);
                 currentActiveIndex = targetIndex;
@@ -626,25 +630,19 @@
             });
 
 
-            // --- DOPRACOWANY SYSTEM DETEKCJI SCROLLA (KIERUNEK WPROST Z MYSZKI) ---
+            // --- SYSTEM SCROLLSPY ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
             
             let lastDetectedId = ""; 
-            let lastScrollY = window.scrollY; // Śledzenie realnej pozycji Y
 
             const updateActiveMenuLink = () => {
                 if (isScrollingByClick) return;
 
-                const currentScrollY = window.scrollY;
-                // Wykrywanie kierunku ruchu bezpośrednio z delty przewijania okna
-                const isGoingUp = currentScrollY < lastScrollY;
-                lastScrollY = currentScrollY;
-
                 let currentActiveId = "";
-                const scrollPosition = currentScrollY + menuOffset + 140;
-                const isAtBottom = (window.innerHeight + currentScrollY) >= document.documentElement.scrollHeight - 60;
+                const scrollPosition = window.scrollY + menuOffset + 140;
+                const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60;
 
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
@@ -658,7 +656,7 @@
                     if (lastDetectedId !== "kontakt-bottom") {
                         navLinks.forEach(link => link.classList.remove('active'));
                         consultationBtn.classList.add('consultation-active');
-                        setForceDirection(isGoingUp);
+                        setForceDirection(false);
                         currentActiveIndex = 4;
                         lastDetectedId = "kontakt-bottom";
                     }
@@ -668,13 +666,12 @@
                     if (currentActiveId && currentActiveId !== lastDetectedId) {
                         lastDetectedId = currentActiveId;
                         
-                        // Przypisanie kierunku rysowania linii w locie, w 100% zsynchronizowane z ruchem myszki
-                        setForceDirection(isGoingUp);
-
                         navLinks.forEach(link => {
                             const linkHref = link.getAttribute('href');
                             if (linkHref === `#${currentActiveId}`) {
-                                currentActiveIndex = parseInt(link.getAttribute('data-index') || "1");
+                                const newIndex = parseInt(link.getAttribute('data-index') || "1");
+                                setForceDirection(newIndex < currentActiveIndex);
+                                currentActiveIndex = newIndex;
                                 link.classList.add('active');
                             } else {
                                 link.classList.remove('active');
@@ -696,31 +693,30 @@
             }, { passive: true });
 
 
-            // Animacja wejściowa GSAP Hero
+            // Definicje introskopii (uruchamiane dopiero po upewnieniu się, że GSAP istnieje)
             const runHeroIntro = () => {
+                if (typeof gsap === 'undefined') return;
                 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 if (prefersReducedMotion) return;
 
-                if (typeof gsap !== 'undefined') {
-                    const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
-                    tl.from('.main-header', { opacity: 0, y: -25 })
-                      .from('.hero-title', { opacity: 0, y: 40, duration: 1.1 }, '-=0.5')
-                      .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
-                      .from('.meta-item', { opacity: 0, scale: 0.93, stagger: 0.12, duration: 0.6 }, '-=0.6')
-                      .from('.hero-actions .btn', { opacity: 0, y: 20, stagger: 0.15 }, '-=0.5')
-                      .from('.production-terminal', { opacity: 0, scale: 0.95, duration: 1 }, '-=0.7');
-                }
+                const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
+                tl.from('.main-header', { opacity: 0, y: -25 })
+                  .from('.hero-title', { opacity: 0, y: 40, duration: 1.1 }, '-=0.5')
+                  .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
+                  .from('.meta-item', { opacity: 0, scale: 0.93, stagger: 0.12, duration: 0.6 }, '-=0.6')
+                  .from('.hero-actions .btn', { opacity: 0, y: 20, stagger: 0.15 }, '-=0.5')
+                  .from('.production-terminal', { opacity: 0, scale: 0.95, duration: 1 }, '-=0.7');
             };
 
-            // Intersection Observer dla dolnych sekcji
             const initScrollReveal = () => {
+                const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
                 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                
                 if (prefersReducedMotion) {
-                    document.querySelectorAll('.scroll-animate-trigger').forEach(el => el.classList.add('active'));
+                    sectionsToObserve.forEach(el => el.classList.add('active'));
                     return;
                 }
 
-                const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
@@ -742,10 +738,18 @@
                 sectionsToObserve.forEach(sec => observer.observe(sec));
             };
 
+            // Wywołanie startowe niezależne od sieci
             runAutoSequence();
-            runHeroIntro();
             initScrollReveal();
             updateActiveMenuLink();
+
+            // Bezpieczne sprawdzanie gotowości obiektów zewnętrznych CDNs
+            const checkGsapReady = setInterval(() => {
+                if (typeof gsap !== 'undefined') {
+                    clearInterval(checkGsapReady);
+                    runHeroIntro();
+                }
+            }, 50);
         });
     </script>
 </body>
