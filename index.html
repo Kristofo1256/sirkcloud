@@ -16,81 +16,30 @@
 
     <style>
         /* CSS Core Reset */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg-main: #04060a;
-            --bg-surface: #0b111e;
-            --bg-card: #111a2e;
-            --accent-indigo: #4338ca;
-            --accent-blue: #2563eb;
-            --accent-cyan: #06b6d4;
-            --accent-purple: #7c3aed;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            
+            --bg-main: #04060a; --bg-surface: #0b111e; --bg-card: #111a2e;
+            --accent-indigo: #4338ca; --accent-blue: #2563eb; --accent-cyan: #06b6d4; --accent-purple: #7c3aed;
+            --text-main: #f8fafc; --text-muted: #94a3b8;
             --container-max: 1200px;
             --font-primary: 'Epilogue', sans-serif;
             --transition-linear: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        html {
-            font-family: var(--font-primary);
-            background-color: var(--bg-main);
-            color: var(--text-main);
-        }
-
-        body {
-            overflow-x: hidden;
-            position: relative;
-            background-color: var(--bg-main);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            width: 100%;
-            max-width: var(--container-max);
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .section {
-            padding: 85px 0;
-            position: relative;
-            z-index: 2;
-        }
+        html { font-family: var(--font-primary); background-color: var(--bg-main); color: var(--text-main); }
+        body { overflow-x: hidden; position: relative; background-color: var(--bg-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+        .section { padding: 85px 0; position: relative; z-index: 2; }
 
         /* Tło Aurora & Grid */
-        .aurora-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .aurora-glow {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.28;
-        }
-
+        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; }
+        .aurora-glow { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.28; }
         .aurora-1 { width: 650px; height: 650px; background: var(--accent-blue); top: -10%; right: -5%; }
         .aurora-2 { width: 550px; height: 550px; background: var(--accent-purple); bottom: 5%; left: -10%; }
 
         .tech-grid-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            position: absolute; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(to right, rgba(6, 182, 212, 0.02) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(6, 182, 212, 0.02) 1px, transparent 1px);
@@ -99,15 +48,9 @@
 
         /* Header / Menu */
         .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            background-color: rgba(4, 6, 10, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 14px 0;
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            background-color: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04); padding: 14px 0;
         }
 
         .header-container { display: flex; justify-content: space-between; align-items: center; }
@@ -122,17 +65,9 @@
 
         /* Przyciski */
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 28px;
-            font-family: var(--font-primary);
-            font-size: 0.95rem;
-            font-weight: 700;
-            text-decoration: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform var(--transition-linear), background-color var(--transition-linear);
+            display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px;
+            font-family: var(--font-primary); font-size: 0.95rem; font-weight: 700; text-decoration: none;
+            border-radius: 6px; cursor: pointer; transition: transform var(--transition-linear), background-color var(--transition-linear);
         }
         .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
         .btn-primary {
@@ -170,16 +105,9 @@
             text-align: left; position: relative; cursor: text; overflow-y: auto;
         }
 
-        /* NAPRAWIONY PASSEK MAC SYSTEM - TERAZ JEST STICKY */
         .terminal-header { 
-            position: sticky;
-            top: 0;
-            background-color: #020408;
-            z-index: 10;
-            display: flex; 
-            gap: 6px; 
-            padding-top: 22px;
-            padding-bottom: 14px; 
+            position: sticky; top: 0; background-color: #020408; z-index: 10;
+            display: flex; gap: 6px; padding-top: 22px; padding-bottom: 14px; 
             border-bottom: 1px solid rgba(255,255,255,0.04); 
         }
         .term-dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -188,22 +116,11 @@
         .term-dot.green { background: #22c55e; }
 
         .log-output { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
-        
-        .term-row { 
-            display: block; 
-            line-height: 1.4; 
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-        }
-
+        .term-row { display: block; line-height: 1.4; overflow-wrap: break-word; word-wrap: break-word; }
         .admin-input { color: #f1f5f9; font-weight: 500; }
 
-        /* Ukryty input łapiący fizyczną klawiaturę */
-        #terminalHiddenInput {
-            position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;
-        }
+        #terminalHiddenInput { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
 
-        /* Mrugający kursor tekstowy */
         .term-cursor {
             display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9;
             margin-left: 2px; vertical-align: middle; animation: blinkCursor 0.8s infinite steps(1);
@@ -520,8 +437,17 @@
                 await new Promise(r => setTimeout(r, 1000));
                 appendLog(`<span style="color:#a7f3d0;">&gt; [████████████████████] 100%</span>`);
                 await new Promise(r => setTimeout(r, 1000));
-                appendLog(`&gt; <span class="t-success">System initialized. All systems stable.</span>`);
-                await new Promise(r => setTimeout(r, 800));
+                
+                // PRZYWRÓCONE LOGI SYSTEMOWE
+                appendLog(`&gt; Infrastruktura zoptymalizowana.`);
+                await new Promise(r => setTimeout(r, 1200));
+                appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
+                await new Promise(r => setTimeout(r, 1300));
+                appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                await new Promise(r => setTimeout(r, 1400));
+                appendLog(`&gt; Mission completed. All systems are stable.`);
+                await new Promise(r => setTimeout(r, 1100));
+
                 appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
                 await new Promise(r => setTimeout(r, 600));
                 appendLog(`&gt; Connection closed.`);
