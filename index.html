@@ -178,7 +178,6 @@
 
         .log-output { display: flex; flex-direction: column; gap: 8px; }
         
-        /* ZOPTYMALIZOWANE INTELIGENTNE ZAWIJANIE SŁÓW */
         .term-row { 
             display: block; 
             line-height: 1.4; 
@@ -687,7 +686,7 @@
                             return;
                         }
 
-                        // Bezpieczny komunikat o braku uprawnień (ZOPTYMALIZOWANE ZAWIJANIE TEKSTU)
+                        // Bezpieczny komunikat o braku uprawnień
                         setTimeout(() => {
                             appendStaticLog(`<span class="t-danger">bash: command not found: "${userCmd}". Permission denied. Admin access required.</span>`);
                             createInteractivePromptLine();
