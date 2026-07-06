@@ -64,14 +64,38 @@
 
         .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
         
-        /* Optymalizacja renderowania linii podświetlenia pod kątem Safari */
-        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; padding: 4px 0; }
+        /* NOWE: Ultra-płynne renderowanie linii bez użycia transformacji, odporne na jittering */
+        .nav-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-weight: 500; 
+            font-size: 0.95rem; 
+            position: relative; 
+            padding: 4px 0;
+            transition: color 0.25s ease;
+        }
         .nav-link:hover, .nav-link.active { color: var(--text-main); }
         
-        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
-        .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background-color: var(--accent-cyan); 
+            transform: scaleX(0); 
+            transform-origin: left; 
+            transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1); 
+            will-change: transform;
+        }
         
-        /* Gdy schodzimy w górę (cofamy się), zmieniamy origin na prawą stronę */
+        .nav-link.active::after { 
+            transform: scaleX(1); 
+            transform-origin: left; 
+        }
+        
+        /* Zmiana punktu kotwiczenia (kierunku) realizowana czysto i bez szarpnięć */
         .nav-link.reverse-direction::after { transform-origin: right; }
         .nav-link.active.reverse-direction::after { transform-origin: right; }
 
@@ -325,7 +349,7 @@
             </div>
         </section>
 
-        <!-- Sekcja: O nas (Zoptymalizowana wysokość) -->
+        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -375,7 +399,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -555,15 +579,15 @@
             let currentActiveIndex = 1; 
             let isScrollingByClick = false; 
 
-            // Ta funkcja nadaje styl rysowania linii na podstawie obecnej i docelowej sekcji
             const setLinesDirection = (targetIndex) => {
+                // Zapobiega zbędnemu nadpisywaniu klas jeśli stan indeksu się nie zmienił
+                if (targetIndex === currentActiveIndex) return;
+
                 const navLinks = document.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
-                    // Jeśli cofamy się (indeks maleje), linia od prawej do lewej
                     if (targetIndex < currentActiveIndex) {
                         link.classList.add('reverse-direction');
                     } else {
-                        // Jeśli idziemy naprzód (indeks rośnie), linia od lewej do prawej
                         link.classList.remove('reverse-direction');
                     }
                 });
@@ -604,10 +628,12 @@
             });
 
 
-            // --- CAŁKOWICIE ZSYNCHRONIZOWANY SCROLLSPY (ANALOGIA RUCHU MYSZKI) ---
+            // --- NAPRAWIONY, PŁYNNY SYSTEM SCROLLSPY (BEZ SZARPANIA / DEBOUNCED) ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
+            
+            let lastDetectedId = ""; // Pamięć podręczna ostatnio wybranej sekcji
 
             const updateActiveMenuLink = () => {
                 if (isScrollingByClick) return;
@@ -625,32 +651,44 @@
                 });
 
                 if (isAtBottom) {
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    consultationBtn.classList.add('consultation-active');
-                    // Konsultacja na samym dole to najwyższy punkt (indeks 4)
-                    currentActiveIndex = 4;
+                    if (lastDetectedId !== "kontakt-bottom") {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        consultationBtn.classList.add('consultation-active');
+                        setLinesDirection(4);
+                        lastDetectedId = "kontakt-bottom";
+                    }
                 } else {
                     consultationBtn.classList.remove('consultation-active');
-                    navLinks.forEach(link => {
-                        const linkHref = link.getAttribute('href');
-                        if (linkHref === `#${currentActiveId}`) {
-                            const newIndex = parseInt(link.getAttribute('data-index') || "1");
-                            
-                            // WYKRYWANIE KIERUNKU MYSZKI:
-                            // Przekazujemy do funkcji nowy indeks. Ponieważ funkcja setLinesDirection porównuje go z aktualnym (starym)
-                            // currentActiveIndex, automatycznie doda klasę reverse-direction, jeśli scrollujemy do góry,
-                            // lub ją zdejmie, jeśli scrollujemy w dół!
-                            setLinesDirection(newIndex);
-                            
-                            link.classList.add('active');
-                        } else {
-                            link.classList.remove('active');
-                        }
-                    });
+                    
+                    // GŁÓWNA OPTYMALIZACJA: Logika wykonuje się TYLKO wtedy, gdy faktycznie przekroczyliśmy granicę sekcji
+                    if (currentActiveId && currentActiveId !== lastDetectedId) {
+                        lastDetectedId = currentActiveId;
+                        
+                        navLinks.forEach(link => {
+                            const linkHref = link.getAttribute('href');
+                            if (linkHref === `#${currentActiveId}`) {
+                                const newIndex = parseInt(link.getAttribute('data-index') || "1");
+                                setLinesDirection(newIndex);
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
                 }
             };
 
-            window.addEventListener('scroll', updateActiveMenuLink);
+            // Użycie requestAnimationFrame do idealnej synchronizacji z częstotliwością odświeżania ekranu (60Hz/120Hz)
+            let isTicking = false;
+            window.addEventListener('scroll', () => {
+                if (!isTicking) {
+                    window.requestAnimationFrame(() => {
+                        updateActiveMenuLink();
+                        isTicking = false;
+                    });
+                    isTicking = true;
+                }
+            }, { passive: true });
 
 
             // Animacja wejściowa GSAP Hero
