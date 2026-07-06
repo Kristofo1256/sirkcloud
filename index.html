@@ -4,93 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
-    
-    <!-- Fonty: Epilogue -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Narzędzia animacji GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
 
     <style>
-        /* CSS Core Reset */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         :root {
             --bg-main: #04060a; --bg-surface: #0b111e; --bg-card: #111a2e;
-            --accent-indigo: #4338ca; --accent-blue: #2563eb; --accent-cyan: #06b6d4; --accent-purple: #7c3aed;
+            --accent-blue: #2563eb; --accent-cyan: #06b6d4; --accent-purple: #7c3aed;
             --text-main: #f8fafc; --text-muted: #94a3b8;
-            --container-max: 1200px;
-            --font-primary: 'Epilogue', sans-serif;
-            --transition-linear: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
+        html { font-family: 'Epilogue', sans-serif; background-color: var(--bg-main); color: var(--text-main); }
+        body { overflow-x: hidden; line-height: 1.6; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section { padding: 85px 0; }
 
-        html { font-family: var(--font-primary); background-color: var(--bg-main); color: var(--text-main); }
-        body { overflow-x: hidden; position: relative; background-color: var(--bg-main); line-height: 1.6; }
-        .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
-        .section { padding: 85px 0; position: relative; z-index: 2; }
-
-        /* Tło Aurora & Grid */
-        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; }
-        .aurora-glow { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.28; }
-        .aurora-1 { width: 650px; height: 650px; background: var(--accent-blue); top: -10%; right: -5%; }
-        .aurora-2 { width: 550px; height: 550px; background: var(--accent-purple); bottom: 5%; left: -10%; }
-        .tech-grid-overlay { position: absolute; width: 100%; height: 100%; background-image: linear-gradient(to right, rgba(6, 182, 212, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(6, 182, 212, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
-
-        /* Header */
-        .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background-color: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.04); padding: 14px 0; }
+        /* Nagłówek */
+        .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.04); padding: 14px 0; }
         .header-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo-img { height: 46px; width: auto; object-fit: contain; }
-        .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
-        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
-        .nav-link:hover { color: var(--text-main); }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
 
-        /* Terminal */
-        .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
-        .production-terminal {
-            width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
-            background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 0 22px 22px 22px;
-            font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
-            text-align: left; position: relative; cursor: default; overflow-y: auto;
-        }
-        .terminal-header { position: sticky; top: 0; background-color: #020408; z-index: 10; display: flex; gap: 6px; padding-top: 22px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .term-dot.red { background: #ef4444; } .term-dot.yellow { background: #eab308; } .term-dot.green { background: #22c55e; }
-        .log-output { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
-        .term-row { display: block; line-height: 1.4; overflow-wrap: break-word; }
-        .admin-input { color: #f1f5f9; font-weight: 500; }
-        .term-cursor { display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9; margin-left: 2px; vertical-align: middle; animation: blinkCursor 0.8s infinite steps(1); }
-        @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-        .t-bold { font-weight: bold; color: var(--text-main); }
-        .t-success { color: #22c55e; font-weight: bold; }
-        .t-danger { color: #ef4444; font-weight: bold; }
-        #terminalHiddenInput { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
-
-        /* Reszta styli bez zmian... */
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: 0.3s; }
-        .btn-primary { background: var(--accent-blue); color: #fff; }
+        /* Hero */
         .hero-section { padding-top: 210px; padding-bottom: 110px; }
         .hero-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
         .hero-title { font-size: 3.6rem; font-weight: 800; background: linear-gradient(135deg, #fff 40%, var(--accent-cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        @media (max-width: 1024px) { .hero-container { grid-template-columns: 1fr; } .hero-visual { order: -1; } }
+
+        /* Terminal */
+        .production-terminal {
+            width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
+            background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative; overflow-y: auto;
+        }
+        .terminal-header { position: sticky; top: 0; background: #020408; padding: 22px 22px 14px 22px; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 6px; z-index: 10; }
+        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .term-dot.red { background: #ef4444; } .term-dot.yellow { background: #eab308; } .term-dot.green { background: #22c55e; }
+        .log-output { display: flex; flex-direction: column; gap: 8px; padding: 12px 22px 22px 22px; font-family: 'Courier New', monospace; font-size: 12.5px; color: #38bdf8; }
+        .term-row { display: block; line-height: 1.4; overflow-wrap: break-word; }
+        .term-cursor { display: inline-block; width: 8px; height: 15px; background: #f1f5f9; animation: blink 0.8s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        .t-bold { font-weight: bold; color: var(--text-main); }
+        .t-success { color: #22c55e; }
+        .t-danger { color: #ef4444; }
+        #terminalHiddenInput { position: absolute; opacity: 0; }
+
+        @media (max-width: 1024px) { .hero-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="aurora-container"><div class="tech-grid-overlay"></div></div>
-    
+
     <header class="main-header"><div class="container header-container">
-        <a href="#" class="logo-container">SirK <span class="accent-text">Cloud</span></a>
-        <nav class="main-nav"><ul><li><a href="#oferta" class="nav-link">Start</a></li></ul></nav>
+        <a href="#" style="text-decoration:none; color:white; font-weight:800;">SirK <span style="color:var(--accent-cyan)">Cloud</span></a>
+        <nav><a href="#oferta" class="nav-link">Start</a></nav>
     </div></header>
 
     <main><section class="hero-section">
         <div class="container hero-container">
             <div class="hero-content">
                 <h1 class="hero-title">IT dla Twojej firmy</h1>
-                <p class="hero-subtitle">Prosty, zrozumiały outsourcing.</p>
+                <p>Profesjonalne wsparcie w zasięgu ręki.</p>
             </div>
             <div class="hero-visual">
                 <div class="production-terminal" id="clickableTerminal">
@@ -104,80 +76,63 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const terminalWindow = document.getElementById('clickableTerminal');
             const terminalBody = document.getElementById('terminalBody');
             const hiddenInput = document.getElementById('terminalHiddenInput');
-            
-            let isInteractiveEnabled = false;
+            let isInteractive = false;
 
-            const appendLine = (html) => {
+            const append = (html) => {
                 const row = document.createElement('span');
                 row.className = 'term-row';
                 row.innerHTML = html;
                 terminalBody.appendChild(row);
-                terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                terminalBody.parentElement.scrollTop = terminalBody.parentElement.scrollHeight;
             };
 
-            const delay = ms => new Promise(res => setTimeout(res, ms));
+            const run = async () => {
+                const curRow = document.createElement('span');
+                curRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span>`;
+                terminalBody.appendChild(curRow);
+                await new Promise(r => setTimeout(r, 3200));
+                curRow.remove();
 
-            const runAutoSequence = async () => {
-                // 1. Mruganie kursora (4x)
-                const cursorRow = document.createElement('span');
-                cursorRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span>`;
-                terminalBody.appendChild(cursorRow);
-                await delay(3200);
-                cursorRow.remove();
-
-                // 2. Symulacja komend
-                appendLine(`<span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core`);
-                await delay(1000);
-                appendLine(`<span style="color:#a7f3d0;">&gt; [████████████████████] 100%</span>`);
-                await delay(800);
-                appendLine(`&gt; System health check: <span class="t-success">0 errors</span>`);
-                await delay(1000);
-                appendLine(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
-                await delay(600);
-                appendLine(`&gt; Connection closed.`);
-                await delay(500);
-
-                // 3. Odblokowanie interaktywności
-                isInteractiveEnabled = true;
-                terminalWindow.style.cursor = 'text';
-                createInteractivePrompt();
-            };
-
-            const createInteractivePrompt = () => {
+                append(`<span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core`);
+                await new Promise(r => setTimeout(r, 1000));
+                append(`<span style="color:#a7f3d0;">&gt; [████████████████████] 100%</span>`);
+                await new Promise(r => setTimeout(r, 1000));
+                append(`&gt; <span class="t-success">System stable.</span>`);
+                append(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
+                await new Promise(r => setTimeout(r, 600));
+                
+                isInteractive = true;
                 const row = document.createElement('span');
                 row.className = 'term-row';
                 row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
                 terminalBody.appendChild(row);
-                terminalWindow.scrollTop = terminalWindow.scrollHeight;
                 hiddenInput.focus();
             };
 
-            terminalWindow.addEventListener('click', () => {
-                if (isInteractiveEnabled) hiddenInput.focus();
-            });
-
             hiddenInput.addEventListener('input', (e) => {
-                const inputSpan = terminalBody.querySelector('.admin-input:last-child');
-                if (inputSpan) inputSpan.textContent = e.target.value;
+                const s = terminalBody.querySelector('.admin-input:last-child');
+                if (s) s.textContent = e.target.value;
             });
 
             hiddenInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const cmd = hiddenInput.value.trim().toLowerCase();
-                    if (cmd === 'clear' || cmd === 'exit') {
+                if (e.key === 'Enter' && isInteractive) {
+                    const val = hiddenInput.value.trim();
+                    if (val === 'clear' || val === 'exit') {
                         terminalBody.innerHTML = "";
-                        createInteractivePrompt();
                     } else {
-                        appendLine(`<span class="t-danger">bash: "${cmd}": command not found</span>`);
-                        createInteractivePrompt();
+                        append(`<span class="t-danger">bash: "${val}": command not found</span>`);
                     }
+                    const row = document.createElement('span');
+                    row.className = 'term-row';
+                    row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
+                    terminalBody.appendChild(row);
+                    hiddenInput.value = "";
                 }
             });
 
-            runAutoSequence();
+            run();
         });
     </script>
 </body>
