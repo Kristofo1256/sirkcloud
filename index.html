@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
+    <title>SirK Cloud | Nowoczesny Outsourcing IT — Laboratorium Animacji</title>
     
     <!-- Fonty: Epilogue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,6 @@
         }
 
         html {
-            /* Usunięte css-smooth dla pełnej kontroli przez JS */
             font-family: var(--font-primary);
             background-color: var(--bg-main);
             color: var(--text-main);
@@ -85,21 +84,8 @@
             opacity: 0.25;
         }
 
-        .aurora-1 {
-            width: 600px;
-            height: 600px;
-            background: var(--accent-blue);
-            top: -10%;
-            right: -5%;
-        }
-
-        .aurora-2 {
-            width: 500px;
-            height: 500px;
-            background: var(--accent-purple);
-            bottom: 5%;
-            left: -10%;
-        }
+        .aurora-1 { width: 600px; height: 600px; background: var(--accent-blue); top: -10%; right: -5%; }
+        .aurora-2 { width: 500px; height: 500px; background: var(--accent-purple); bottom: 5%; left: -10%; }
 
         .tech-grid-overlay {
             position: absolute;
@@ -209,17 +195,20 @@
 
         .btn-full { width: 100%; }
 
-        /* Hero Sekcja */
+        /* Hero Sekcja — Zmiana na rozkład pionowy/elastyczny dla pomieszczenia laboratorium */
         .hero-section {
-            padding-top: 190px;
-            padding-bottom: 90px;
+            padding-top: 160px;
+            padding-bottom: 80px;
         }
 
-        .hero-container {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 40px;
-            align-items: center;
+        .hero-layout-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .hero-text-block {
+            max-width: 800px;
         }
 
         .hero-title {
@@ -235,14 +224,13 @@
         .hero-subtitle {
             font-size: 1.2rem;
             color: var(--text-muted);
-            margin-bottom: 36px;
-            max-width: 600px;
+            margin-bottom: 30px;
         }
 
         .hero-meta {
             display: flex;
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
@@ -261,115 +249,194 @@
         .meta-item svg { color: var(--accent-cyan); }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* POPRAWKA: ZNACZNE POWIĘKSZENIE CAŁEJ ANIMACJI CHMURY SERWEROWEJ */
-        .hero-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            height: 460px;
-        }
-
-        .server-rack-matrix {
-            position: relative;
-            width: 410px; /* Zwiększone z 280px */
-            height: 410px; /* Zwiększone z 280px */
-            background: rgba(11, 17, 30, 0.7);
-            border: 1px solid rgba(6, 182, 212, 0.25);
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-        }
-
-        /* Obwody sieciowe serwera */
-        .server-circuit-line {
-            position: absolute;
-            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.25), transparent);
-            height: 1px;
-            width: 92%;
-        }
-        .server-circuit-line.v {
-            transform: rotate(90deg);
-        }
-
-        /* Węzły sieciowe (Większe diody aktywności) */
-        .server-node {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-cyan);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-cyan);
-            animation: nodeActivity 1.8s infinite ease-in-out;
-        }
-        .node-tl { top: 28px; left: 28px; animation-delay: 0.1s; }
-        .node-tr { top: 28px; right: 28px; animation-delay: 0.5s; }
-        .node-bl { bottom: 28px; left: 28px; animation-delay: 0.9s; }
-        .node-br { bottom: 28px; right: 28px; animation-delay: 1.3s; }
-
-        /* Większy rdzeń centralny dla wyeksponowania Logo */
-        .server-core-hub {
-            z-index: 5;
-            background: #0d1527;
-            padding: 24px; /* Zwiększone */
-            border: 1px solid rgba(6, 182, 212, 0.5);
-            border-radius: 12px;
-            max-width: 300px; /* Zwiększone z 200px */
-            width: 80%;
-            box-shadow: 0 0 35px rgba(37, 99, 235, 0.25);
-            animation: corePulse 3.5s infinite ease-in-out;
-        }
-
-        .hero-logo-display {
+        /* --- SIATKA MATRYCY LABORATORIUM ANIMACJI --- */
+        .animation-lab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
             width: 100%;
-            height: auto;
-            object-fit: contain;
+            margin-top: 20px;
         }
 
-        /* Szybszy przesył pakietów danych */
-        .data-packet-bus {
+        .lab-box {
+            background: rgba(11, 17, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            min-height: 320px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .lab-title-tag {
             position: absolute;
+            top: 16px;
+            left: 16px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .lab-viewport {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
             width: 100%;
             height: 100%;
-            pointer-events: none;
         }
 
-        .data-pulse {
+        .lab-logo-element {
+            max-width: 180px;
+            width: 75%;
+            height: auto;
+            object-fit: contain;
+            z-index: 5;
+            position: relative;
+        }
+
+        /* Fallback tekstu logo wewnątrz okien */
+        .lab-fallback-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            z-index: 5;
+        }
+
+        /* -----------------------------------------------------
+           KONCEPCJA A: DATA CLOUD FIREWALL (Skaner laserowy sieci)
+           ----------------------------------------------------- */
+        .box-firewall .firewall-block {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: #ffffff;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            background: rgba(37, 99, 235, 0.02);
+            border-radius: 6px;
+        }
+        .b1 { width: 220px; height: 120px; }
+        .b2 { width: 260px; height: 160px; border-style: dashed; }
+
+        .laser-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            left: 0;
+            animation: laserScan 3s infinite ease-in-out;
+            z-index: 6;
+        }
+
+        @keyframes laserScan {
+            0%, 100% { top: 20%; opacity: 0.2; }
+            50% { top: 80%; opacity: 1; }
+        }
+
+        /* -----------------------------------------------------
+           KONCEPCJA B: NEURAL FIBER MESH (Światłowody węzłowe)
+           ----------------------------------------------------- */
+        .mesh-container {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+        }
+        .mesh-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-purple);
             border-radius: 50%;
-            box-shadow: 0 0 12px #ffffff;
+            box-shadow: 0 0 10px var(--accent-purple);
+            animation: meshPulse 2s infinite ease-in-out;
+        }
+        .md-1 { top: 20%; left: 15%; animation-delay: 0.2s; }
+        .md-2 { top: 15%; right: 20%; animation-delay: 0.8s; }
+        .md-3 { bottom: 25%; left: 25%; animation-delay: 1.4s; }
+        .md-4 { bottom: 15%; right: 15%; animation-delay: 0.5s; }
+
+        .mesh-line {
+            position: absolute;
+            background: linear-gradient(to right, rgba(124, 58, 237, 0.2), transparent);
+            height: 1px;
+        }
+        .ml-1 { top: 21%; left: 16%; width: 60%; transform: rotate(5deg); }
+        .ml-2 { bottom: 24%; left: 26%; width: 50%; transform: rotate(-10deg); }
+
+        @keyframes meshPulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.4; }
+            50% { transform: scale(1.4); opacity: 1; background: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-cyan); }
         }
 
-        .dp-1 { top: 50%; left: 0; animation: pulseX 2.8s infinite linear; }
-        .dp-2 { left: 50%; top: 0; animation: pulseY 3.2s infinite linear; animation-delay: 1.2s; }
+        /* -----------------------------------------------------
+           KONCEPCJA C: QUANTUM CPU HUB (Fale rdzenia taktującego)
+           ----------------------------------------------------- */
+        .cpu-die {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            background: #0d1527;
+            border-radius: 8px;
+        }
+        .cpu-wave {
+            position: absolute;
+            border: 1px solid var(--accent-blue);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+            animation: waveExpand 4s infinite linear;
+        }
+        .wv-2 { animation-delay: 1.3s; }
+        .wv-3 { animation-delay: 2.6s; }
 
-        @keyframes nodeActivity {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 14px var(--accent-cyan); }
+        @keyframes waveExpand {
+            0% { width: 80px; height: 80px; opacity: 0.8; }
+            100% { width: 320px; height: 320px; opacity: 0; border-color: var(--accent-purple); }
         }
 
-        @keyframes corePulse {
-            0%, 100% { border-color: rgba(6, 182, 212, 0.3); box-shadow: 0 0 25px rgba(37, 99, 235, 0.2); }
-            50% { border-color: rgba(6, 182, 212, 0.8); box-shadow: 0 0 45px rgba(6, 182, 212, 0.4); }
+        /* -----------------------------------------------------
+           KONCEPCJA D: INBOUND PACKET STREAM (Wodospad danych)
+           ----------------------------------------------------- */
+        .stream-pipeline {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            justify-content: space-around;
+            opacity: 0.4;
         }
-
-        @keyframes pulseX {
-            0% { left: 5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 95%; opacity: 0; }
+        .stream-track {
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent);
+            position: relative;
         }
+        .stream-packet {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, var(--accent-cyan));
+            top: -60px;
+            animation: packetFall 3s infinite linear;
+        }
+        .st-1 .stream-packet { animation-duration: 2.2s; animation-delay: 0.2s; }
+        .st-2 .stream-packet { animation-duration: 3.5s; animation-delay: 1.1s; background: linear-gradient(to bottom, transparent, var(--accent-purple)); }
+        .st-3 .stream-packet { animation-duration: 1.8s; animation-delay: 0.7s; }
+        .st-4 .stream-packet { animation-duration: 2.8s; animation-delay: 1.9s; }
 
-        @keyframes pulseY {
-            0% { top: 5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 95%; opacity: 0; }
+        @keyframes packetFall {
+            0% { top: -10%; }
+            100% { top: 110%; }
         }
 
         /* Nagłówki sekcji */
@@ -385,7 +452,7 @@
         }
         .section-title { font-size: 2.4rem; font-weight: 700; }
 
-        /* Siatki */
+        /* Siatki dolne */
         .cards-grid { display: grid; gap: 24px; }
         .layout-3-col { grid-template-columns: repeat(3, 1fr); }
         .layout-2-col { grid-template-columns: repeat(2, 1fr); }
@@ -400,11 +467,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             transition: transform var(--transition-linear), border-color var(--transition-linear);
         }
-
-        .interactive-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(6, 182, 212, 0.3);
-        }
+        .interactive-card:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.3); }
 
         .card-icon {
             color: var(--accent-cyan);
@@ -417,7 +480,6 @@
             background: rgba(6, 182, 212, 0.05);
             border-radius: 6px;
         }
-
         .interactive-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
         .interactive-card p { color: var(--text-muted); font-size: 0.95rem; }
 
@@ -431,19 +493,8 @@
             border-radius: 0 6px 6px 0;
             transition: border-left-color var(--transition-linear), background-color var(--transition-linear);
         }
-
-        .filar-item:hover {
-            border-left-color: var(--accent-cyan);
-            background-color: rgba(17, 26, 46, 0.7);
-        }
-
-        .filar-number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--accent-cyan);
-            line-height: 1;
-        }
-
+        .filar-item:hover { border-left-color: var(--accent-cyan); background-color: rgba(17, 26, 46, 0.7); }
+        .filar-number { font-size: 1.6rem; font-weight: 800; color: var(--accent-cyan); line-height: 1; }
         .filar-content h3 { font-size: 1.3rem; margin-bottom: 8px; }
         .filar-content p { color: var(--text-muted); font-size: 0.95rem; }
 
@@ -454,7 +505,6 @@
             gap: 50px;
             align-items: center;
         }
-
         .contact-lead { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
         .contact-details { display: flex; flex-direction: column; gap: 16px; }
 
@@ -470,11 +520,7 @@
             border-radius: 6px;
             transition: border-color var(--transition-linear), background var(--transition-linear);
         }
-
-        .contact-method:hover {
-            border-color: rgba(6, 182, 212, 0.2);
-            background: rgba(17, 26, 46, 0.6);
-        }
+        .contact-method:hover { border-color: rgba(6, 182, 212, 0.2); background: rgba(17, 26, 46, 0.6); }
 
         .method-icon {
             width: 44px;
@@ -486,7 +532,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
         .method-value { font-weight: 700; font-size: 1.15rem; }
 
@@ -497,7 +542,6 @@
             border-radius: 12px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-
         .contact-cta-box h3 { font-size: 1.6rem; margin-bottom: 12px; }
         .contact-cta-box p { color: var(--text-muted); margin-bottom: 28px; font-size: 0.95rem; }
 
@@ -509,7 +553,6 @@
             position: relative;
             z-index: 2;
         }
-
         .footer-container {
             display: flex;
             justify-content: space-between;
@@ -527,23 +570,14 @@
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
         }
-
-        .scroll-animate-trigger.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
 
         .stagger-node {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-
-        .scroll-animate-trigger.active .stagger-node {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .scroll-animate-trigger.active .stagger-node { opacity: 1; transform: translateY(0); }
         .scroll-animate-trigger.active .stagger-node:nth-child(1) { transition-delay: 0.05s; }
         .scroll-animate-trigger.active .stagger-node:nth-child(2) { transition-delay: 0.18s; }
         .scroll-animate-trigger.active .stagger-node:nth-child(3) { transition-delay: 0.31s; }
@@ -551,9 +585,8 @@
 
         /* RWD */
         @media (max-width: 1024px) {
-            .hero-container, .contact-container { grid-template-columns: 1fr; gap: 44px; }
-            .hero-visual { order: -1; height: auto; }
-            .server-rack-matrix { width: 320px; height: 320px; }
+            .animation-lab-grid { grid-template-columns: 1fr; }
+            .contact-container { grid-template-columns: 1fr; gap: 44px; }
             .layout-3-col, .layout-2-col { grid-template-columns: 1fr; }
         }
 
@@ -567,9 +600,7 @@
 
         @media (prefers-reduced-motion: reduce) {
             .scroll-animate-trigger, .stagger-node { opacity: 1 !important; transform: none !important; transition: none !important; }
-            .aurora-glow, .server-node, .server-core-hub, .data-pulse, .btn, .interactive-card, .filar-item {
-                animation: none !important; transform: none !important; transition: none !important;
-            }
+            .laser-line, .mesh-dot, .cpu-wave, .stream-packet { animation: none !important; }
         }
     </style>
 </head>
@@ -602,8 +633,8 @@
     <main>
         <!-- Sekcja Hero -->
         <section class="hero-section" id="oferta">
-            <div class="container hero-container">
-                <div class="hero-content">
+            <div class="container hero-layout-wrapper">
+                <div class="hero-text-block">
                     <h1 class="hero-title">Kompleksowa opieka IT dla Twojej firmy</h1>
                     <p class="hero-subtitle">Pomagam firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji.</p>
                     
@@ -624,26 +655,66 @@
                     </div>
                 </div>
                 
-                <!-- Rdzeń serwerowy IT z przepływem danych wokół Twojego logo -->
-                <div class="hero-visual" aria-hidden="true">
-                    <div class="server-rack-matrix">
-                        <div class="server-circuit-line"></div>
-                        <div class="server-circuit-line v"></div>
-                        
-                        <div class="server-node node-tl"></div>
-                        <div class="server-node node-tr"></div>
-                        <div class="server-node node-bl"></div>
-                        <div class="server-node node-br"></div>
-                        
-                        <div class="data-packet-bus">
-                            <div class="data-pulse dp-1"></div>
-                            <div class="data-pulse dp-2"></div>
-                        </div>
-
-                        <div class="server-core-hub">
-                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Core Rack Hub" class="hero-logo-display" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:1.5rem; font-weight:800; color:var(--text-main);\'>SirK <span style=\'color:var(--accent-cyan);\'>Cloud</span></span>';">
+                <!-- MATRYCA MATRIXA: LAB Z 4 RÓŻNYMI ANIMACJAMI IT -->
+                <div class="animation-lab-grid" aria-label="Laboratorium testowe animacji">
+                    
+                    <!-- Opcja A -->
+                    <div class="lab-box box-firewall">
+                        <span class="lab-title-tag">A: Data Cloud Firewall</span>
+                        <div class="lab-viewport">
+                            <div class="firewall-block b1"></div>
+                            <div class="firewall-block b2"></div>
+                            <div class="laser-line"></div>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
                         </div>
                     </div>
+
+                    <!-- Opcja B -->
+                    <div class="lab-box box-mesh">
+                        <span class="lab-title-tag">B: Neural Fiber Mesh</span>
+                        <div class="lab-viewport">
+                            <div class="mesh-container">
+                                <div class="mesh-line ml-1"></div>
+                                <div class="mesh-line ml-2"></div>
+                                <div class="mesh-dot md-1"></div>
+                                <div class="mesh-dot md-2"></div>
+                                <div class="mesh-dot md-3"></div>
+                                <div class="mesh-dot md-4"></div>
+                            </div>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Opcja C -->
+                    <div class="lab-box box-cpu">
+                        <span class="lab-title-tag">C: Quantum CPU Hub</span>
+                        <div class="lab-viewport">
+                            <div class="cpu-die"></div>
+                            <div class="cpu-wave wv-1"></div>
+                            <div class="cpu-wave wv-2"></div>
+                            <div class="cpu-wave wv-3"></div>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Opcja D -->
+                    <div class="lab-box box-stream">
+                        <span class="lab-title-tag">D: Inbound Packet Stream</span>
+                        <div class="lab-viewport">
+                            <div class="stream-pipeline">
+                                <div class="stream-track st-1"><div class="stream-packet"></div></div>
+                                <div class="stream-track st-2"><div class="stream-packet"></div></div>
+                                <div class="stream-track st-3"><div class="stream-packet"></div></div>
+                                <div class="stream-track st-4"><div class="stream-packet"></div></div>
+                            </div>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -734,7 +805,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowości. Sprawdźmy, jak możemy Ci pomóc.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy Ci pomóc.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -790,7 +861,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // POPRAWKA: Ultraszybki i zoptymalizowany system nawigacji menu (Zastępuje wolne CSS)
+            // Błyskawiczny programowy skok menu (Rozwiązuje problem powolnego ładowania/przewijania)
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -798,20 +869,19 @@
                     const targetElement = document.querySelector(targetId);
                     
                     if (targetElement) {
-                        const headerOffset = 80; // Wysokość zamrożonego menu górnego
+                        const headerOffset = 80;
                         const elementPosition = targetElement.getBoundingClientRect().top;
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                        // Płynny zjazd kontrolowany programistycznie (Szybki i dynamiczny)
                         window.scrollTo({
                             top: offsetPosition,
-                            behavior: 'auto' // Błyskawiczny przeskok bez sztucznego opóźnienia
+                            behavior: 'auto' // Natychmiastowe przeniesienie bez zwłoki czasowej
                         });
                     }
                 });
             });
 
-            // 1. INTRO ANIMACJA
+            // 1. INTRO ANIMACJA GSAP
             const runHeroIntro = () => {
                 if (prefersReducedMotion) return;
 
@@ -823,7 +893,7 @@
                       .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
                       .from('.meta-item', { opacity: 0, scale: 0.93, stagger: 0.12, duration: 0.6 }, '-=0.6')
                       .from('.hero-actions .btn', { opacity: 0, y: 20, stagger: 0.15 }, '-=0.5')
-                      .from('.server-rack-matrix', { opacity: 0, scale: 0.9, duration: 1.2 }, '-=0.8');
+                      .from('.lab-box', { opacity: 0, y: 30, stagger: 0.15, duration: 1 }, '-=0.6');
                 }
             };
 
