@@ -71,6 +71,7 @@
         .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
         .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
         
+        /* Gdy schodzimy w górę (cofamy się), zmieniamy origin na prawą stronę */
         .nav-link.reverse-direction::after { transform-origin: right; }
         .nav-link.active.reverse-direction::after { transform-origin: right; }
 
@@ -487,7 +488,6 @@
                 const progressBarFill = progressRow.querySelector('.progress-bar-fill');
                 const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
                 
-                // WYDŁUŻENIE PASKA: zwiększono liczbę bloków z 20 na 32 dla idealnych proporcji
                 const totalBlocks = 32;
                 for (let i = 1; i <= totalBlocks; i++) {
                     progressBarFill.textContent += "█";
@@ -555,12 +555,15 @@
             let currentActiveIndex = 1; 
             let isScrollingByClick = false; 
 
+            // Ta funkcja nadaje styl rysowania linii na podstawie obecnej i docelowej sekcji
             const setLinesDirection = (targetIndex) => {
                 const navLinks = document.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
+                    // Jeśli cofamy się (indeks maleje), linia od prawej do lewej
                     if (targetIndex < currentActiveIndex) {
                         link.classList.add('reverse-direction');
                     } else {
+                        // Jeśli idziemy naprzód (indeks rośnie), linia od lewej do prawej
                         link.classList.remove('reverse-direction');
                     }
                 });
@@ -601,7 +604,7 @@
             });
 
 
-            // --- ULEPSZONY SCROLLSPY (ZWIĘKSZONA CZUŁOŚĆ I PŁYNNOŚĆ WYGŁADZANIA) ---
+            // --- CAŁKOWICIE ZSYNCHRONIZOWANY SCROLLSPY (ANALOGIA RUCHU MYSZKI) ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
@@ -624,13 +627,21 @@
                 if (isAtBottom) {
                     navLinks.forEach(link => link.classList.remove('active'));
                     consultationBtn.classList.add('consultation-active');
+                    // Konsultacja na samym dole to najwyższy punkt (indeks 4)
+                    currentActiveIndex = 4;
                 } else {
                     consultationBtn.classList.remove('consultation-active');
                     navLinks.forEach(link => {
                         const linkHref = link.getAttribute('href');
                         if (linkHref === `#${currentActiveId}`) {
                             const newIndex = parseInt(link.getAttribute('data-index') || "1");
+                            
+                            // WYKRYWANIE KIERUNKU MYSZKI:
+                            // Przekazujemy do funkcji nowy indeks. Ponieważ funkcja setLinesDirection porównuje go z aktualnym (starym)
+                            // currentActiveIndex, automatycznie doda klasę reverse-direction, jeśli scrollujemy do góry,
+                            // lub ją zdejmie, jeśli scrollujemy w dół!
                             setLinesDirection(newIndex);
+                            
                             link.classList.add('active');
                         } else {
                             link.classList.remove('active');
