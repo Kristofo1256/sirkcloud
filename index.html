@@ -160,7 +160,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- TERMINAL INTERAKTYWNY --- */
+        /* --- INTERAKTYWNY TERMINAL --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -181,7 +181,7 @@
 
         .admin-input { color: #f1f5f9; font-weight: 500; }
 
-        /* Ukryty input do obsługi klawiatury fizycznej i mobilnej */
+        /* Ukryty input łapiący fizyczną klawiaturę */
         #terminalHiddenInput {
             position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;
         }
@@ -313,7 +313,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z zaawansowaną obsługą fizycznej interakcji klawiatury użytkownika -->
+                <!-- Terminal z zapętloną animacją oraz otwartym oknem interaktywnym na końcu -->
                 <div class="hero-visual">
                     <div class="production-terminal" id="clickableTerminal">
                         <div class="terminal-header">
@@ -322,10 +322,9 @@
                             <div class="term-dot green"></div>
                         </div>
                         
-                        <!-- Kontener na logi sterowany przez precyzyjny silnik JS -->
                         <div id="terminalBody" class="log-output"></div>
                         
-                        <!-- Ukryte pole input łapiące kliknięcia klawiatury -->
+                        <!-- Przechwytywacz klawiatury użytkownika -->
                         <input type="text" id="terminalHiddenInput" autocomplete="off">
                     </div>
                 </div>
@@ -469,7 +468,7 @@
         </div>
     </footer>
 
-    <!-- Zaawansowany, całkowicie izolowany silnik interaktywnego terminala -->
+    <!-- Zaawansowany i bezpieczny silnik interaktywnego terminala -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -483,17 +482,17 @@
                 let inactivityTimer = null;
                 let currentLineTarget = null;
                 let currentCursorTarget = null;
-                let activeLoopId = 0; // Token do anulowania starych procesów w tle
+                let activeLoopId = 0; 
 
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                // Tworzy czysty wiersz promptu dla użytkownika
+                // Tworzenie wiersza promptu administratora
                 const createInteractivePromptLine = () => {
                     const row = document.createElement('span');
                     row.className = 'term-row';
                     row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
                     terminalBody.appendChild(row);
-                    terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                    terminalWindow.scrollTo({ top: terminalWindow.scrollHeight, behavior: 'smooth' });
 
                     currentLineTarget = row.querySelector('.admin-input');
                     currentCursorTarget = row.querySelector('.term-cursor');
@@ -505,10 +504,10 @@
                     row.className = 'term-row';
                     row.innerHTML = htmlText;
                     terminalBody.appendChild(row);
-                    terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                    terminalWindow.scrollTo({ top: terminalWindow.scrollHeight, behavior: 'smooth' });
                 };
 
-                // Automatyczne pisanie wyizolowane lokalnie
+                // Asynchroniczne pisanie automatyczne
                 const simulateAutoTyping = (targetSpan, textToType, myLoopId) => {
                     return new Promise((resolve, reject) => {
                         let i = 0;
@@ -526,7 +525,7 @@
                     });
                 };
 
-                // Automatyczny pasek ładowania wyizolowany lokalnie
+                // Asynchroniczny pasek postępu
                 const simulateAutoProgressBar = (myLoopId) => {
                     return new Promise((resolve, reject) => {
                         const row = document.createElement('span');
@@ -546,7 +545,7 @@
                                 const percentage = Math.round((currentBlock / totalBlocks) * 100);
                                 row.innerHTML = `&gt; [${filled}${empty}] ${percentage}%`;
                                 currentBlock++;
-                                terminalWindow.scrollTop = terminalWindow.scrollHeight;
+                                terminalWindow.scrollTo({ top: terminalWindow.scrollHeight, behavior: 'smooth' });
                                 setTimeout(step, interval);
                             } else {
                                 resolve();
@@ -556,17 +555,16 @@
                     });
                 };
 
-                // GŁÓWNA PĘTLA PREZENTACYJNA
+                // GŁÓWNA PĘTLA PREZENTACYJNA (AUTOMAT)
                 const runPresentationLoop = async () => {
                     if (isUserActive) return;
                     
-                    activeLoopId++; // Unieważnienie ewentualnych wiszących wątków
+                    activeLoopId++; 
                     const myLoopId = activeLoopId;
                     
                     terminalBody.innerHTML = "";
                     
                     try {
-                        // KROK 1: Pierwsza linia promptu
                         const row1 = document.createElement('span');
                         row1.className = 'term-row';
                         row1.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
@@ -575,18 +573,16 @@
                         const textSpan1 = row1.querySelector('.admin-input');
                         const cursorSpan1 = row1.querySelector('.term-cursor');
                         
-                        await delay(5000); // 5s czekania z mrugającym kursorem na start
+                        await delay(5000); 
                         if (isUserActive || myLoopId !== activeLoopId) return;
 
                         await simulateAutoTyping(textSpan1, "run sirk-business-support-core", myLoopId);
                         if (cursorSpan1) cursorSpan1.remove();
                         await delay(600);
 
-                        // KROK 2: Progress bar (3 sekundy)
                         await simulateAutoProgressBar(myLoopId);
                         await delay(1000);
 
-                        // KROK 3: Wyświetlanie raportów
                         if (isUserActive || myLoopId !== activeLoopId) return;
                         appendStaticLog(`&gt; Infrastruktura zoptymalizowana.`);
                         await delay(1200);
@@ -602,7 +598,7 @@
                         if (isUserActive || myLoopId !== activeLoopId) return;
                         appendStaticLog(`&gt; Mission completed. All systems are stable.`);
 
-                        // KROK 4: Natychmiastowy kolejny prompt przed wpisaniem exit 0
+                        // Prompt bezpośrednio przed "exit 0"
                         const row2 = document.createElement('span');
                         row2.className = 'term-row';
                         row2.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
@@ -612,30 +608,32 @@
                         const textSpan2 = row2.querySelector('.admin-input');
                         const cursorSpan2 = row2.querySelector('.term-cursor');
 
-                        await delay(2500); // Czekamy 2.5 sekundy, kursor mruga
+                        await delay(2500); 
                         if (isUserActive || myLoopId !== activeLoopId) return;
 
                         await simulateAutoTyping(textSpan2, "exit 0", myLoopId);
                         if (cursorSpan2) cursorSpan2.remove();
                         await delay(800);
 
-                        // KROK 5: Zamknięcie sesji i restart pętli
                         appendStaticLog(`&gt; Connection closed.`);
-                        await delay(3000);
+                        await delay(1000);
+
+                        // MODYFIKACJA: Po connection closed logi zostają, a system od razu daje wolną linię do pisania
+                        createInteractivePromptLine();
                         
-                        if (!isUserActive && myLoopId === activeLoopId) {
-                            runPresentationLoop();
-                        }
+                        // Rozpoczynamy odliczanie bezczynności do restartu (wyczyszczenia) pętli automatowej
+                        startInactivityTimer();
+
                     } catch(e) {
                         // Przerwano przez interakcję użytkownika
                     }
                 };
 
-                // PRZEJŚCIE W TRYB INTERAKTYWNY (KONTROLA DLA UŻYTKOWNIKA)
+                // URUCHOMIENIE TRYBU INTERAKTYWNEGO
                 const activateInteractiveMode = () => {
                     if (isUserActive) return;
                     isUserActive = true;
-                    activeLoopId++; // Natychmiastowe ubicie wątków automatycznych
+                    activeLoopId++; // Zabicie automatycznych procesów
                     
                     clearTimeout(inactivityTimer);
                     terminalBody.innerHTML = "";
@@ -649,37 +647,40 @@
                     inactivityTimer = setTimeout(() => {
                         isUserActive = false;
                         runPresentationLoop();
-                    }, 12000); // Po 12 sekundach bezczynności terminal wraca do auto-prezentacji
+                    }, 10000); // 10 sekund braku ruchu użytkownika czyści terminal i odpala prezentację od nowa
                 };
 
-                // Nasłuchiwanie kliknięcia myszką na okno terminala
+                // Kliknięcie w okno terminala
                 terminalWindow.addEventListener('click', () => {
-                    activateInteractiveMode();
+                    if (!isUserActive) {
+                        activateInteractiveMode();
+                    }
                     hiddenInput.focus();
-                });
+                };
 
-                // Renderowanie wpisywanych znaków w locie
+                // Reakcja na wpisywanie z klawiatury
                 hiddenInput.addEventListener('input', (e) => {
-                    if (!isUserActive) activateInteractiveMode();
+                    if (!isUserActive) isUserActive = true;
+                    activeLoopId++; 
                     if (currentLineTarget) {
                         currentLineTarget.textContent = e.target.value;
                     }
                     startInactivityTimer();
                 });
 
-                // Obsługa klawisza Enter oraz błędów administratora
+                // Reakcja na Enter i symulacja bezpiecznego braku admina
                 hiddenInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
-                        const rawCommand = hiddenInput.value.trim();
+                        const userCmd = hiddenInput.value.trim();
                         if (currentCursorTarget) currentCursorTarget.remove();
 
-                        if (rawCommand === "") {
+                        if (userCmd === "") {
                             createInteractivePromptLine();
                             return;
                         }
 
-                        // Komendy czyszczące / resetujące
-                        if (rawCommand.toLowerCase() === 'exit' || rawCommand.toLowerCase() === 'exit 0' || rawCommand.toLowerCase() === 'clear') {
+                        // Komendy czyszczące
+                        if (userCmd.toLowerCase() === 'exit' || userCmd.toLowerCase() === 'exit 0' || userCmd.toLowerCase() === 'clear') {
                             terminalBody.innerHTML = "";
                             appendStaticLog(`&gt; Konsola wyczyszczona.`);
                             createInteractivePromptLine();
@@ -687,9 +688,9 @@
                             return;
                         }
 
-                        // Wypluwanie komunikatu o braku admina
+                        // Bezpieczny, zamknięty log o braku uprawnień administratora
                         setTimeout(() => {
-                            appendStaticLog(`<span class="t-danger">bash: command not found: "${rawCommand}". Permission denied. Admin access required.</span>`);
+                            appendStaticLog(`<span class="t-danger">bash: command not found: "${userCmd}". Permission denied. Admin access required.</span>`);
                             createInteractivePromptLine();
                         }, 100);
 
