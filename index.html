@@ -408,7 +408,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -562,7 +562,8 @@
                         const textSpan1 = row1.querySelector('.admin-input');
                         const cursorSpan1 = row1.querySelector('.term-cursor');
                         
-                        await delay(2000); 
+                        // ZMIANA: kursor mruga dokładnie 4 razy (4 x 0.8s = 3200ms) zanim cokolwiek zacznie pisać
+                        await delay(3200); 
                         if (isUserActive || myLoopId !== activeLoopId) return;
 
                         await simulateAutoTyping(textSpan1, "run sirk-business-support-core", myLoopId);
