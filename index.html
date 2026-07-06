@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SirK Cloud | Nowoczesny Outsourcing IT — Laboratorium Animacji</title>
+    <title>SirK Cloud | Nowoczesny Outsourcing IT — Laboratorium 12 Animacji</title>
     
     <!-- Fonty: Epilogue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,13 +77,7 @@
             overflow: hidden;
         }
 
-        .aurora-glow {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(130px);
-            opacity: 0.25;
-        }
-
+        .aurora-glow { position: absolute; border-radius: 50%; filter: blur(130px); opacity: 0.25; }
         .aurora-1 { width: 600px; height: 600px; background: var(--accent-blue); top: -10%; right: -5%; }
         .aurora-2 { width: 500px; height: 500px; background: var(--accent-purple); bottom: 5%; left: -10%; }
 
@@ -110,47 +104,14 @@
             padding: 14px 0;
         }
 
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            height: 46px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .logo-fallback {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--text-main);
-        }
-
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 46px; width: auto; object-fit: contain; }
+        .logo-fallback { font-weight: 800; font-size: 1.5rem; color: var(--text-main); }
         .accent-text { color: var(--accent-cyan); }
 
-        .main-nav ul {
-            display: flex;
-            list-style: none;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-
+        .main-nav ul { display: flex; list-style: none; align-items: center; gap: 32px; }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
         .nav-link:hover { color: var(--text-main); }
 
         /* Przyciski */
@@ -167,421 +128,174 @@
             cursor: pointer;
             transition: transform var(--transition-linear), background-color var(--transition-linear);
         }
-
         .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
-
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-indigo) 100%);
-            color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.1);
+            color: #ffffff; border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, var(--accent-blue) 30%, var(--accent-purple) 100%);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.03);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.07);
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-        }
-
+        .btn-primary:hover { transform: translateY(-2px); background: linear-gradient(135deg, var(--accent-blue) 30%, var(--accent-purple) 100%); }
+        .btn-secondary { background-color: rgba(255, 255, 255, 0.03); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .btn-secondary:hover { background-color: rgba(255, 255, 255, 0.07); border-color: var(--accent-cyan); transform: translateY(-2px); }
         .btn-full { width: 100%; }
 
-        /* Hero Sekcja — Zmiana na rozkład pionowy/elastyczny dla pomieszczenia laboratorium */
-        .hero-section {
-            padding-top: 160px;
-            padding-bottom: 80px;
-        }
-
-        .hero-layout-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-        }
-
-        .hero-text-block {
-            max-width: 800px;
-        }
-
+        /* Hero Sekcja */
+        .hero-section { padding-top: 160px; padding-bottom: 80px; }
+        .hero-layout-wrapper { display: flex; flex-direction: column; gap: 50px; }
+        .hero-text-block { max-width: 800px; }
         .hero-title {
-            font-size: 3.6rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            line-height: 1.15;
+            font-size: 3.6rem; font-weight: 800; margin-bottom: 20px; line-height: 1.15;
             background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-
-        .hero-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
+        .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px; }
+        .hero-meta { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
         .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            background: rgba(17, 26, 46, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 8px 18px;
-            border-radius: 20px;
+            display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem;
+            background: rgba(17, 26, 46, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 18px; border-radius: 20px;
         }
-
         .meta-item svg { color: var(--accent-cyan); }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- SIATKA MATRYCY LABORATORIUM ANIMACJI --- */
+        /* --- SIATKA MATRYCY LABORATORIUM (12 POZYCJI) --- */
         .animation-lab-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            width: 100%;
-            margin-top: 20px;
+            gap: 24px; width: 100%; margin-top: 20px;
         }
 
         .lab-box {
             background: rgba(11, 17, 30, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            min-height: 320px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-radius: 12px; padding: 24px;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            min-height: 340px; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
         .lab-title-tag {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent-cyan);
-            background: rgba(6, 182, 212, 0.1);
-            padding: 4px 10px;
-            border-radius: 4px;
-            z-index: 10;
+            position: absolute; top: 16px; left: 16px;
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1); padding: 4px 10px; border-radius: 4px; z-index: 10;
         }
 
-        .lab-viewport {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
+        .lab-viewport { flex-grow: 1; display: flex; justify-content: center; align-items: center; position: relative; width: 100%; height: 100%; }
+        .lab-logo-element { max-width: 180px; width: 75%; height: auto; object-fit: contain; z-index: 5; position: relative; }
+        .lab-fallback-text { font-size: 1.4rem; font-weight: 800; color: var(--text-main); z-index: 5; }
 
-        .lab-logo-element {
-            max-width: 180px;
-            width: 75%;
-            height: auto;
-            object-fit: contain;
-            z-index: 5;
-            position: relative;
-        }
-
-        /* Fallback tekstu logo wewnątrz okien */
-        .lab-fallback-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--text-main);
-            z-index: 5;
-        }
+        /* WSPÓLNE STYLE KLASYCZNYCH ANIMACJI (A-D) */
+        .laser-line { position: absolute; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); box-shadow: 0 0 12px var(--accent-cyan); animation: laserScan 3s infinite ease-in-out; }
+        @keyframes laserScan { 0%, 100% { top: 20%; opacity: 0.2; } 50% { top: 80%; opacity: 1; } }
+        .cpu-die { position: absolute; width: 140px; height: 140px; border: 1px solid rgba(6, 182, 212, 0.4); background: #0d1527; border-radius: 8px; }
+        .cpu-wave { position: absolute; border: 1px solid var(--accent-blue); border-radius: 50%; width: 100px; height: 100px; opacity: 0; animation: waveExpand 4s infinite linear; }
+        .wv-2 { animation-delay: 1.3s; } .wv-3 { animation-delay: 2.6s; }
+        @keyframes waveExpand { 0% { width: 80px; height: 80px; opacity: 0.8; } 100% { width: 320px; height: 320px; opacity: 0; border-color: var(--accent-purple); } }
+        .stream-pipeline { position: absolute; width: 90%; height: 90%; display: flex; justify-content: space-around; opacity: 0.3; }
+        .stream-track { width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent); position: relative; }
+        .stream-packet { position: absolute; width: 2px; height: 50px; background: linear-gradient(to bottom, transparent, var(--accent-cyan)); top: -60px; animation: packetFall 3s infinite linear; }
+        @keyframes packetFall { 0% { top: -10%; } 100% { top: 110%; } }
 
         /* -----------------------------------------------------
-           KONCEPCJA A: DATA CLOUD FIREWALL (Skaner laserowy sieci)
+           NOWE KONCEPCJE (E - L) — SFORMATOWANE W CSS
            ----------------------------------------------------- */
-        .box-firewall .firewall-block {
-            position: absolute;
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            background: rgba(37, 99, 235, 0.02);
-            border-radius: 6px;
-        }
-        .b1 { width: 220px; height: 120px; }
-        .b2 { width: 260px; height: 160px; border-style: dashed; }
 
-        .laser-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-            box-shadow: 0 0 12px var(--accent-cyan);
-            left: 0;
-            animation: laserScan 3s infinite ease-in-out;
-            z-index: 6;
-        }
+        /* E: SERVER NODE RACK */
+        .rack-frame { width: 240px; height: 160px; border: 2px solid #1e293b; border-radius: 6px; display: flex; flex-direction: column; justify-content: space-around; padding: 10px; background: #080d16; }
+        .rack-blade { height: 25px; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding-right: 10px; position: relative; }
+        .rack-led { width: 6px; height: 6px; border-radius: 50%; background: #1e293b; }
+        .rack-led.active { background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); animation: ledBlink 0.5s infinite alternate; }
+        .rack-led.purple { background: var(--accent-purple); box-shadow: 0 0 8px var(--accent-purple); animation: ledBlink 0.8s infinite alternate; }
+        @keyframes ledBlink { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        @keyframes laserScan {
-            0%, 100% { top: 20%; opacity: 0.2; }
-            50% { top: 80%; opacity: 1; }
-        }
+        /* F: BINARY DATA STREAM */
+        .binary-bg { position: absolute; width: 100%; height: 100%; font-family: monospace; font-size: 10px; color: rgba(6, 182, 212, 0.15); display: flex; justify-content: space-around; overflow: hidden; pointer-events: none; }
+        .binary-col { display: flex; flex-direction: column; animation: binaryScroll 5s infinite linear; }
+        .binary-col:nth-child(2) { animation-duration: 7s; animation-delay: 2s; }
+        .binary-col:nth-child(3) { animation-duration: 4s; animation-delay: 1s; }
+        @keyframes binaryScroll { 0% { transform: translateY(-100px); } 100% { transform: translateY(200px); } }
 
-        /* -----------------------------------------------------
-           KONCEPCJA B: NEURAL FIBER MESH (Światłowody węzłowe)
-           ----------------------------------------------------- */
-        .mesh-container {
-            position: absolute;
-            width: 80%;
-            height: 80%;
-        }
-        .mesh-dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--accent-purple);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-purple);
-            animation: meshPulse 2s infinite ease-in-out;
-        }
-        .md-1 { top: 20%; left: 15%; animation-delay: 0.2s; }
-        .md-2 { top: 15%; right: 20%; animation-delay: 0.8s; }
-        .md-3 { bottom: 25%; left: 25%; animation-delay: 1.4s; }
-        .md-4 { bottom: 15%; right: 15%; animation-delay: 0.5s; }
+        /* G: DEVOPS PIPELINE LOOP */
+        .pipeline-svg { width: 260px; height: 120px; fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 2; }
+        .pipeline-track { stroke: rgba(37, 99, 235, 0.2); stroke-dasharray: 8, 8; animation: dashMove 4s infinite linear; }
+        .pipeline-pulse { fill: var(--accent-cyan); r: 5; animation: pulseMove 6s infinite linear; }
+        @keyframes dashMove { to { stroke-dashoffset: -20; } }
 
-        .mesh-line {
-            position: absolute;
-            background: linear-gradient(to right, rgba(124, 58, 237, 0.2), transparent);
-            height: 1px;
-        }
-        .ml-1 { top: 21%; left: 16%; width: 60%; transform: rotate(5deg); }
-        .ml-2 { bottom: 24%; left: 26%; width: 50%; transform: rotate(-10deg); }
+        /* H: CYBER ENCRYPTED SHIELD */
+        .shield-ring { position: absolute; border: 2px dashed rgba(124, 58, 237, 0.3); border-radius: 50%; animation: rotateClockwise 20s infinite linear; }
+        .sr-1 { width: 200px; height: 200px; border-color: rgba(6, 182, 212, 0.2); }
+        .sr-2 { width: 250px; height: 250px; animation: rotateCounter 25s infinite linear; }
+        @keyframes rotateClockwise { to { transform: rotate(360deg); } }
+        @keyframes rotateCounter { to { transform: rotate(-360deg); } }
 
-        @keyframes meshPulse {
-            0%, 100% { transform: scale(0.8); opacity: 0.4; }
-            50% { transform: scale(1.4); opacity: 1; background: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-cyan); }
-        }
+        /* I: CLOUD DATABASE PULSE */
+        .db-cluster { display: flex; gap: 40px; position: absolute; width: 80%; justify-content: center; }
+        .db-node { width: 50px; height: 70px; border: 1px solid rgba(255,255,255,0.05); background: rgba(17,26,46,0.8); border-radius: 4px; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 6px; }
+        .db-line { width: 80%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; }
+        .db-line.active { background: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue); animation: dbPulse 2s infinite ease-in-out; }
+        @keyframes dbPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        /* -----------------------------------------------------
-           KONCEPCJA C: QUANTUM CPU HUB (Fale rdzenia taktującego)
-           ----------------------------------------------------- */
-        .cpu-die {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            background: #0d1527;
-            border-radius: 8px;
-        }
-        .cpu-wave {
-            position: absolute;
-            border: 1px solid var(--accent-blue);
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            opacity: 0;
-            animation: waveExpand 4s infinite linear;
-        }
-        .wv-2 { animation-delay: 1.3s; }
-        .wv-3 { animation-delay: 2.6s; }
+        /* J: NETWORK PING TOPOLOGY */
+        .network-center { width: 12px; height: 12px; background: #ffffff; border-radius: 50%; position: absolute; box-shadow: 0 0 15px #ffffff; }
+        .network-node { width: 6px; height: 6px; background: var(--accent-cyan); border-radius: 50%; position: absolute; opacity: 0.6; }
+        .nn-1 { top: 25%; left: 30%; } .nn-2 { top: 30%; right: 25%; } .nn-3 { bottom: 30%; left: 35%; }
+        .ping-line { position: absolute; background: var(--accent-cyan); height: 1px; opacity: 0; transform-origin: left center; }
 
-        @keyframes waveExpand {
-            0% { width: 80px; height: 80px; opacity: 0.8; }
-            100% { width: 320px; height: 320px; opacity: 0; border-color: var(--accent-purple); }
-        }
+        /* K: SAAS DASHBOARD CORE */
+        .dashboard-chart { width: 240px; height: 100px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .chart-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; stroke: var(--accent-cyan); stroke-width: 2; fill: none; }
 
-        /* -----------------------------------------------------
-           KONCEPCJA D: INBOUND PACKET STREAM (Wodospad danych)
-           ----------------------------------------------------- */
-        .stream-pipeline {
-            position: absolute;
-            width: 90%;
-            height: 90%;
-            display: flex;
-            justify-content: space-around;
-            opacity: 0.4;
-        }
-        .stream-track {
-            width: 1px;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent);
-            position: relative;
-        }
-        .stream-packet {
-            position: absolute;
-            width: 2px;
-            height: 50px;
-            background: linear-gradient(to bottom, transparent, var(--accent-cyan));
-            top: -60px;
-            animation: packetFall 3s infinite linear;
-        }
-        .st-1 .stream-packet { animation-duration: 2.2s; animation-delay: 0.2s; }
-        .st-2 .stream-packet { animation-duration: 3.5s; animation-delay: 1.1s; background: linear-gradient(to bottom, transparent, var(--accent-purple)); }
-        .st-3 .stream-packet { animation-duration: 1.8s; animation-delay: 0.7s; }
-        .st-4 .stream-packet { animation-duration: 2.8s; animation-delay: 1.9s; }
+        /* L: OPTICAL TERMINAL CODE */
+        .terminal-box { width: 260px; height: 140px; background: #030508; border: 1px solid #1e293b; border-radius: 6px; font-family: monospace; font-size: 11px; color: #38bdf8; padding: 12px; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+        .term-ln { opacity: 0; animation: typeLine 4s infinite steps(1); overflow: hidden; white-space: nowrap; }
+        .tl-1 { animation-delay: 0.5s; } .tl-2 { animation-delay: 1.5s; } .tl-3 { animation-delay: 2.5s; }
+        @keyframes typeLine { 0% { opacity: 0; width: 0; } 10%, 90% { opacity: 1; width: 100%; } 100% { opacity: 0; } }
 
-        @keyframes packetFall {
-            0% { top: -10%; }
-            100% { top: 110%; }
-        }
-
-        /* Nagłówki sekcji */
+        /* Nagłówki sekcji dolnych */
         .section-header { margin-bottom: 44px; max-width: 700px; }
-        .section-tag {
-            display: inline-block;
-            color: var(--accent-cyan);
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
+        .section-tag { display: inline-block; color: var(--accent-cyan); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
         .section-title { font-size: 2.4rem; font-weight: 700; }
 
-        /* Siatki dolne */
+        /* Siatki */
         .cards-grid { display: grid; gap: 24px; }
         .layout-3-col { grid-template-columns: repeat(3, 1fr); }
         .layout-2-col { grid-template-columns: repeat(2, 1fr); }
 
         /* Karty "Dla kogo" */
-        .interactive-card {
-            background-color: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 36px;
-            border-radius: 8px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform var(--transition-linear), border-color var(--transition-linear);
-        }
+        .interactive-card { background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); padding: 36px; border-radius: 8px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform var(--transition-linear), border-color var(--transition-linear); }
         .interactive-card:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.3); }
-
-        .card-icon {
-            color: var(--accent-cyan);
-            margin-bottom: 20px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(6, 182, 212, 0.05);
-            border-radius: 6px;
-        }
+        .card-icon { color: var(--accent-cyan); margin-bottom: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(6, 182, 212, 0.05); border-radius: 6px; }
         .interactive-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
         .interactive-card p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Filary "O Nas" */
-        .filar-item {
-            display: flex;
-            gap: 24px;
-            background: rgba(17, 26, 46, 0.4);
-            border-left: 3px solid rgba(37, 99, 235, 0.3);
-            padding: 28px;
-            border-radius: 0 6px 6px 0;
-            transition: border-left-color var(--transition-linear), background-color var(--transition-linear);
-        }
+        .filar-item { display: flex; gap: 24px; background: rgba(17, 26, 46, 0.4); border-left: 3px solid rgba(37, 99, 235, 0.3); padding: 28px; border-radius: 0 6px 6px 0; transition: border-left-color var(--transition-linear), background-color var(--transition-linear); }
         .filar-item:hover { border-left-color: var(--accent-cyan); background-color: rgba(17, 26, 46, 0.7); }
         .filar-number { font-size: 1.6rem; font-weight: 800; color: var(--accent-cyan); line-height: 1; }
         .filar-content h3 { font-size: 1.3rem; margin-bottom: 8px; }
         .filar-content p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Sekcja Kontakt */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 50px;
-            align-items: center;
-        }
+        .contact-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
         .contact-lead { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
         .contact-details { display: flex; flex-direction: column; gap: 16px; }
-
-        .contact-method {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-decoration: none;
-            color: var(--text-main);
-            padding: 16px;
-            background: rgba(17, 26, 46, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            border-radius: 6px;
-            transition: border-color var(--transition-linear), background var(--transition-linear);
-        }
+        .contact-method { display: flex; align-items: center; gap: 20px; text-decoration: none; color: var(--text-main); padding: 16px; background: rgba(17, 26, 46, 0.3); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 6px; transition: border-color var(--transition-linear), background var(--transition-linear); }
         .contact-method:hover { border-color: rgba(6, 182, 212, 0.2); background: rgba(17, 26, 46, 0.6); }
-
-        .method-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 6px;
-            background: rgba(6, 182, 212, 0.08);
-            color: var(--accent-cyan);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .method-icon { width: 44px; height: 44px; border-radius: 6px; background: rgba(6, 182, 212, 0.08); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; }
         .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
         .method-value { font-weight: 700; font-size: 1.15rem; }
-
-        .contact-cta-box {
-            background: linear-gradient(145deg, var(--bg-surface) 0%, #152033 100%);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 44px;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
+        .contact-cta-box { background: linear-gradient(145deg, var(--bg-surface) 0%, #152033 100%); border: 1px solid rgba(255, 255, 255, 0.04); padding: 44px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .contact-cta-box h3 { font-size: 1.6rem; margin-bottom: 12px; }
         .contact-cta-box p { color: var(--text-muted); margin-bottom: 28px; font-size: 0.95rem; }
 
         /* Stopka */
-        .main-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 40px 0;
-            background-color: #020305;
-            position: relative;
-            z-index: 2;
-        }
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #020305; position: relative; z-index: 2; }
+        .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
         /* System przejść scrolla */
-        .scroll-animate-trigger {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform, opacity;
-        }
+        .scroll-animate-trigger { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
         .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
-
-        .stagger-node {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
+        .stagger-node { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .scroll-animate-trigger.active .stagger-node { opacity: 1; transform: translateY(0); }
-        .scroll-animate-trigger.active .stagger-node:nth-child(1) { transition-delay: 0.05s; }
-        .scroll-animate-trigger.active .stagger-node:nth-child(2) { transition-delay: 0.18s; }
-        .scroll-animate-trigger.active .stagger-node:nth-child(3) { transition-delay: 0.31s; }
-        .scroll-animate-trigger.active .stagger-node:nth-child(4) { transition-delay: 0.44s; }
 
         /* RWD */
         @media (max-width: 1024px) {
@@ -589,18 +303,11 @@
             .contact-container { grid-template-columns: 1fr; gap: 44px; }
             .layout-3-col, .layout-2-col { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 768px) {
             .hero-title { font-size: 2.5rem; }
-            .section-title { font-size: 1.8rem; }
             .main-nav { display: none; }
             .hero-actions { flex-direction: column; }
             .btn { width: 100%; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .scroll-animate-trigger, .stagger-node { opacity: 1 !important; transform: none !important; transition: none !important; }
-            .laser-line, .mesh-dot, .cpu-wave, .stream-packet { animation: none !important; }
         }
     </style>
 </head>
@@ -636,17 +343,11 @@
             <div class="container hero-layout-wrapper">
                 <div class="hero-text-block">
                     <h1 class="hero-title">Kompleksowa opieka IT dla Twojej firmy</h1>
-                    <p class="hero-subtitle">Pomagam firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji.</p>
+                    <p class="hero-subtitle">Pomagam firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji. Wybierz najlepszą animację z poniższej palety dwunastu opcji laboratoryjnych.</p>
                     
                     <div class="hero-meta" aria-label="Informacje o usłudze">
-                        <div class="meta-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-                            <span>Zdalna obsługa cała Polska</span>
-                        </div>
-                        <div class="meta-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span>Od 250 zł miesięcznie</span>
-                        </div>
+                        <div class="meta-item"><span>Zdalna obsługa cała Polska</span></div>
+                        <div class="meta-item"><span>Od 250 zł miesięcznie</span></div>
                     </div>
 
                     <div class="hero-actions">
@@ -655,63 +356,147 @@
                     </div>
                 </div>
                 
-                <!-- MATRYCA MATRIXA: LAB Z 4 RÓŻNYMI ANIMACJAMI IT -->
+                <!-- SIATKA LABORATORIUM: 12 RÓŻNYCH KONCEPCJI IT OBOK SIEBIE -->
                 <div class="animation-lab-grid" aria-label="Laboratorium testowe animacji">
                     
-                    <!-- Opcja A -->
-                    <div class="lab-box box-firewall">
+                    <!-- A -->
+                    <div class="lab-box">
                         <span class="lab-title-tag">A: Data Cloud Firewall</span>
                         <div class="lab-viewport">
-                            <div class="firewall-block b1"></div>
-                            <div class="firewall-block b2"></div>
                             <div class="laser-line"></div>
-                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK Cloud</span>
                         </div>
                     </div>
 
-                    <!-- Opcja B -->
-                    <div class="lab-box box-mesh">
+                    <!-- B -->
+                    <div class="lab-box">
                         <span class="lab-title-tag">B: Neural Fiber Mesh</span>
                         <div class="lab-viewport">
                             <div class="mesh-container">
-                                <div class="mesh-line ml-1"></div>
-                                <div class="mesh-line ml-2"></div>
-                                <div class="mesh-dot md-1"></div>
-                                <div class="mesh-dot md-2"></div>
-                                <div class="mesh-dot md-3"></div>
-                                <div class="mesh-dot md-4"></div>
+                                <div class="mesh-dot md-1"></div><div class="mesh-dot md-2"></div><div class="mesh-dot md-3"></div><div class="mesh-dot md-4"></div>
                             </div>
-                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK Cloud</span>
                         </div>
                     </div>
 
-                    <!-- Opcja C -->
-                    <div class="lab-box box-cpu">
+                    <!-- C -->
+                    <div class="lab-box">
                         <span class="lab-title-tag">C: Quantum CPU Hub</span>
                         <div class="lab-viewport">
-                            <div class="cpu-die"></div>
-                            <div class="cpu-wave wv-1"></div>
-                            <div class="cpu-wave wv-2"></div>
-                            <div class="cpu-wave wv-3"></div>
-                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                            <div class="cpu-die"></div><div class="cpu-wave wv-1"></div><div class="cpu-wave wv-2"></div>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK Cloud</span>
                         </div>
                     </div>
 
-                    <!-- Opcja D -->
-                    <div class="lab-box box-stream">
+                    <!-- D -->
+                    <div class="lab-box">
                         <span class="lab-title-tag">D: Inbound Packet Stream</span>
                         <div class="lab-viewport">
                             <div class="stream-pipeline">
                                 <div class="stream-track st-1"><div class="stream-packet"></div></div>
                                 <div class="stream-track st-2"><div class="stream-packet"></div></div>
                                 <div class="stream-track st-3"><div class="stream-packet"></div></div>
-                                <div class="stream-track st-4"><div class="stream-packet"></div></div>
                             </div>
-                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Sirk Cloud Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <span class="lab-fallback-text" style="display:none;">SirK <span class="accent-text">Cloud</span></span>
+                            <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="Logo" class="lab-logo-element" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="lab-fallback-text" style="display:none;">SirK Cloud</span>
+                        </div>
+                    </div>
+
+                    <!-- E (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">E: Server Node Rack</span>
+                        <div class="lab-viewport">
+                            <div class="rack-frame">
+                                <div class="rack-blade"><div class="rack-led active"></div><div class="rack-led"></div></div>
+                                <div class="rack-blade"><div class="rack-led purple"></div><div class="rack-led active"></div></div>
+                                <div class="rack-blade"><div class="rack-led active"></div><div class="rack-led purple"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- F (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">F: Binary Data Stream</span>
+                        <div class="lab-viewport">
+                            <div class="binary-bg">
+                                <div class="binary-col"><span>1010</span><span>0101</span><span>1100</span></div>
+                                <div class="binary-col"><span>0110</span><span>1001</span><span>0011</span></div>
+                                <div class="binary-col"><span>1111</span><span>0000</span><span>1010</span></div>
+                            </div>
+                            <span class="lab-fallback-text">SirK Cloud</span>
+                        </div>
+                    </div>
+
+                    <!-- G (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">G: DevOps Pipeline Loop</span>
+                        <div class="lab-viewport">
+                            <svg class="pipeline-svg" viewBox="0 0 260 120">
+                                <path class="pipeline-track" d="M 40,60 C 40,20 100,20 130,60 C 160,100 220,100 220,60 C 220,20 160,20 130,60 C 100,100 40,100 40,60 Z" />
+                                <circle class="pipeline-pulse" r="5"><animateMotion dur="4s" repeatCount="indefinite" path="M 40,60 C 40,20 100,20 130,60 C 160,100 220,100 220,60 C 220,20 160,20 130,60 C 100,100 40,100 40,60 Z" /></circle>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- H (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">H: Cyber Encrypted Shield</span>
+                        <div class="lab-viewport">
+                            <div class="shield-ring sr-1"></div>
+                            <div class="shield-ring sr-2"></div>
+                            <span class="lab-fallback-text">SECURE</span>
+                        </div>
+                    </div>
+
+                    <!-- I (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">I: Cloud Database Pulse</span>
+                        <div class="lab-viewport">
+                            <div class="db-cluster">
+                                <div class="db-node"><div class="db-line active"></div><div class="db-line"></div></div>
+                                <div class="db-node"><div class="db-line"></div><div class="db-line active"></div></div>
+                                <div class="db-node"><div class="db-line active"></div><div class="db-line active"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- J (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">J: Network Ping Topology</span>
+                        <div class="lab-viewport">
+                            <div class="network-center"></div>
+                            <div class="network-node nn-1"></div>
+                            <div class="network-node nn-2"></div>
+                            <div class="network-node nn-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- K (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">K: SaaS Dashboard Core</span>
+                        <div class="lab-viewport">
+                            <div class="dashboard-chart">
+                                <svg width="240" height="100" style="position:absolute; bottom:0;">
+                                    <path d="M0,80 Q30,20 60,70 T120,40 T180,90 T240,30" fill="none" stroke="var(--accent-cyan)" stroke-width="2">
+                                        <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M0,80 Q30,20 60,70 T120,40 T180,90 T240,30; M0,60 Q30,80 60,40 T120,70 T180,30 T240,80; M0,80 Q30,20 60,70 T120,40 T180,90 T240,30" />
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- L (NOWE) -->
+                    <div class="lab-box">
+                        <span class="lab-title-tag">L: Optical Terminal Code</span>
+                        <div class="lab-viewport">
+                            <div class="terminal-box">
+                                <div class="term-ln tl-1">root@sirk-cloud:~# init stack</div>
+                                <div class="term-ln tl-2">&gt; deploying core clusters [OK]</div>
+                                <div class="term-ln tl-3">&gt; monitoring network 24/7</div>
+                            </div>
                         </div>
                     </div>
 
@@ -726,31 +511,10 @@
                     <span class="section-tag">Dla kogo</span>
                     <h2 class="section-title">Profile firm, które wspieramy na co dzień</h2>
                 </div>
-                
                 <div class="cards-grid layout-3-col">
-                    <div class="interactive-card stagger-node">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        </div>
-                        <h3>Małe firmy bez działu IT</h3>
-                        <p>Zdejmujemy z Twoich barków monitorowanie sprzętu, konfigurację sieci, kopie zapasowe i bieżące awarie, byś mógł skupić się na rozwoju biznesu.</p>
-                    </div>
-
-                    <div class="interactive-card stagger-node">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        </div>
-                        <h3>Zespoły potrzebujące szybkiej reakcji</h3>
-                        <p>Gdy technologia zawodzi, liczy się każda minuta. Oferujemy natychmiastowe wsparcie zdalne i sprawne działanie, eliminując przestoje w pracy.</p>
-                    </div>
-
-                    <div class="interactive-card stagger-node">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m10 10-1.5 1.5L7 10"/><path d="m15 14-1.5 1.5L12 14"/></svg>
-                        </div>
-                        <h3>Firmy chcące IT dopasowanego do siebie</h3>
-                        <p>Nie wierzymy w rozwiązania szablonowe. Analizujemy Twoje procesy, dobieramy bezpieczne rozwiązania chmurowe i infrastrukturę pod Twój budżet.</p>
-                    </div>
+                    <div class="interactive-card stagger-node"><h3>Małe firmy bez działu IT</h3><p>Zdejmujemy z Twoich barków monitorowanie sprzętu, konfigurację sieci, kopie zapasowe i bieżące awarie.</p></div>
+                    <div class="interactive-card stagger-node"><h3>Zespoły potrzebujące szybkiej reakcji</h3><p>Gdy technologia zawodzi, liczy się każda minuta. Oferujemy natychmiastowe wsparcie zdalne.</p></div>
+                    <div class="interactive-card stagger-node"><h3>Firmy chcące IT dopasowanego do siebie</h3><p>Nie wierzymy w rozwiązania szablonowe. Analizujemy Twoje procesy biznesowe.</p></div>
                 </div>
             </div>
         </section>
@@ -758,43 +522,12 @@
         <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">O nas</span>
-                    <h2 class="section-title">IT z ludzkim podejściem</h2>
-                </div>
-
+                <div class="section-header"><span class="section-tag">O nas</span><h2 class="section-title">IT z ludzkim podejściem</h2></div>
                 <div class="cards-grid layout-2-col">
-                    <div class="filar-item stagger-node">
-                        <div class="filar-number">01</div>
-                        <div class="filar-content">
-                            <h3>Partner nie helpdesk</h3>
-                            <p>Nie jesteśmy tylko anonimową infolinią przyjmującą zgłoszenia. Doradzamy, rozmawiamy i wspólnie z Tobą planujemy jak optymalnie wykorzystać technologię do wzrostu zysków.</p>
-                        </div>
-                    </div>
-
-                    <div class="filar-item stagger-node">
-                        <div class="filar-number">02</div>
-                        <div class="filar-content">
-                            <h3>IT na którym możesz polegać</h3>
-                            <p>Zapewniamy ciągłość działania. Działamy prewencyjnie – monitorujemy systemy zanim pojawi się problem, zabezpieczając dane Twojej firmy 24/7.</p>
-                        </div>
-                    </div>
-
-                    <div class="filar-item stagger-node">
-                        <div class="filar-number">03</div>
-                        <div class="filar-content">
-                            <h3>Normalne IT dla firm</h3>
-                            <p>Tłumaczymy zawiłe kwestie techniczne na prosty język korzyści. Otrzymujesz jasne rekomendacje bez niezrozumiałego żargonu programistycznego i sieciowego.</p>
-                        </div>
-                    </div>
-
-                    <div class="filar-item stagger-node">
-                        <div class="filar-number">04</div>
-                        <div class="filar-content">
-                            <h3>Obsługa zdalna i lokalna</h3>
-                            <p>Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
-                        </div>
-                    </div>
+                    <div class="filar-item stagger-node"><div class="filar-number">01</div><div class="filar-content"><h3>Partner nie helpdesk</h3><p>Nie jesteśmy anonimową infolinią. Doradzamy i planujemy rozwój.</p></div></div>
+                    <div class="filar-item stagger-node"><div class="filar-number">02</div><div class="filar-content"><h3>IT na którym możesz polegać</h3><p>Działamy prewencyjnie – monitorujemy systemy zanim pojawi się problem.</p></div></div>
+                    <div class="filar-item stagger-node"><div class="filar-number">03</div><div class="filar-content"><h3>Normalne IT dla firm</h3><p>Tłumaczymy zawiłe kwestie techniczne na prosty, zrozumiały język.</p></div></div>
+                    <div class="filar-item stagger-node"><div class="filar-number">04</div><div class="filar-content"><h3>Obsługa zdalna i lokalna</h3><p>Łączymy elastyczność wsparcia online z obecnością inżyniera w Łodzi.</p></div></div>
                 </div>
             </div>
         </section>
@@ -803,130 +536,66 @@
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
-                    <span class="section-tag">Kontakt</span>
-                    <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy Ci pomóc.</p>
-                    
+                    <span class="section-tag">Kontakt</span><h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online).</p>
                     <div class="contact-details">
-                        <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
-                            <div class="method-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            </div>
-                            <div>
-                                <span class="method-label">Telefon (Pon–Pt 8:00–18:00)</span>
-                                <span class="method-value">+48 511 832 376</span>
-                            </div>
-                        </a>
-
-                        <a href="mailto:kjankowski@sirk.cloud" class="contact-method" aria-label="Wyślij wiadomość e-mail na adres kjankowski@sirk.cloud">
-                            <div class="method-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                            </div>
-                            <div>
-                                <span class="method-label">Napisz bezpośrednio</span>
-                                <span class="method-value">kjankowski@sirk.cloud</span>
-                            </div>
-                        </a>
-
-                        <a href="https://instagram.com/sirk.cloud" target="_blank" rel="noopener noreferrer" class="contact-method" aria-label="Odwiedź nasz profil na Instagramie @sirk.cloud">
-                            <div class="method-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                            </div>
-                            <div>
-                                <span class="method-label">Instagram</span>
-                                <span class="method-value">@sirk.cloud</span>
-                            </div>
-                        </a>
+                        <a href="tel:+48511832376" class="contact-method"><div><span class="method-label">Telefon</span><span class="method-value">+48 511 832 376</span></div></a>
+                        <a href="mailto:kjankowski@sirk.cloud" class="contact-method"><div><span class="method-label">Napisz bezpośrednio</span><span class="method-value">kjankowski@sirk.cloud</span></div></a>
                     </div>
                 </div>
-
                 <div class="contact-cta-box stagger-node">
-                    <h3>Gotowy uprościć swoje systemy IT?</h3>
-                    <p>Wybierz najwygodniejszą formę kontaktu. Otrzymasz rzetelną wiedzę i profesjonalne spojrzenie bez branżowego owijania w bawełnę.</p>
-                    <a href="mailto:kjankowski@sirk.cloud?subject=Bezp%C5%82atna%20konsultacja%20IT" class="btn btn-primary btn-full">Zarezerwuj bezpłatną konsultację</a>
+                    <h3>Gotowy uprościć swoje systemy IT?</h3><a href="mailto:kjankowski@sirk.cloud?subject=Konsultacja" class="btn btn-primary btn-full">Zarezerwuj konsultację</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer">
-        <div class="container footer-container">
-            <p>&copy; 2026 SirK Cloud. Wszelkie prawa zastrzeżone.</p>
-            <p class="footer-sub">Partner w IT dla sektora MŚP — Łódź i cała Polska.</p>
-        </div>
-    </footer>
+    <footer class="main-footer"><div class="container footer-container"><p>&copy; 2026 SirK Cloud. Wszelkie prawa zastrzeżone.</p></div></footer>
 
-    <!-- Logika JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // Błyskawiczny programowy skok menu (Rozwiązuje problem powolnego ładowania/przewijania)
+            // Błyskawiczny programowy skok menu
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
+                    const targetElement = document.querySelector(this.getAttribute('href'));
                     if (targetElement) {
-                        const headerOffset = 80;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'auto' // Natychmiastowe przeniesienie bez zwłoki czasowej
-                        });
+                        window.scrollTo({ top: targetElement.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'auto' });
                     }
                 });
             });
 
-            // 1. INTRO ANIMACJA GSAP
-            const runHeroIntro = () => {
-                if (prefersReducedMotion) return;
+            // INTRO GSAP
+            if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+                const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
+                tl.from('.main-header', { opacity: 0, y: -25 })
+                  .from('.hero-title', { opacity: 0, y: 40, duration: 1.1 }, '-=0.5')
+                  .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
+                  .from('.meta-item', { opacity: 0, scale: 0.93, stagger: 0.12, duration: 0.6 }, '-=0.6')
+                  .from('.hero-actions .btn', { opacity: 0, y: 20, stagger: 0.15 }, '-=0.5')
+                  .from('.lab-box', { opacity: 0, y: 30, stagger: 0.1, duration: 0.8 }, '-=0.6');
+            }
 
-                if (typeof gsap !== 'undefined') {
-                    const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
-                    
-                    tl.from('.main-header', { opacity: 0, y: -25 })
-                      .from('.hero-title', { opacity: 0, y: 40, duration: 1.1 }, '-=0.5')
-                      .from('.hero-subtitle', { opacity: 0, y: 25, duration: 0.9 }, '-=0.7')
-                      .from('.meta-item', { opacity: 0, scale: 0.93, stagger: 0.12, duration: 0.6 }, '-=0.6')
-                      .from('.hero-actions .btn', { opacity: 0, y: 20, stagger: 0.15 }, '-=0.5')
-                      .from('.lab-box', { opacity: 0, y: 30, stagger: 0.15, duration: 1 }, '-=0.6');
-                }
-            };
-
-            // 2. OBSERWATOR SCROLLOWANIA
-            const initScrollReveal = () => {
-                if (prefersReducedMotion) return;
-
-                const sections = document.querySelectorAll('.scroll-animate-trigger');
-                
+            // SCROLL REVEAL OBSERVER
+            if (!prefersReducedMotion) {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('active');
-                            
                             if (typeof gsap !== 'undefined') {
                                 const nodes = entry.target.querySelectorAll('.stagger-node');
                                 if (nodes.length > 0) {
-                                    gsap.fromTo(nodes, 
-                                        { opacity: 0, y: 30, scale: 0.98 },
-                                        { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.14, ease: 'power3.out', overwrite: 'auto' }
-                                    );
+                                    gsap.fromTo(nodes, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.14, ease: 'power3.out', overwrite: 'auto' });
                                 }
                             }
                             observer.unobserve(entry.target);
                         }
                     });
                 }, { threshold: 0.1 });
-
-                sections.forEach(sec => observer.observe(sec));
-            };
-
-            runHeroIntro();
-            initScrollReveal();
+                document.querySelectorAll('.scroll-animate-trigger').forEach(sec => observer.observe(sec));
+            }
         });
     </script>
 </body>
