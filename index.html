@@ -160,10 +160,10 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* --- ZMODYFIKOWANY TERMINAL REAL-TIME IT --- */
+        /* --- SPERSONALIZOWANY TERMINAL REAL-TIME SSH --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
         .production-terminal {
-            width: 100%; max-width: 480px; min-height: 310px;
+            width: 100%; max-width: 480px; min-height: 350px;
             background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #38bdf8;
@@ -176,29 +176,12 @@
         .term-dot.yellow { background: #eab308; }
         .term-dot.green { background: #22c55e; }
 
-        /* Układ promptu startowego, który czeka 3 sekundy */
-        .terminal-welcome-prompt {
-            display: block;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            font-weight: bold;
-        }
-
-        /* Dyskretny, migający kursor czekający na akcję */
-        .terminal-welcome-prompt::after {
+        /* Klasyczny mrugający kursor tekstowy */
+        .t-cursor::after {
             content: '_';
             animation: terminalCursor 0.8s infinite steps(1);
         }
-
-        @keyframes terminalCursor {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        /* Wyłączamy kursor powitalny w momencie, gdy główna animacja rusza (po 3s) */
-        .terminal-welcome-prompt.writing-started::after {
-            display: none;
-        }
+        @keyframes terminalCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
         .term-line {
             opacity: 0;
@@ -212,15 +195,21 @@
         .t-success { color: #22c55e; font-weight: bold; }
         .t-warn { color: #eab308; }
 
-        /* ZWOLNIONA I DOPASOWANA TIMELINE ANIMACJI */
-        /* Start pisania po 3s oczekiwania, wydłużone czasy pisania linii (duration) */
-        .ln-1 { animation: typeAndShow 4.5s steps(35) forwards; animation-delay: 3.0s; }
-        .ln-2 { animation: typeAndShow 3.5s steps(45) forwards; animation-delay: 8.0s; color: #a7f3d0; } /* Sam Progress Bar */
-        .ln-3 { animation: typeAndShow 2.5s steps(20) forwards; animation-delay: 12.0s; } /* Potwierdzenie pod spodem */
-        .ln-4 { animation: typeAndShow 2.5s steps(30) forwards; animation-delay: 15.0s; } 
-        .ln-5 { animation: typeAndShow 2.5s steps(30) forwards; animation-delay: 18.0s; }
-        .ln-6 { animation: typeAndShow 3.5s steps(40) forwards; animation-delay: 21.0s; }
-        .ln-7 { animation: typeAndShow 2.0s steps(15) forwards; animation-delay: 25.0s; color: var(--text-main); }
+        /* TIMELINE: 5 sekund autoryzacji SSH, potem błyskawiczna egzekucja skryptu */
+        .ssh-1 { animation: typeAndShow 1.5s steps(30) forwards; animation-delay: 0.2s; }
+        .ssh-2 { animation: typeAndShow 1.5s steps(30) forwards; animation-delay: 1.8s; }
+        .ssh-3 { animation: typeAndShow 1.0s steps(35) forwards; animation-delay: 3.5s; color: #22c55e; }
+        
+        /* 5.0s - Pojawia się prompt i zaczyna się pisać komenda rozruchu */
+        .ln-1 { animation: typeAndShow 1.5s steps(35) forwards; animation-delay: 5.0s; }
+        
+        /* Od tego momentu reszta dzieje się CIUT PRZYSPIESZONA, płynnie linia po linii */
+        .ln-2 { animation: typeAndShow 1.2s steps(45) forwards; animation-delay: 7.0s; color: #a7f3d0; }
+        .ln-3 { animation: typeAndShow 0.8s steps(20) forwards; animation-delay: 8.4s; }
+        .ln-4 { animation: typeAndShow 0.8s steps(25) forwards; animation-delay: 9.4s; }
+        .ln-5 { animation: typeAndShow 0.8s steps(30) forwards; animation-delay: 10.4s; }
+        .ln-6 { animation: typeAndShow 1.0s steps(30) forwards; animation-delay: 11.4s; }
+        .ln-7 { animation: typeAndShow 0.8s steps(15) forwards; animation-delay: 12.6s; color: var(--text-main); }
 
         @keyframes typeAndShow {
             0% { opacity: 0; width: 0; }
@@ -276,10 +265,6 @@
         .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
         .stagger-node { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .scroll-animate-trigger.active .stagger-node { opacity: 1; transform: translateY(0); }
-        .scroll-animate-trigger.active .stagger-node:nth-child(1) { transition-delay: 0.05s; }
-        .scroll-animate-trigger.active .stagger-node:nth-child(2) { transition-delay: 0.18s; }
-        .scroll-animate-trigger.active .stagger-node:nth-child(3) { transition-delay: 0.31s; }
-        .scroll-animate-trigger.active .stagger-node:nth-child(4) { transition-delay: 0.44s; }
 
         /* RWD */
         @media (max-width: 1024px) {
@@ -297,7 +282,6 @@
         @media (prefers-reduced-motion: reduce) {
             .scroll-animate-trigger, .stagger-node { opacity: 1 !important; transform: none !important; transition: none !important; }
             .term-line { opacity: 1 !important; width: 100% !important; animation: none !important; }
-            .terminal-welcome-prompt::after { display: none; }
         }
     </style>
 </head>
@@ -352,7 +336,7 @@
                     </div>
                 </div>
                 
-                <!-- Terminal z symulacją 3s zwłoki wejścia inżyniera -->
+                <!-- Terminal z zaawansowaną sekwencją startową SSH (5s handshak-u) -->
                 <div class="hero-visual" aria-hidden="true">
                     <div class="production-terminal">
                         <div class="terminal-header">
@@ -361,17 +345,19 @@
                             <div class="term-dot green"></div>
                         </div>
                         
-                        <!-- Pusty Monit startowy czeka na akcję -->
-                        <div id="welcomePrompt" class="terminal-welcome-prompt">root@sirk-cloud:~#</div>
+                        <!-- Etap 1: Inicjalizacja bezpiecznego połączenia przez admina (0s - 5s) -->
+                        <div class="term-line ssh-1">ssh admin@sirk-cloud-core</div>
+                        <div class="term-line ssh-2">&gt; Establishing secure shell handshake...</div>
+                        <div class="term-line ssh-3">&gt; Authenticated via SSH Key. Welcome admin.</div>
                         
-                        <!-- Sekwencja uruchomieniowa rusza po 3 sekundach -->
-                        <div class="term-line ln-1">booting up support --force</div>
+                        <!-- Etap 2: Komenda wpisuje się automatycznie po 5 sekundach i wykonuje ekspresowo -->
+                        <div class="term-line ln-1"><span class="t-bold">root@sirk-cloud:~#</span> booting up support --force</div>
                         <div class="term-line ln-2">&gt; [████████████████████████████████] 100%</div>
                         <div class="term-line ln-3">&gt; Infrastruktura zoptymalizowana.</div>
                         <div class="term-line ln-4">&gt; Services status: <span class="t-success">[0] Active / Running</span></div>
                         <div class="term-line ln-5">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></div>
                         <div class="term-line ln-6">&gt; Mission completed. All systems are stable.</div>
-                        <div class="term-line ln-7"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</div>
+                        <div class="term-line ln-7 t-cursor"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</div>
                     </div>
                 </div>
             </div>
@@ -518,14 +504,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            // Logika wyłączenia kursora powitalnego w terminalu dokładnie po 3 sekundach (gdy rusza wpisywanie)
-            setTimeout(() => {
-                const welcomePrompt = document.getElementById('welcomePrompt');
-                if (welcomePrompt) {
-                    welcomePrompt.classList.add('writing-started');
-                }
-            }, 3000);
 
             // Błyskawiczny, natychmiastowy przeskok nawigacji menu
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
