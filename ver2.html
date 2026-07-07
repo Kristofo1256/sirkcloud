@@ -250,6 +250,72 @@
   .price-list li{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--ink-dim);}
   .price-list svg{color:var(--blue);flex:none;}
 
+  /* ---------- machine pricing calculator ---------- */
+  .price-card-calc{padding:44px;}
+  .calc-title{font-size:24px;font-weight:600;margin:0 0 12px;font-family:'Space Grotesk',sans-serif;}
+
+  .machine-slider-wrap{margin-bottom:32px;}
+  .slider-scale{display:flex;justify-content:space-between;margin-top:10px;font-size:11.5px;color:var(--ink-dim);opacity:0.7;}
+
+  .price-breakdown{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;
+  }
+  .price-metric{
+    padding:20px 20px;border-radius:16px;border:1px solid var(--line);
+    background:rgba(255,255,255,0.02);transition:border-color .3s ease, background .3s ease;
+  }
+  .price-metric.total{
+    border-color:rgba(0,210,255,0.3);
+    background:linear-gradient(160deg,rgba(0,210,255,0.1),rgba(138,43,226,0.06));
+  }
+  .metric-label{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-dim);margin-bottom:10px;
+  }
+  .metric-label svg{color:var(--blue);}
+  .metric-value{
+    font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--ink);
+    display:block;
+  }
+  .metric-value small{font-size:14px;font-weight:500;color:var(--ink-dim);font-family:'Inter',sans-serif;}
+  .metric-value.big{
+    font-size:34px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .metric-value.big small{
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    -webkit-background-clip:text;background-clip:text;color:transparent;opacity:0.8;
+  }
+
+  .price-meter{margin-bottom:32px;}
+  .price-meter-track{
+    position:relative;height:8px;border-radius:999px;
+    background:rgba(255,255,255,0.06);overflow:visible;margin-bottom:16px;
+  }
+  .price-meter-fill{
+    position:absolute;left:0;top:0;height:100%;border-radius:999px;
+    background:linear-gradient(90deg,var(--blue),var(--purple));
+    width:0%;transition:width .25s ease;
+  }
+  .price-meter-dot{
+    position:absolute;top:50%;left:0%;width:18px;height:18px;border-radius:50%;
+    background:#fff;transform:translate(-50%,-50%);
+    box-shadow:0 0 0 4px rgba(0,210,255,0.25),0 0 18px rgba(0,210,255,0.7);
+    transition:left .25s ease;
+  }
+  .price-meter-labels{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;color:var(--ink-dim);gap:8px;flex-wrap:wrap;
+  }
+  .price-meter-labels b{color:var(--ink);font-weight:600;}
+  .savings-badge{
+    font-size:11.5px;font-weight:600;color:#08101f;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    padding:5px 12px;border-radius:999px;letter-spacing:0.01em;
+    transition:opacity .2s ease;white-space:nowrap;
+  }
+
   .consult-card{border-radius:26px;padding:48px;border:1px solid var(--line);background:rgba(255,255,255,0.02);}
   .consult-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--purple);
     border:1px solid rgba(138,43,226,0.3);padding:6px 14px;border-radius:999px;background:rgba(138,43,226,0.06);margin-bottom:24px;}
@@ -420,25 +486,54 @@
       <p>Płacisz za realną opiekę, nie za sztywny pakiet. Im dokładniej znamy Twoją firmę, tym trafniejsza wycena.</p>
     </div>
     <div class="pricing-wrap">
-      <div class="price-card reveal">
-        <span class="price-tag">Obsługa IT</span>
-        <div class="price-amount">już od 250 zł<span> / mies.</span></div>
-        <p class="price-desc">Ostateczna cena zależy od wielkości zespołu i zakresu opieki — poniżej możesz to zobaczyć.</p>
+      <div class="price-card price-card-calc reveal">
+        <span class="price-tag">Kalkulator kosztów opieki IT</span>
+        <h3 class="calc-title">Ile zapłacisz za outsourcing?</h3>
+        <p class="price-desc">Im więcej maszyn obejmujemy opieką, tym niższa cena za każdą z nich. Przesuń suwak i zobacz wycenę na żywo.</p>
 
-        <div class="slider-wrap">
-          <div class="slider-label">Wielkość zespołu: <b id="teamSizeLabel">10 osób</b></div>
-          <input type="range" min="1" max="60" value="10" id="teamSlider">
+        <div class="slider-wrap machine-slider-wrap">
+          <div class="slider-label">
+            Liczba maszyn w firmie
+            <b id="machineCountLabel">1 maszyna</b>
+          </div>
+          <input type="range" min="1" max="40" value="1" id="machineSlider" aria-label="Liczba maszyn">
+          <div class="slider-scale"><span>1</span><span>10</span><span>20</span><span>30</span><span>40</span></div>
         </div>
 
-        <div class="slider-label" style="margin-bottom:28px;">
-          Szacunkowa opieka miesięczna
-          <b id="priceEstimate" style="color:var(--blue);font-size:20px;">450 zł</b>
+        <div class="price-breakdown">
+          <div class="price-metric">
+            <span class="metric-label">
+              <svg data-lucide="server" width="15" height="15"></svg>
+              Cena za maszynę
+            </span>
+            <span class="metric-value" id="perMachinePrice">250 <small>zł</small></span>
+          </div>
+          <div class="price-metric total">
+            <span class="metric-label">
+              <svg data-lucide="wallet" width="15" height="15"></svg>
+              Łącznie miesięcznie
+            </span>
+            <span class="metric-value big" id="totalPrice">250 <small>zł</small></span>
+          </div>
+        </div>
+
+        <div class="price-meter">
+          <div class="price-meter-track">
+            <div class="price-meter-fill" id="meterFill"></div>
+            <div class="price-meter-dot" id="meterDot"></div>
+          </div>
+          <div class="price-meter-labels">
+            <span>1 maszyna <b>· 250 zł/szt.</b></span>
+            <span id="savingsBadge" class="savings-badge">Zacznij suwać →</span>
+            <span>40 maszyn <b>· 200 zł/szt.</b></span>
+          </div>
         </div>
 
         <ul class="price-list">
           <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Zdalne wsparcie techniczne</li>
           <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Monitoring i backupy</li>
           <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Stały opiekun IT</li>
+          <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Cena za maszynę spada wraz ze skalą</li>
         </ul>
         <a href="#kontakt" class="btn btn-primary" style="width:100%;justify-content:center;">Wycena dla mojej firmy</a>
       </div>
@@ -632,19 +727,60 @@ ScrollTrigger.create({
   }
 });
 
-/* ---------------- pricing slider ---------------- */
+/* ---------------- machine pricing calculator ---------------- */
 (function(){
-  const slider = document.getElementById('teamSlider');
-  const sizeLabel = document.getElementById('teamSizeLabel');
-  const priceLabel = document.getElementById('priceEstimate');
-  function calc(){
-    const n = parseInt(slider.value,10);
-    sizeLabel.textContent = n + (n===1 ? ' osoba' : ' osób');
-    const price = Math.max(250, Math.round((250 + (n-1)*38)/10)*10);
-    priceLabel.textContent = price.toLocaleString('pl-PL') + ' zł';
+  const slider = document.getElementById('machineSlider');
+  const countLabel = document.getElementById('machineCountLabel');
+  const perMachineEl = document.getElementById('perMachinePrice');
+  const totalEl = document.getElementById('totalPrice');
+  const meterFill = document.getElementById('meterFill');
+  const meterDot = document.getElementById('meterDot');
+  const savingsBadge = document.getElementById('savingsBadge');
+
+  const MIN_N = 1, MAX_N = 40;
+  const START_PRICE = 250, END_PRICE = 200;
+
+  const state = { per: START_PRICE, total: START_PRICE };
+
+  function pluralMachines(n){
+    if(n === 1) return 'maszyna';
+    const lastDigit = n % 10;
+    const lastTwo = n % 100;
+    if(lastDigit >= 2 && lastDigit <= 4 && !(lastTwo >= 12 && lastTwo <= 14)) return 'maszyny';
+    return 'maszyn';
   }
-  slider.addEventListener('input', calc);
-  calc();
+
+  function update(){
+    const n = parseInt(slider.value, 10);
+    const perMachine = START_PRICE - (n - 1) * ((START_PRICE - END_PRICE) / (MAX_N - MIN_N));
+    const total = perMachine * n;
+    const progress = (n - MIN_N) / (MAX_N - MIN_N);
+    const savingsPct = Math.round((1 - perMachine / START_PRICE) * 100);
+
+    countLabel.textContent = n + ' ' + pluralMachines(n);
+
+    gsap.to(state, {
+      per: perMachine, total: total, duration: 0.45, ease: 'power2.out',
+      onUpdate: () => {
+        perMachineEl.innerHTML = Math.round(state.per) + ' <small>zł</small>';
+        totalEl.innerHTML = Math.round(state.total).toLocaleString('pl-PL') + ' <small>zł</small>';
+      }
+    });
+
+    gsap.to(meterFill, {width: (progress*100)+'%', duration:0.4, ease:'power2.out'});
+    gsap.to(meterDot, {left: (progress*100)+'%', duration:0.4, ease:'power2.out'});
+
+    if(n === 1){
+      savingsBadge.textContent = 'Zacznij suwać →';
+      savingsBadge.style.opacity = '0.75';
+    } else {
+      savingsBadge.textContent = `Oszczędzasz ${savingsPct}% na maszynę`;
+      savingsBadge.style.opacity = '1';
+    }
+  }
+
+  slider.addEventListener('input', update);
+  update();
 })();
 
 /* ---------------- magnetic buttons ---------------- */
