@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Pobieranie czcionki bez blokowania renderowania strony -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -36,8 +34,8 @@
         
         #o-nas { padding: 125px 0; }
 
-        /* Tło Aurora & Grid - Zoptymalizowane pod kątem GPU */
-        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; will-change: transform; }
+        /* Tło Aurora & Grid */
+        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; }
         .aurora-glow { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.28; }
         .aurora-1 { width: 650px; height: 650px; background: var(--accent-blue); top: -10%; right: -5%; }
         .aurora-2 { width: 550px; height: 550px; background: var(--accent-purple); bottom: 5%; left: -10%; }
@@ -50,7 +48,7 @@
             background-size: 40px 40px;
         }
 
-        /* Header / Menu - Naprawiony lag renderowania przez usunięcie backdrop-filter */
+        /* Header / Menu */
         .main-header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
             background-color: rgba(4, 6, 10, 0.96);
@@ -273,7 +271,6 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
-    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
             <a href="#" class="logo-container" data-scroll="oferta" aria-label="Przewiń na górę strony">
@@ -292,12 +289,11 @@
     </header>
 
     <main>
-        <!-- Sekcja Hero (Oferta) -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
                     <h1 class="hero-title">Kompleksowa opieka IT dla Twojej firmy</h1>
-                    <p class="hero-subtitle">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji.</p>
+                    <p class="hero-subtitle">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały – bez straszenia technologią i niepotrzebnych komplikacji.</p>
                     
                     <div class="hero-meta" aria-label="Informacje o usłudze">
                         <div class="meta-item">
@@ -325,7 +321,6 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output">
-                            <!-- STATYCZNY FINISZUJĄCY OBRAZ TERMINALA DLA WERSJI MOBILNEJ -->
                             <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
                             <div class="progress-row-layout" style="color:#a7f3d0;">
                                 <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill">██████████████████████████████████████████</span>]</span>
@@ -345,7 +340,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -381,7 +375,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -393,23 +386,23 @@
                     <div class="filar-item">
                         <div class="filar-number">01</div>
                         <div class="filar-content">
-                            <h3>Partner nie helpdesk</h3>
-                            <p>Nie jesteśmy tylko anonimową infolinią przyjmującą zgłoszenia. Doradzamy, rozmawiamy i wspólnie z Tobą planujemy jak optymalnie wykorzystać technologię do wzrostu biznesu.</p>
+                            <h3>Partner, nie helpdesk</h3>
+                            <p>Nie jesteśmy tylko anonimową infolinią przyjmującą zgłoszenia. Doradzamy, rozmawiamy i wspólnie z Tobą planujemy, jak optymalnie wykorzystać technologię do wzrostu biznesu.</p>
                         </div>
                     </div>
 
                     <div class="filar-item">
                         <div class="filar-number">02</div>
                         <div class="filar-content">
-                            <h3>IT na którym możesz polegać</h3>
-                            <p>Zapewniamy ciągłość działania. Działamy prewencyjnie – optymalizujemy i weryfikujemy systemy zanim pojawi się problem, trwale zabezpieczając dane Twojej firmy.</p>
+                            <h3>IT, na którym możesz polegać</h3>
+                            <p>Zapewniamy ciągłość działania. Działamy prewencyjnie – optymalizujemy i weryfikujemy systemy, zanim pojawi się problem, trwale zabezpieczając dane Twojej firmy.</p>
                         </div>
                     </div>
 
                     <div class="filar-item">
                         <div class="filar-number">03</div>
                         <div class="filar-content">
-                            <h3>Normalne IT dla firm</h3>
+                            <h3>Prosty język, jasne zasady</h3>
                             <p>Tłumaczymy zawiłe kwestie techniczne na prosty język korzyści. Otrzymujesz jasne rekomendacje bez niezrozumiałego żargonu programistycznego i sieciowego.</p>
                         </div>
                     </div>
@@ -425,13 +418,12 @@
             </div>
         </section>
 
-        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną, 20–30-minutową konsultację (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -518,6 +510,7 @@
                 return;
             }
 
+            // Czyszczenie pod animację na desktopie
             terminalBody.innerHTML = "";
 
             const appendLog = (html) => {
@@ -652,7 +645,7 @@
             runAutoSequence();
         });
 
-        // --- NATYCHMIASTOWY SKOK ---
+        // --- NATIVE SMOOTH SCROLL ---
         document.querySelectorAll('[data-scroll]').forEach(trigger => {
             trigger.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -665,7 +658,7 @@
 
                 window.scrollTo({
                     top: targetPosition,
-                    behavior: 'auto'
+                    behavior: 'smooth'
                 });
             });
         });
