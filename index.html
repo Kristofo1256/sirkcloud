@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CORE RESET & PREMIUM VARIABLES --- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-main: #060913; 
+            --bg-surface: #0b1120; 
+            --bg-card: #111a2e;
+            --accent-cyan: #00D2FF; 
+            --accent-purple: #8A2BE2; 
+            --accent-blue: #2563eb;
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8;
+            --container-max: 1200px;
+            --font-header: 'Syne', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html { 
+            font-family: var(--font-body); 
+            background-color: var(--bg-main); 
+            color: var(--text-main);
+            scroll-behavior: smooth;
+        }
+        body { overflow-x: hidden; position: relative; background-color: var(--bg-main); -webkit-font-smoothing: antialiased; }
+        .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+        .section { padding: 100px 0; position: relative; z-index: 2; }
+
+        /* --- KINOWE TŁO I INTERAKTYWNY CANVAS --- */
+        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; }
+        #particleCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.6; }
+        
+        .radial-glow { position: absolute; border-radius: 50%; filter: blur(160px); opacity: 0.15; mixer-blend-mode: screen; }
+        .glow-1 { width: 700px; height: 700px; background: var(--accent-cyan); top: -20%; right: -10%; }
+        .glow-2 { width: 600px; height: 600px; background: var(--accent-purple); bottom: -10%; left: -10%; }
+
+        /* --- STYLIZACJA NAGŁÓWKA --- */
+        .main-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            background-color: rgba(6, 9, 19, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.04); padding: 16px 0;
+        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; transition: transform 0.2s ease; }
+        .logo-container:hover { transform: scale(1.02); }
+        .logo-img { height: 46px; width: auto; object-fit: contain; }
+        
+        .main-nav ul { display: flex; list-style: none; align-items: center; gap: 36px; }
+        .nav-link { 
+            color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; 
+            position: relative; padding: 6px 0; transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .nav-link:hover, .nav-link.active { color: var(--text-main); }
+        .nav-link::after { 
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; 
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); 
+            transform: scaleX(0); transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+        /* --- PREMIUM BUTTONS --- */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px;
+            font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; text-decoration: none;
+            border-radius: 8px; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-sm { padding: 8px 20px; font-size: 0.85rem; }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            color: #ffffff; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.2);
+        }
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 30px rgba(0, 210, 255, 0.4);
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+        }
+
+        .btn-secondary { 
+            background: rgba(255, 255, 255, 0.03); color: var(--text-main); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .btn-secondary:hover { 
+            background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); 
+            border-color: var(--accent-cyan);
+        }
+        .btn-full { width: 100%; }
+
+        /* --- HERO SECTION --- */
+        .hero-section { padding-top: 220px; padding-bottom: 120px; }
+        .hero-container { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 60px; align-items: center; }
+        
+        .hero-title {
+            font-family: var(--font-header); font-size: 3.8rem; font-weight: 800; margin-bottom: 24px; line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 40px; max-width: 580px; }
+        .hero-meta { display: flex; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
+        .meta-item {
+            display: inline-flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.9rem; font-weight: 500;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 30px;
+        }
+        .hero-actions { display: flex; gap: 20px; }
+
+        /* --- TWÓJ ORYGINALNY TERMINAL (PC / MOBILE) --- */
+        .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
+        .production-terminal {
+            width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
+            background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 0 22px 22px 22px;
+            font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
+            text-align: left; position: relative; overflow: hidden; -webkit-transform: translate3d(0, 0, 0);
+        }
+        .terminal-header { position: relative; z-index: 10; display: flex; gap: 6px; padding-top: 22px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .term-dot.red { background: #ef4444; }
+        .term-dot.yellow { background: #eab308; }
+        .term-dot.green { background: #22c55e; }
+        .log-output { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; overflow: hidden; }
+        .term-row { display: block; line-height: 1.4; white-space: normal; word-break: break-all; }
+        .progress-row-layout { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; }
+        .progress-bar-wrapper { display: flex; align-items: center; white-space: nowrap; overflow: hidden; flex-grow: 1; }
+        .progress-bar-fill { color: #38bdf8; letter-spacing: 0px; display: inline-block; word-break: break-all; }
+        .progress-percentage-val { min-width: 40px; text-align: right; font-weight: bold; flex-shrink: 0; color: #a7f3d0; }
+        .admin-input { color: #f1f5f9; font-weight: 500; }
+        #terminalHiddenInput { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+        .term-cursor { display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9; margin-left: 2px; vertical-align: middle; animation: blinkCursor 0.8s infinite steps(1); }
+        @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        .t-bold { font-weight: bold; color: var(--text-main); }
+        .t-success { color: #22c55e; font-weight: bold; }
+        .t-warn { color: #eab308; }
+        .t-danger { color: #ef4444; font-weight: bold; }
+
+        /* --- STYLIZACJA SEKCJI --- */
+        .section-header { margin-bottom: 56px; max-width: 700px; }
+        .section-tag { 
+            display: inline-block; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 0.8rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; 
+        }
+        .section-title { font-family: var(--font-header); font-size: 2.8rem; font-weight: 700; line-height: 1.15; }
+
+        /* --- SEKCJA DLA KOGO (INTERAKTYWNE KARTY GLASSMORPHISM) --- */
+        .cards-grid { display: grid; gap: 32px; }
+        .layout-3-col { grid-template-columns: repeat(3, 1fr); }
+        
+        .interactive-card {
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 12px; position: relative; 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .interactive-card:hover { 
+            transform: translateY(-8px); background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent-cyan); box-shadow: 0 20px 40px rgba(0, 210, 255, 0.05);
+        }
+        .card-icon { 
+            color: var(--accent-cyan); margin-bottom: 24px; width: 48px; height: 48px; display: flex; 
+            align-items: center; justify-content: center; background: rgba(0, 210, 255, 0.08); border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .interactive-card:hover .card-icon { transform: scale(1.1) rotate(5deg); color: var(--accent-purple); background: rgba(138, 43, 226, 0.1); }
+        .interactive-card h3 { font-family: var(--font-header); font-size: 1.4rem; margin-bottom: 16px; }
+        .interactive-card p { color: var(--text-muted); font-size: 0.98rem; }
+
+        /* --- SEKCJA O NAS (BENTO GRID SYSTEM) --- */
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .bento-item { 
+            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 40px; border-radius: 16px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-item:hover { border-color: var(--accent-purple); background: rgba(255, 255, 255, 0.03); }
+        
+        .bento-large { grid-column: span 2; }
+        .bento-medium { grid-column: span 1; }
+        .bento-full-row { grid-column: span 3; display: flex; justify-content: space-between; align-items: center; }
+        
+        .bento-item h3 { font-family: var(--font-header); font-size: 1.5rem; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .bento-item p { color: var(--text-muted); font-size: 0.98rem; }
+        .bento-counter { font-family: var(--font-header); font-size: 3rem; font-weight: 800; color: var(--accent-cyan); }
+
+        /* --- SEKCJA CENNIK --- */
+        .pricing-center { max-width: 600px; margin: 0 auto; text-align: center; }
+
+        /* --- SEKCJA KONTAKT --- */
+        .contact-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+        .contact-lead { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
+        .contact-details { display: flex; flex-direction: column; gap: 16px; }
+        .contact-method { 
+            display: flex; align-items: center; gap: 20px; text-decoration: none; color: var(--text-main); 
+            padding: 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); 
+            border-radius: 8px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .contact-method:hover { border-color: var(--accent-cyan); background: rgba(255, 255, 255, 0.05); transform: scale(1.02); }
+        .method-icon { width: 44px; height: 44px; border-radius: 6px; background: rgba(0, 210, 255, 0.08); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; }
+        .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
+        .method-value { font-weight: 700; font-size: 1.15rem; }
+        
+        /* Premium CTA Magnetic Box */
+        .contact-cta-box { 
+            background: linear-gradient(145deg, #0d1527 0%, #16223f 100%); border: 1px solid rgba(255, 255, 255, 0.06); 
+            padding: 50px; border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); transition: transform 0.3s ease;
+        }
+        .contact-cta-box:hover { transform: scale(1.01); border-color: var(--accent-purple); }
+        .contact-cta-box h3 { font-family: var(--font-header); font-size: 1.8rem; margin-bottom: 16px; }
+        .contact-cta-box p { color: var(--text-muted); margin-bottom: 32px; font-size: 0.98rem; }
+
+        /* --- STOPKA --- */
+        .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #03050a; position: relative; z-index: 2; }
+        .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- SILNIK OBSERWERA SCROLLA --- */
+        .scroll-animate-trigger { 
+            opacity: 0; transform: translateY(40px); filter: blur(4px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+            will-change: transform, opacity, filter; 
+        }
+        .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+        /* --- SKALOWANIE RESPONSYWNE (MOBILE OPTIMIZATION) --- */
+        @media (max-width: 1024px) {
+            .hero-container, .contact-container { grid-template-columns: 1fr; gap: 40px; }
+            .hero-visual { order: 1; margin-top: 20px; }
+            .layout-3-col, .bento-grid { grid-template-columns: 1fr; }
+            .bento-large, .bento-medium { grid-column: span 1; }
+            .bento-full-row { grid-direction: column; flex-direction: column; gap: 20px; text-align: center; }
+        }
+
+        @media (max-width: 768px) {
+            .section { padding: 70px 0; }
+            .hero-section { padding-top: 140px; padding-bottom: 60px; }
+            .hero-title { font-size: 2.4rem; text-align: center; }
+            .hero-subtitle { font-size: 1.05rem; text-align: center; margin-bottom: 32px; }
+            .hero-meta { justify-content: center; gap: 10px; }
+            .hero-actions { flex-direction: column; width: 100%; gap: 12px; }
+            .btn { width: 100%; }
+            .main-header { padding: 12px 0; }
+            .main-nav { display: none; }
+            .section-title { font-size: 1.9rem; }
+            .production-terminal { font-size: 11px; min-height: 310px; max-height: 310px; padding: 0 16px 16px 16px; cursor: default; }
+            .footer-container { flex-direction: column; text-align: center; gap: 12px; }
+            
+            /* Wyłączenie ciężkich blurów i przesunięć na telefonach dla oszczędności baterii */
+            .scroll-animate-trigger { opacity: 0; transform: translateY(15px); filter: none; transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+            .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg" aria-hidden="true">
+        <canvas id="particleCanvas"></canvas>
+        <div class="radial-glow glow-1"></div>
+        <div class="radial-glow glow-2"></div>
+    </div>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="#" class="logo-container" data-scroll="oferta" aria-label="Przewiń na górę">
+                <img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="SirK Cloud Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span class="logo-fallback" style="display:none; font-weight:800; font-size:1.5rem; font-family:var(--font-header);">SirK <span style="color:var(--accent-cyan);">Cloud</span></span>
+            </a>
+            <nav class="main-nav" aria-label="Nawigacja">
+                <ul>
+                    <li><a href="#oferta" data-scroll="oferta" class="nav-link">Oferta</a></li>
+                    <li><a href="#dla-kogo" data-scroll="dla-kogo" class="nav-link">Dla kogo</a></li>
+                    <li><a href="#o-nas" data-scroll="o-nas" class="nav-link">O nas</a></li>
+                    <li><a href="#kontakt" data-scroll="kontakt" id="consultationBtn" class="btn btn-secondary btn-sm">Konsultacja</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="oferta">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Kompleksowa opieka IT dla Twojej firmy. Po prostu.</h1>
+                    <p class="hero-subtitle">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały – bez straszenia technologią i niepotrzebnych komplikacji.</p>
+                    
+                    <div class="hero-meta">
+                        <div class="meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                            <span>Zdalna obsługa cała Polska</span>
+                        </div>
+                        <div class="meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12 y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Od 250 zł miesięcznie</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#kontakt" data-scroll="kontakt" class="btn btn-primary">Umów bezpłatną konsultację</a>
+                        <a href="#dla-kogo" data-scroll="dla-kogo" class="btn btn-secondary">Zobacz ofertę</a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="production-terminal" id="clickableTerminal">
+                        <div class="terminal-header">
+                            <div class="term-dot red"></div>
+                            <div class="term-dot yellow"></div>
+                            <div class="term-dot green"></div>
+                        </div>
+                        <div id="terminalBody" class="log-output">
+                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
+                            <div class="progress-row-layout" style="color:#a7f3d0;">
+                                <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill">██████████████████████████████████████████</span>]</span>
+                                <span class="progress-percentage-val">100%</span>
+                            </div>
+                            <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
+                            <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
+                            <span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>
+                            <span class="term-row">&gt; Mission completed. All systems are stable.</span>
+                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</span>
+                            <span class="term-row">&gt; Connection closed.</span>
+                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span></span>
+                        </div>
+                        <input type="text" id="terminalHiddenInput" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section scroll-animate-trigger" id="dla-kogo">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Profil wsparcia</span>
+                    <h2 class="section-title">Dla kogo jest SirK Cloud?</h2>
+                </div>
+                
+                <div class="cards-grid layout-3-col">
+                    <div class="interactive-card">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3>Małe firmy bez działu IT</h3>
+                        <p>Zdejmujemy z Twoich barków administrowanie sprzętem, konfigurację sieci, wykonywanie kopii zapasowych i usuwanie bieżących awarii.</p>
+                    </div>
+
+                    <div class="interactive-card">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <h3>Zespoły wymagające szybkiej reakcji</h3>
+                        <p>Gdy technologia zawodzi, liczy się każda minuta. Oferujemy natychmiastowe wsparcie zdalne i sprawne działanie, eliminując przestoje w pracy.</p>
+                    </div>
+
+                    <div class="interactive-card">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m10 10-1.5 1.5L7 10"/><path d="m15 14-1.5 1.5L12 14"/></svg>
+                        </div>
+                        <h3>Firmy chcące IT dopasowanego do siebie</h3>
+                        <p>Nie wierzymy w rozwiązania szablonowe. Analizujemy Twoje procesy, dobieramy bezpieczne rozwiązania chmurowe i infrastrukturę pod Twój budżet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section scroll-animate-trigger" id="o-nas">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Nasze wartości</span>
+                    <h2 class="section-title">IT z ludzkim podejściem</h2>
+                </div>
+
+                <div class="bento-grid">
+                    <div class="bento-item bento-large">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Partner, nie helpdesk
+                        </h3>
+                        <p>Nie jesteśmy tylko anonimową infolinią przyjmującą zgłoszenia. Doradzamy, rozmawiamy i wspólnie z Tobą planujemy, jak optymalnie wykorzystać technologię do wzrostu biznesu.</p>
+                    </div>
+
+                    <div class="bento-item bento-medium">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            Niezawodność
+                        </h3>
+                        <p>Zapewniamy ciągłość działania. Działamy prewencyjnie – optymalizujemy systemy, zanim pojawi się problem.</p>
+                    </div>
+
+                    <div class="bento-item bento-medium">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 1.5 1.5L9 10px"/><path d="m14 12 1.5 1.5L19 10px"/></svg>
+                            Jasny język
+                        </h3>
+                        <p>Tłumaczymy zawiłe kwestie techniczne na prosty język korzyści, bez niezrozumiałego żargonu.</p>
+                    </div>
+
+                    <div class="bento-item bento-large">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Obsługa zdalna i lokalna
+                        </h3>
+                        <p>Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
+                    </div>
+
+                    <div class="bento-item bento-full-row">
+                        <div>
+                            <h3 style="margin-bottom: 4px;">Zasięg operacyjny</h3>
+                            <p style="max-width: 600px;">Zabezpieczamy infrastrukturę firm bez względu na lokalizację – działamy sprawnie w chmurze oraz na miejscu.</p>
+                        </div>
+                        <div class="bento-counter">100% <span style="font-size:1.2rem; color:var(--text-muted); font-family:var(--font-body); font-weight:500;">Polska & Łódź</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section scroll-animate-trigger">
+            <div class="container">
+                <div class="interactive-card pricing-center">
+                    <span class="section-tag" style="margin-bottom:8px;">Transparentne warunki</span>
+                    <h3 style="font-size: 2.2rem; font-family:var(--font-header); margin-bottom: 16px;">Obsługa już od 250 zł miesięcznie</h3>
+                    <p style="color:var(--text-muted); margin-bottom: 28px;">Koszt wsparcia dopasowujemy idealnie do wielkości Twojego zespołu i realnych potrzeb infrastrukturalnych. Brak ukrytych opłat.</p>
+                    <a href="#kontakt" data-scroll="kontakt" class="btn btn-primary">Poproś o indywidualną wycenę</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section scroll-animate-trigger" id="kontakt">
+            <div class="container contact-container">
+                <div class="contact-info-block">
+                    <span class="section-tag">Kontakt</span>
+                    <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
+                    <p class="contact-lead">Zgłoś się na bezpłatną, 20–30-minutową konsultację (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    
+                    <div class="contact-details">
+                        <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas">
+                            <div class="method-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>
+                            </div>
+                            <div>
+                                <span class="method-label">Telefon (Pon–Pt 8:00–18:00)</span>
+                                <span class="method-value">+48 511 832 376</span>
+                            </div>
+                        </a>
+
+                        <a href="mailto:kjankowski@sirk.cloud" class="contact-method" aria-label="Napisz do nas e-mail">
+                            <div class="method-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            </div>
+                            <div>
+                                <span class="method-label">Napisz bezpośrednio</span>
+                                <span class="method-value">kjankowski@sirk.cloud</span>
+                            </div>
+                        </a>
+
+                        <a href="https://instagram.com/sirk.cloud" target="_blank" rel="noopener noreferrer" class="contact-method" aria-label="Profil Instagram">
+                            <div class="method-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                            </div>
+                            <div>
+                                <span class="method-label">Instagram</span>
+                                <span class="method-value">@sirk.cloud</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-cta-box">
+                    <h3>Gotowy uprościć swoje systemy IT?</h3>
+                    <p>Wybierz najwygodniejszą formę kontaktu. Otrzymasz rzetelną wiedzę i profesjonalne wsparcie bez branżowego owijania w bawełnę.</p>
+                    <a href="mailto:kjankowski@sirk.cloud?subject=Bezp%C5%82atna%20konsultacja%20IT" class="btn btn-primary btn-full">Zarezerwuj bezpłatną konsultację</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 SirK Cloud. Wszelkie prawa zastrzeżone.</p>
+            <p class="footer-sub">Partner w IT dla sektora MŚP — Łódź i cała Polska.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalWindow = document.getElementById('clickableTerminal');
+            const terminalBody = document.getElementById('terminalBody');
+            const hiddenInput = document.getElementById('terminalHiddenInput');
+            let isInteractiveEnabled = false;
+
+            // --- 1. WYDAJNE I SZYBKIE IMPLEMENTOWANIE ELEMENTÓW INTERFEJSU (Intersection Observer) ---
+            const initScrollReveal = () => {
+                const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
+                const isMobile = window.innerWidth <= 768;
+                
+                const observerOptions = {
+                    root: null,
+                    threshold: 0, 
+                    rootMargin: isMobile ? "0px 0px 0px 0px" : "0px 0px -50px 0px"
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+                
+                sectionsToObserve.forEach(sec => observer.observe(sec));
+            };
+            initScrollReveal();
+
+            // --- 2. ZACHOWANY AUTENTYCZNY SKRYPT TERMINALA (PC ONLY) ---
+            if (window.innerWidth <= 768) return; // Na mobile zostaje perfekcyjny statyczny HTML
+
+            terminalBody.innerHTML = "";
+
+            const appendLog = (html) => {
+                const row = document.createElement('span');
+                row.className = 'term-row';
+                row.innerHTML = html;
+                terminalBody.appendChild(row);
+                while (terminalBody.children.length > 11) {
+                    terminalBody.removeChild(terminalBody.firstChild);
+                }
+                return row;
+            };
+
+            const createInteractivePromptLine = () => {
+                const row = document.createElement('span');
+                row.className = 'term-row';
+                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="admin-input"></span><span class="term-cursor"></span>`;
+                terminalBody.appendChild(row);
+                while (terminalBody.children.length > 11) {
+                    terminalBody.removeChild(terminalBody.firstChild);
+                }
+                hiddenInput.value = "";
+                hiddenInput.focus();
+            };
+
+            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+            const runAutoSequence = async () => {
+                const firstRow = document.createElement('span');
+                firstRow.className = 'term-row';
+                firstRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
+                terminalBody.appendChild(firstRow);
+                
+                await sleep(1500);
+                const textContainer = firstRow.querySelector('.term-text-container');
+                const commandText = "run sirk-business-support-core";
+                
+                for (let i = 0; i < commandText.length; i++) {
+                    textContainer.textContent += commandText[i];
+                    await sleep(60); 
+                }
+                
+                const firstCursor = firstRow.querySelector('.term-cursor');
+                if(firstCursor) firstCursor.remove();
+
+                await sleep(600);
+                
+                const progressRow = appendLog(`
+                    <div class="progress-row-layout" style="color:#a7f3d0;">
+                        <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill"></span>]</span>
+                        <span class="progress-percentage-val">0%</span>
+                    </div>
+                `);
+                
+                const progressBarFill = progressRow.querySelector('.progress-bar-fill');
+                const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
+                
+                const totalBlocks = 41; 
+                for (let i = 1; i <= totalBlocks; i++) {
+                    progressBarFill.textContent += "█";
+                    const percentage = Math.round((i / totalBlocks) * 100);
+                    progressPercentageVal.textContent = `${percentage}%`;
+                    await sleep(35); 
+                }
+
+                await sleep(600);
+                appendLog(`&gt; Infrastruktura zoptymalizowana.`);
+                await sleep(700);
+                appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
+                await sleep(700);
+                appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
+                await sleep(800);
+                appendLog(`&gt; Mission completed. All systems are stable.`);
+                
+                const exitRow = document.createElement('span');
+                exitRow.className = 'term-row';
+                exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
+                terminalBody.appendChild(exitRow);
+                while (terminalBody.children.length > 11) {
+                    terminalBody.removeChild(terminalBody.firstChild);
+                }
+
+                await sleep(3000);
+
+                const exitTextContainer = exitRow.querySelector('.exit-text-container');
+                const exitCommandText = "exit 0";
+
+                for (let i = 0; i < exitCommandText.length; i++) {
+                    exitTextContainer.textContent += exitCommandText[i];
+                    await sleep(80); 
+                }
+
+                const exitCursor = exitRow.querySelector('.term-cursor');
+                if(exitCursor) exitCursor.remove();
+
+                await sleep(500);
+                appendLog(`&gt; Connection closed.`);
+                await sleep(400);
+                
+                isInteractiveEnabled = true;
+                createInteractivePromptLine();
+            };
+
+            terminalWindow.addEventListener('click', () => { if(isInteractiveEnabled) hiddenInput.focus(); });
+            hiddenInput.addEventListener('input', (e) => {
+                if(!isInteractiveEnabled) return;
+                const rows = terminalBody.querySelectorAll('.term-row');
+                if(rows.length > 0) {
+                    const span = rows[rows.length - 1].querySelector('.admin-input');
+                    if(span) span.textContent = e.target.value;
+                }
+            });
+
+            hiddenInput.addEventListener('keydown', (e) => {
+                if(e.key === 'Enter' && isInteractiveEnabled) {
+                    const val = hiddenInput.value.trim();
+                    const rows = terminalBody.querySelectorAll('.term-row');
+                    if(rows.length > 0) {
+                        const lastCursor = rows[rows.length - 1].querySelector('.term-cursor');
+                        if(lastCursor) lastCursor.remove();
+                    }
+                    if(val === 'clear' || val === 'exit') terminalBody.innerHTML = "";
+                    else if(val !== "") appendLog(`<span class="t-danger">bash: "${val}": command not found</span>`);
+                    createInteractivePromptLine();
+                }
+            });
+
+            runAutoSequence();
+        });
+
+        // --- 3. SKRYPT INTERAKTYWNEJ CHMURY CZĄSTECZEK (CANVAS 3D PARALLAX EFFECT) ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 140 };
+
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        if (window.innerWidth > 768) {
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.x;
+                mouse.y = e.y;
+            });
+            window.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            class Particle {
+                constructor() {
+                    // Generowanie punktów w kształcie elipsy/chmury na środku ekranu
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = Math.random() * 260 + 40;
+                    this.baseX = window.innerWidth * 0.75 + Math.cos(angle) * radius * 1.3;
+                    this.baseY = window.innerHeight * 0.45 + Math.sin(angle) * radius * 0.8;
+                    this.x = this.baseX;
+                    this.y = this.baseY;
+                    this.size = Math.random() * 1.8 + 0.4;
+                    this.density = (Math.random() * 20) + 8;
+                    this.color = Math.random() > 0.4 ? '#00D2FF' : '#8A2BE2';
+                    this.alpha = Math.random() * 0.5 + 0.2;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fill();
+                }
+                update() {
+                    // Delikatny, ciągły szum/pływanie chmury
+                    this.baseX += Math.sin(Date.now() * 0.001 + this.density) * 0.1;
+                    this.baseY += Math.cos(Date.now() * 0.001 + this.density) * 0.08;
+
+                    if (mouse.x != null) {
+                        let dx = mouse.x - this.x;
+                        let dy = mouse.y - this.y;
+                        let distance = Math.hypot(dx, dy);
+                        let forceDirectionX = dx / distance;
+                        let forceDirectionY = dy / distance;
+                        
+                        if (distance < mouse.radius) {
+                            let force = (mouse.radius - distance) / mouse.radius;
+                            let directionX = forceDirectionX * force * this.density * 0.6;
+                            let directionY = forceDirectionY * force * this.density * 0.6;
+                            this.x -= directionX;
+                            this.y -= directionY;
+                        } else {
+                            if (this.x !== this.baseX) {
+                                this.x -= (this.x - this.baseX) * 0.08;
+                            }
+                            if (this.y !== this.baseY) {
+                                this.y -= (this.y - this.baseY) * 0.08;
+                            }
+                        }
+                    } else {
+                        if (this.x !== this.baseX) this.x -= (this.x - this.baseX) * 0.05;
+                        if (this.y !== this.baseY) this.y -= (this.y - this.baseY) * 0.05;
+                    }
+                }
+            }
+
+            const initParticles = () => {
+                particles = [];
+                const count = Math.min(800, window.innerWidth / 2);
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle());
+                }
+            };
+            initParticles();
+
+            const animateParticles = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(animateParticles);
+            };
+            animateParticles();
+        }
+
+        // --- 4. WYDAJNA NAWIGACJA SMOOTH SCROLL & SCROLLSPY ---
+        document.querySelectorAll('[data-scroll]').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = trigger.getAttribute('data-scroll');
+                const targetSection = document.getElementById(targetId);
+                if (!targetSection) return;
+
+                const menuOffset = window.innerWidth <= 768 ? 65 : 95;
+                window.scrollTo({
+                    top: targetSection.offsetTop - menuOffset,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const sections = document.querySelectorAll('section[id], #kontakt');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const consultationBtn = document.getElementById('consultationBtn');
+
+        const updateActiveMenuLink = () => {
+            if (window.innerWidth <= 768) return;
+            let currentActiveId = "oferta";
+            const scrollPosition = window.scrollY + 105;
+            const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 20;
+
+            sections.forEach(section => {
+                if (scrollPosition >= section.offsetTop) {
+                    currentActiveId = section.getAttribute('id');
+                }
+            });
+
+            if (isAtBottom) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                consultationBtn.classList.add('consultation-active');
+            } else {
+                consultationBtn.classList.remove('consultation-active');
+                navLinks.forEach(link => {
+                    if (link.getAttribute('data-scroll') === currentActiveId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+        };
+        window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
+    </script>
+</body>
+</html>
