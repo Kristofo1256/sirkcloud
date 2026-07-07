@@ -130,7 +130,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal - Zabezpieczenie Safari przed czarnym blokiem */
+        /* Terminal - Stabilny render Safari */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -417,7 +417,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -475,6 +475,31 @@
             const hiddenInput = document.getElementById('terminalHiddenInput');
             let isInteractiveEnabled = false;
 
+            // --- REVEAL INTERSECTION OBSERVER ---
+            // Uruchamiamy natychmiast, przed jakąkolwiek logiką terminala, aby uniknąć lagów na telefonach
+            const initScrollReveal = () => {
+                const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
+                const isMobile = window.innerWidth <= 768;
+                
+                const observerOptions = {
+                    root: null,
+                    threshold: 0, 
+                    rootMargin: isMobile ? "0px 0px 0px 0px" : "0px 0px -50px 0px"
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+                
+                sectionsToObserve.forEach(sec => observer.observe(sec));
+            };
+            initScrollReveal();
+
             const appendLog = (html) => {
                 const row = document.createElement('span');
                 row.className = 'term-row';
@@ -503,19 +528,18 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
             const runAutoSequence = async () => {
-                // POPRAWIONA I DOPASOWANA WERSJA MOBILNA (Teksty 1:1 identyczne jak na PC)
+                // OPTYMALIZACJA MOBILNA: Jedno natychmiastowe wstrzyknięcie kodu HTML zapobiegające lagom i opóźnieniom renderowania strony
                 if (window.innerWidth <= 768) {
-                    terminalBody.innerHTML = `
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
-                        <span class="term-row" style="color:#a7f3d0;">&gt;&nbsp;[████████████████████████████████] 100%</span>
-                        <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
-                        <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
-                        <span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>
-                        <span class="term-row">&gt; Mission completed. All systems are stable.</span>
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</span>
-                        <span class="term-row">&gt; Connection closed.</span>
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span></span>
-                    `;
+                    terminalBody.innerHTML = 
+                        '<span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>' +
+                        '<span class="term-row" style="color:#a7f3d0;">&gt;&nbsp;[████████████████████████████████] 100%</span>' +
+                        '<span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>' +
+                        '<span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>' +
+                        '<span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>' +
+                        '<span class="term-row">&gt; Mission completed. All systems are stable.</span>' +
+                        '<span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</span>' +
+                        '<span class="term-row">&gt; Connection closed.</span>' +
+                        '<span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span></span>';
                     return;
                 }
 
@@ -569,7 +593,7 @@
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
                 
-                // 1. Znak zachęty exit 0 wyskakuje OD RAZU po logach
+                // Realistyczna logika znaku zachęty w terminalu
                 const exitRow = document.createElement('span');
                 exitRow.className = 'term-row';
                 exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
@@ -578,10 +602,10 @@
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
 
-                // 2. Czekamy 3 sekundy (kursor miga obok pustego promptu)
+                // Pełne 3 sekundy pauzy (kursor miga przy pustym promptu)
                 await sleep(3000);
 
-                // 3. Po 3 sekundach następuje pisanie komendy
+                // Rozpoczęcie automatycznego pisania exit 0
                 const exitTextContainer = exitRow.querySelector('.exit-text-container');
                 const exitCommandText = "exit 0";
 
@@ -673,31 +697,6 @@
             };
 
             window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
-
-            // --- REVEAL INTERSECTION OBSERVER ---
-            const initScrollReveal = () => {
-                const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
-                const isMobile = window.innerWidth <= 768;
-                
-                const observerOptions = {
-                    root: null,
-                    threshold: 0, 
-                    rootMargin: isMobile ? "0px 0px 0px 0px" : "0px 0px -50px 0px"
-                };
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('active');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, observerOptions);
-                
-                sectionsToObserve.forEach(sec => observer.observe(sec));
-            };
-
-            initScrollReveal();
             updateActiveMenuLink();
         });
     </script>
