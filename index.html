@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
+    <!-- Pobieranie czcionki bez blokowania renderowania strony -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -34,8 +36,8 @@
         
         #o-nas { padding: 125px 0; }
 
-        /* Tło Aurora & Grid */
-        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; }
+        /* Tło Aurora & Grid - Zoptymalizowane pod kątem GPU */
+        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; overflow: hidden; will-change: transform; }
         .aurora-glow { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.28; }
         .aurora-1 { width: 650px; height: 650px; background: var(--accent-blue); top: -10%; right: -5%; }
         .aurora-2 { width: 550px; height: 550px; background: var(--accent-purple); bottom: 5%; left: -10%; }
@@ -48,10 +50,10 @@
             background-size: 40px 40px;
         }
 
-        /* Header / Menu */
+        /* Header / Menu - Naprawiony lag renderowania przez usunięcie backdrop-filter */
         .main-header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
-            background-color: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px);
+            background-color: rgba(4, 6, 10, 0.96);
             border-bottom: 1px solid rgba(255, 255, 255, 0.04); padding: 14px 0;
         }
 
@@ -271,6 +273,7 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
+    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
             <a href="#" class="logo-container" data-scroll="oferta" aria-label="Przewiń na górę strony">
@@ -289,6 +292,7 @@
     </header>
 
     <main>
+        <!-- Sekcja Hero (Oferta) -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -321,6 +325,7 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output">
+                            <!-- STATYCZNY FINISZUJĄCY OBRAZ TERMINALA DLA WERSJI MOBILNEJ -->
                             <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
                             <div class="progress-row-layout" style="color:#a7f3d0;">
                                 <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill">██████████████████████████████████████████</span>]</span>
@@ -340,6 +345,7 @@
             </div>
         </section>
 
+        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -375,6 +381,7 @@
             </div>
         </section>
 
+        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -418,12 +425,13 @@
             </div>
         </section>
 
+        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -644,8 +652,7 @@
             runAutoSequence();
         });
 
-        // --- NATYCHMIASTOWY SPRZĘTOWY SKOK (Zoptymalizowana Nawigacja) ---
-        // Usunięto powolną animację smooth przeglądarki na rzecz bezpośredniego, natychmiastowego renderu pozycji
+        // --- NATYCHMIASTOWY SKOK ---
         document.querySelectorAll('[data-scroll]').forEach(trigger => {
             trigger.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -656,7 +663,6 @@
                 const menuOffset = window.innerWidth <= 768 ? 65 : 95;
                 const targetPosition = targetSection.offsetTop - menuOffset;
 
-                // Skok w czasie zerowym zarządzany natywnie przez GPU systemu operacyjnego
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'auto'
@@ -664,7 +670,7 @@
             });
         });
 
-        // Lekki, odizolowany ScrollSpy zarządzający klasami menu
+        // Lekki ScrollSpy
         const sections = document.querySelectorAll('section[id], #kontakt');
         const navLinks = document.querySelectorAll('.nav-link');
         const consultationBtn = document.getElementById('consultationBtn');
