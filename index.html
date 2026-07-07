@@ -130,7 +130,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal - Poprawka Safari prostokąta (Usunięcie sticky tła nagłówka) */
+        /* Terminal - Całkowite pozbycie się glitcha czarnego bloku w Safari */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -139,10 +139,12 @@
             font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
             text-align: left; position: relative; 
             overflow: hidden;
+            -webkit-transform: translate3d(0, 0, 0); /* Wymuszenie poprawnego renderowania warstwy w WebKit */
         }
 
+        /* Usunięto background-color z nagłówka, linia separacyjna tworzona jest bezpiecznym borderem */
         .terminal-header { 
-            position: relative; background-color: #020408; z-index: 10;
+            position: relative; z-index: 10;
             display: flex; gap: 6px; padding-top: 22px; padding-bottom: 14px; 
             border-bottom: 1px solid rgba(255,255,255,0.04); 
         }
@@ -555,7 +557,7 @@
                     await sleep(40); 
                 }
 
-                // Stopniowe wyświetlanie logów statusowych
+                // Logi statusowe
                 await sleep(600);
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
                 await sleep(700);
@@ -565,10 +567,10 @@
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
                 
-                // Zadany WAIT przed komendą wyjściową
-                await sleep(1400);
+                // POPRAWIONE: Dokładnie 3 sekundy (3000ms) oczekiwania przed rozpoczęciem pisania exit 0
+                await sleep(3000);
 
-                // NAPRAWIONE: Nowa linia z promptem, w której polecenie "exit 0" wpisze się litera po literze
+                // Przygotowanie linii pod wpisywanie exit 0
                 const exitRow = document.createElement('span');
                 exitRow.className = 'term-row';
                 exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
@@ -580,15 +582,15 @@
                 const exitTextContainer = exitRow.querySelector('.exit-text-container');
                 const exitCommandText = "exit 0";
 
+                // Prawdziwe, płynne wpisywanie polecenia znak po znaku
                 for (let i = 0; i < exitCommandText.length; i++) {
                     exitTextContainer.textContent += exitCommandText[i];
-                    await sleep(80); // Szybkość wpisywania polecenia exit
+                    await sleep(80); 
                 }
 
                 const exitCursor = exitRow.querySelector('.term-cursor');
                 if(exitCursor) exitCursor.remove();
 
-                // Krótka pauza po zakończeniu pisania, a przed fizycznym rozłączeniem
                 await sleep(500);
                 appendLog(`&gt; Connection closed.`);
                 await sleep(400);
@@ -599,7 +601,7 @@
                 createInteractivePromptLine();
             };
 
-            // Obsługa konsoli użytkownika
+            // Interaktywność konsoli użytkownika
             terminalWindow.addEventListener('click', () => { 
                 if(isInteractiveEnabled && window.innerWidth > 768) hiddenInput.focus(); 
             });
