@@ -130,7 +130,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal - Całkowite pozbycie się glitcha czarnego bloku w Safari */
+        /* Terminal - Bezpieczne tło nagłówka chroniące Safari */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -139,10 +139,9 @@
             font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
             text-align: left; position: relative; 
             overflow: hidden;
-            -webkit-transform: translate3d(0, 0, 0); /* Wymuszenie poprawnego renderowania warstwy w WebKit */
+            -webkit-transform: translate3d(0, 0, 0);
         }
 
-        /* Usunięto background-color z nagłówka, linia separacyjna tworzona jest bezpiecznym borderem */
         .terminal-header { 
             position: relative; z-index: 10;
             display: flex; gap: 6px; padding-top: 22px; padding-bottom: 14px; 
@@ -504,14 +503,16 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
             const runAutoSequence = async () => {
-                // Szybka wersja mobilna (statyczna)
+                // PRZYWRÓCONA I NAPRAWIONA WERSJA MOBILNA: Twoje autentyczne teksty z oryginalnego terminala
                 if (window.innerWidth <= 768) {
                     terminalBody.innerHTML = `
-                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> support-core --status</span>
-                        <span class="term-row">&gt; System status: <span class="t-success">[OK] Active</span></span>
-                        <span class="term-row">&gt; Connection: <span class="t-success">Stable</span></span>
-                        <span class="term-row">&gt; Security check: <span class="t-success">0 errors</span></span>
-                        <span class="term-row">&gt; All systems running smoothly.</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
+                        <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
+                        <span class="term-row">&gt; Services status: <span class="t-success">[0] Active / Running</span></span>
+                        <span class="term-row">&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span></span>
+                        <span class="term-row">&gt; Mission completed. All systems are stable.</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> exit 0</span>
+                        <span class="term-row">&gt; Connection closed.</span>
                         <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span></span>
                     `;
                     return;
@@ -567,10 +568,10 @@
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
                 
-                // POPRAWIONE: Dokładnie 3 sekundy (3000ms) oczekiwania przed rozpoczęciem pisania exit 0
+                // NAPRAWIONE: Pełne 3 sekundy (3000ms) absolutnego czekania przed pojawieniem się NOWEJ linijki terminala
                 await sleep(3000);
 
-                // Przygotowanie linii pod wpisywanie exit 0
+                // Tworzymy całą linijkę dopiero TERAZ (po odczekaniu 3 sekund)
                 const exitRow = document.createElement('span');
                 exitRow.className = 'term-row';
                 exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
@@ -582,7 +583,7 @@
                 const exitTextContainer = exitRow.querySelector('.exit-text-container');
                 const exitCommandText = "exit 0";
 
-                // Prawdziwe, płynne wpisywanie polecenia znak po znaku
+                // Płynne wpisywanie polecenia exit 0 znak po znaku
                 for (let i = 0; i < exitCommandText.length; i++) {
                     exitTextContainer.textContent += exitCommandText[i];
                     await sleep(80); 
@@ -601,7 +602,7 @@
                 createInteractivePromptLine();
             };
 
-            // Interaktywność konsoli użytkownika
+            // Obsługa konsoli użytkownika
             terminalWindow.addEventListener('click', () => { 
                 if(isInteractiveEnabled && window.innerWidth > 768) hiddenInput.focus(); 
             });
