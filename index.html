@@ -130,7 +130,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal */
+        /* Terminal - Poprawka Safari prostokąta (Usunięcie sticky tła nagłówka) */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -142,7 +142,7 @@
         }
 
         .terminal-header { 
-            position: sticky; top: 0; background-color: #020408; z-index: 10;
+            position: relative; background-color: #020408; z-index: 10;
             display: flex; gap: 6px; padding-top: 22px; padding-bottom: 14px; 
             border-bottom: 1px solid rgba(255,255,255,0.04); 
         }
@@ -515,7 +515,7 @@
                     return;
                 }
 
-                // Sekwencja Desktop
+                // Sekwencja Desktop - Pierwsza komenda
                 const firstRow = document.createElement('span');
                 firstRow.className = 'term-row';
                 firstRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
@@ -555,7 +555,7 @@
                     await sleep(40); 
                 }
 
-                // Stopniowe wypluwanie kolejnych logów
+                // Stopniowe wyświetlanie logów statusowych
                 await sleep(600);
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
                 await sleep(700);
@@ -565,11 +565,31 @@
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
                 
-                // ZADANY WAIT: krótka pauza (1.2 sekundy) przed wpisaniem polecenia wyjścia
-                await sleep(1200);
+                // Zadany WAIT przed komendą wyjściową
+                await sleep(1400);
 
-                appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
-                await sleep(600);
+                // NAPRAWIONE: Nowa linia z promptem, w której polecenie "exit 0" wpisze się litera po literze
+                const exitRow = document.createElement('span');
+                exitRow.className = 'term-row';
+                exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
+                terminalBody.appendChild(exitRow);
+                while (terminalBody.children.length > 11) {
+                    terminalBody.removeChild(terminalBody.firstChild);
+                }
+
+                const exitTextContainer = exitRow.querySelector('.exit-text-container');
+                const exitCommandText = "exit 0";
+
+                for (let i = 0; i < exitCommandText.length; i++) {
+                    exitTextContainer.textContent += exitCommandText[i];
+                    await sleep(80); // Szybkość wpisywania polecenia exit
+                }
+
+                const exitCursor = exitRow.querySelector('.term-cursor');
+                if(exitCursor) exitCursor.remove();
+
+                // Krótka pauza po zakończeniu pisania, a przed fizycznym rozłączeniem
+                await sleep(500);
                 appendLog(`&gt; Connection closed.`);
                 await sleep(400);
                 
@@ -579,7 +599,7 @@
                 createInteractivePromptLine();
             };
 
-            // Interaktywność konsoli użytkownika
+            // Obsługa konsoli użytkownika
             terminalWindow.addEventListener('click', () => { 
                 if(isInteractiveEnabled && window.innerWidth > 768) hiddenInput.focus(); 
             });
