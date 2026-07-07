@@ -119,11 +119,13 @@
   .hero { position: relative; min-height: 100vh; background: var(--bg); overflow: hidden; }
   #particle-canvas { position: absolute; inset: 0; pointer-events: none; }
   .hero-grid {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0.04;
+    position: absolute; inset: -20px; pointer-events: none; opacity: 0.04;
     background-image:
       linear-gradient(to right, #fff 1px, transparent 1px),
       linear-gradient(to bottom, #fff 1px, transparent 1px);
     background-size: 64px 64px;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
   }
   .hero-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 12rem;
     background: linear-gradient(to top, var(--bg), transparent); pointer-events: none; }
@@ -131,6 +133,58 @@
     position: relative; z-index: 10; min-height: 100vh;
     display: flex; flex-direction: column; justify-content: center;
     padding: 7rem clamp(1.5rem, 8vw, 5rem) 6rem;
+  }
+  @media (min-width: 1024px) {
+    .hero-content {
+      display: grid; grid-template-columns: 1.15fr 0.85fr;
+      align-items: center; gap: clamp(2rem, 4vw, 4rem);
+    }
+  }
+  .hero-text { min-width: 0; }
+
+  /* ---------- HERO VISUAL (infra monitor) ---------- */
+  .hero-visual { display: none; }
+  @media (min-width: 1024px) { .hero-visual { display: block; } }
+  .infra-card { max-width: 27rem; margin-left: auto; }
+  .infra-body { padding: 1.5rem; }
+  .infra-svg { width: 100%; height: auto; display: block; margin-bottom: 1.25rem; overflow: visible; }
+  .infra-hub-ring {
+    fill: none; stroke: rgba(255,107,53,0.35); stroke-width: 1;
+    animation: hubPulse 2.4s ease-out infinite;
+    transform-origin: center;
+  }
+  @keyframes hubPulse {
+    0% { r: 9; opacity: 0.9; }
+    100% { r: 26; opacity: 0; }
+  }
+  .infra-line {
+    stroke: rgba(255,107,53,0.28); stroke-width: 1.25; fill: none;
+    stroke-dasharray: 3 5; animation: infraFlow 2.6s linear infinite;
+  }
+  @keyframes infraFlow { to { stroke-dashoffset: -80; } }
+  .infra-node-ring {
+    fill: none; stroke: rgba(74,222,128,0.5); stroke-width: 1;
+    animation: nodePulse 2.8s ease-out infinite;
+    transform-origin: center;
+  }
+  @keyframes nodePulse {
+    0% { r: 5; opacity: 0.8; }
+    100% { r: 15; opacity: 0; }
+  }
+  .infra-label {
+    font-family: var(--font-mono); font-size: 7.5px; fill: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .infra-metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+    border-top: 1px solid var(--border); padding-top: 1.25rem;
+  }
+  .infra-metric .val {
+    font-family: var(--font-display); font-size: 1.35rem; color: var(--fg); font-weight: 600;
+  }
+  .infra-metric .label {
+    font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.03em; margin-top: 0.25rem; display: block;
   }
 
   .terminal { max-width: 28rem; margin-bottom: 2.5rem; }
@@ -412,30 +466,85 @@
   <div class="hero-grid"></div>
   <div class="hero-fade"></div>
   <div class="hero-content">
-    <!-- Terminal -->
-    <div class="terminal reveal visible">
-      <div class="terminal-window">
+    <div class="hero-text">
+      <!-- Terminal -->
+      <div class="terminal reveal visible">
+        <div class="terminal-window">
+          <div class="terminal-bar">
+            <span class="term-dot r"></span>
+            <span class="term-dot y"></span>
+            <span class="term-dot g"></span>
+            <span>sirk-cloud — bash</span>
+          </div>
+          <div class="terminal-body" id="terminalBody"></div>
+        </div>
+      </div>
+
+      <p class="hero-eyebrow">// Kompleksowa opieka IT</p>
+      <h1>Twoje IT, <span class="accent">ogarnięte</span> na spokojnie.</h1>
+      <p class="hero-sub">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały — bez straszenia technologią i niepotrzebnych komplikacji.</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#dla-kogo">Sprawdź ofertę →</a>
+        <a class="btn-secondary" href="#kontakt">Napisz do nas</a>
+      </div>
+      <div class="hero-meta">
+        <span><span class="dot"></span>Zdalna obsługa — cała Polska</span>
+        <span class="sep"></span>
+        <span>Od 250 zł miesięcznie</span>
+      </div>
+    </div>
+
+    <!-- Infra monitor visual -->
+    <div class="hero-visual reveal delay-2">
+      <div class="terminal-window infra-card">
         <div class="terminal-bar">
           <span class="term-dot r"></span>
           <span class="term-dot y"></span>
           <span class="term-dot g"></span>
-          <span>sirk-cloud — bash</span>
+          <span>infra_monitor.sh — live</span>
         </div>
-        <div class="terminal-body" id="terminalBody"></div>
+        <div class="infra-body">
+          <svg class="infra-svg" viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+            <!-- connecting lines from hub -->
+            <path class="infra-line" d="M60,95 L145,40" />
+            <path class="infra-line" d="M60,95 L210,55" />
+            <path class="infra-line" d="M60,95 L250,105" />
+            <path class="infra-line" d="M60,95 L205,150" />
+            <path class="infra-line" d="M60,95 L120,160" />
+            <!-- satellite nodes -->
+            <g>
+              <circle class="infra-node-ring" cx="145" cy="40" r="5" />
+              <circle cx="145" cy="40" r="4" fill="#4ade80" />
+              <text class="infra-label" x="145" y="28" text-anchor="middle">Windows Srv</text>
+            </g>
+            <g>
+              <circle class="infra-node-ring" cx="210" cy="55" r="5" style="animation-delay:.4s" />
+              <circle cx="210" cy="55" r="4" fill="#4ade80" />
+              <text class="infra-label" x="210" y="43" text-anchor="middle">VMware</text>
+            </g>
+            <g>
+              <circle class="infra-node-ring" cx="250" cy="105" r="5" style="animation-delay:.8s" />
+              <circle cx="250" cy="105" r="4" fill="#4ade80" />
+              <text class="infra-label" x="250" y="123" text-anchor="middle">Chmura</text>
+            </g>
+            <g>
+              <circle class="infra-node-ring" cx="205" cy="150" r="5" style="animation-delay:1.2s" />
+              <circle cx="205" cy="150" r="4" fill="#4ade80" />
+              <text class="infra-label" x="205" y="168" text-anchor="middle">Backup</text>
+            </g>
+            <g>
+              <circle class="infra-node-ring" cx="120" cy="160" r="5" style="animation-delay:1.6s" />
+              <circle cx="120" cy="160" r="4" fill="#4ade80" />
+              <text class="infra-label" x="120" y="178" text-anchor="middle">Sieć</text>
+            </g>
+            <!-- hub -->
+            <circle class="infra-hub-ring" cx="60" cy="95" r="9" />
+            <circle cx="60" cy="95" r="7" fill="#FF6B35" />
+            <text class="infra-label" x="60" y="78" text-anchor="middle" style="fill:#FF6B35;font-size:8px;">sirk.cloud</text>
+          </svg>
+          <div class="infra-metrics" id="infraMetrics"></div>
+        </div>
       </div>
-    </div>
-
-    <p class="hero-eyebrow">// Kompleksowa opieka IT</p>
-    <h1>Twoje IT, <span class="accent">ogarnięte</span> na spokojnie.</h1>
-    <p class="hero-sub">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały — bez straszenia technologią i niepotrzebnych komplikacji.</p>
-    <div class="hero-cta">
-      <a class="btn-primary" href="#dla-kogo">Sprawdź ofertę →</a>
-      <a class="btn-secondary" href="#kontakt">Napisz do nas</a>
-    </div>
-    <div class="hero-meta">
-      <span><span class="dot"></span>Zdalna obsługa — cała Polska</span>
-      <span class="sep"></span>
-      <span>Od 250 zł miesięcznie</span>
     </div>
   </div>
   <div class="scroll-indicator">
@@ -716,6 +825,58 @@
     } else { el.classList.add("visible"); }
   });
 
+  /* ---------- Infra monitor metrics (count-up) ---------- */
+  var infraMetrics = [
+    { target: 15, suffix: " min", label: "Śr. czas reakcji" },
+    { target: 6, suffix: "", label: "Monitorowane usługi" },
+    { target: 99.9, suffix: "%", label: "Uptime klientów", decimals: 1 }
+  ];
+  var infraMetricsEl = document.getElementById("infraMetrics");
+  if (infraMetricsEl) {
+    infraMetricsEl.innerHTML = infraMetrics.map(function () {
+      return '<div class="infra-metric"><span class="val">0</span><span class="label"></span></div>';
+    }).join("");
+    var metricEls = infraMetricsEl.querySelectorAll(".infra-metric");
+    metricEls.forEach(function (el, i) {
+      el.querySelector(".label").textContent = infraMetrics[i].label;
+    });
+    var infraAnimated = false;
+    function animateInfraMetrics() {
+      if (infraAnimated) return;
+      infraAnimated = true;
+      metricEls.forEach(function (el, i) {
+        var m = infraMetrics[i];
+        var start = null;
+        var dur = 1200;
+        var valEl = el.querySelector(".val");
+        function frame(ts) {
+          if (!start) start = ts;
+          var p = Math.min(1, (ts - start) / dur);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var current = m.target * eased;
+          valEl.textContent = (m.decimals ? current.toFixed(m.decimals) : Math.round(current)) + m.suffix;
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      });
+    }
+    if (prefersReduced) {
+      metricEls.forEach(function (el, i) {
+        var m = infraMetrics[i];
+        el.querySelector(".val").textContent = (m.decimals ? m.target.toFixed(m.decimals) : m.target) + m.suffix;
+      });
+    } else if ("IntersectionObserver" in window) {
+      var infraObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { animateInfraMetrics(); infraObs.disconnect(); }
+        });
+      }, { threshold: 0.3 });
+      infraObs.observe(infraMetricsEl);
+    } else {
+      animateInfraMetrics();
+    }
+  }
+
   /* ---------- Terminal typing ---------- */
   var termLines = [
     { prompt:"root@sirk-cloud:~# ", text:"./start_support --init", ok:false },
@@ -770,7 +931,8 @@
   var canvas = document.getElementById("particle-canvas");
   var ctx = canvas.getContext("2d");
   var particles = [];
-  var mouse = { x: null, y: null, radius: 160 };
+  var bursts = [];
+  var mouse = { x: null, y: null, radius: 170 };
   var animId;
 
   function resizeCanvas() {
@@ -827,8 +989,27 @@
           ctx.strokeStyle = "rgba(255,107,53," + (0.35 * (1 - mdist / mouse.radius)) + ")";
           ctx.lineWidth = 0.8;
           ctx.stroke();
+          // gentle pull toward the cursor, like the network is aware of it
+          var pull = (1 - mdist / mouse.radius) * 0.02;
+          p.vx -= (mdx / (mdist || 1)) * pull;
+          p.vy -= (mdy / (mdist || 1)) * pull;
+          var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+          var maxSpeed = 0.9;
+          if (speed > maxSpeed) { p.vx = (p.vx / speed) * maxSpeed; p.vy = (p.vy / speed) * maxSpeed; }
         }
       }
+    }
+    // click-triggered bursts, like a request pinging out across the network
+    for (var b = bursts.length - 1; b >= 0; b--) {
+      var burst = bursts[b];
+      burst.x += burst.vx; burst.y += burst.vy;
+      burst.vx *= 0.96; burst.vy *= 0.96;
+      burst.life -= 0.02;
+      if (burst.life <= 0) { bursts.splice(b, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(burst.x, burst.y, burst.size * burst.life, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,107,53," + (0.7 * burst.life) + ")";
+      ctx.fill();
     }
     animId = requestAnimationFrame(drawParticles);
   }
@@ -855,6 +1036,7 @@
       }
     }
   }
+  var heroGridEl = document.querySelector(".hero-grid");
   if (!prefersReduced) {
     resizeCanvas(); initParticles(); drawParticles();
     window.addEventListener("resize", function () { resizeCanvas(); initParticles(); });
@@ -862,8 +1044,27 @@
       var rect = canvas.getBoundingClientRect();
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
+      if (heroGridEl && rect.top < window.innerHeight && rect.bottom > 0) {
+        var relX = (mouse.x / rect.width - 0.5) * 12;
+        var relY = (mouse.y / rect.height - 0.5) * 12;
+        heroGridEl.style.transform = "translate(" + relX + "px, " + relY + "px)";
+      }
     });
     window.addEventListener("mouseout", function () { mouse.x = null; mouse.y = null; });
+    canvas.parentElement.addEventListener("click", function (e) {
+      var rect = canvas.getBoundingClientRect();
+      var cx = e.clientX - rect.left, cy = e.clientY - rect.top;
+      var count = 10;
+      for (var i = 0; i < count; i++) {
+        var angle = (Math.PI * 2 * i) / count;
+        var speed = 1.2 + Math.random() * 1.2;
+        bursts.push({
+          x: cx, y: cy,
+          vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+          life: 1, size: 2 + Math.random() * 1.5
+        });
+      }
+    });
   } else {
     resizeCanvas(); initParticles(); drawStatic();
     window.addEventListener("resize", function () { resizeCanvas(); initParticles(); drawStatic(); });
