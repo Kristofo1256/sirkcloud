@@ -1,966 +1,668 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sirk Cloud — Kompleksowa opieka IT dla Twojej firmy</title>
+<meta name="description" content="IT z ludzkim podejściem. Bez straszenia technologią, bez komplikacji. Obsługa IT już od 250 zł miesięcznie.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+  :root{
+    --bg:#0B0F19;
+    --bg-2:#0E1424;
+    --blue:#00D2FF;
+    --purple:#8A2BE2;
+    --ink:#F5F7FB;
+    --ink-dim:#9BA3B7;
+    --line:rgba(255,255,255,0.08);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--purple);color:#fff;}
+
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.02em;
+    line-height:1.05;
+  }
+
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--blue),var(--purple));border-radius:10px;}
+
+  a{color:inherit;text-decoration:none;}
+
+  .container{max-width:1200px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- ambient background glows ---------- */
+  .glow-field{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.35;}
+  .glow-blue{width:640px;height:640px;background:var(--blue);top:-200px;left:-120px;}
+  .glow-purple{width:560px;height:560px;background:var(--purple);top:20%;right:-160px;}
+  .glow-blue2{width:500px;height:500px;background:var(--blue);bottom:-160px;left:20%;opacity:0.18;}
+
+  .noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- nav ---------- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(16px);background:rgba(11,15,25,0.55);
+    border-bottom:1px solid var(--line);
+    transition:transform .5s ease;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;max-width:1200px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;}
+  .logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));position:relative;flex:none;
+    box-shadow:0 0 20px rgba(0,210,255,0.5);}
+  .nav-links{display:flex;gap:32px;font-size:14px;color:var(--ink-dim);}
+  .nav-links a{transition:color .25s ease;position:relative;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));color:#0B0F19;}
+
+  @media (max-width:860px){.nav-links{display:none;}}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    position:relative;display:inline-flex;align-items:center;gap:10px;
+    padding:16px 30px;border-radius:999px;font-weight:600;font-size:15px;
+    cursor:pointer;border:none;font-family:'Inter',sans-serif;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    color:#08101f;
+    box-shadow:0 0 0 rgba(0,210,255,0);
+  }
+  .btn-primary::after{
+    content:"";position:absolute;inset:-2px;border-radius:999px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    filter:blur(16px);opacity:0.55;z-index:-1;transition:opacity .35s ease;
+  }
+  .btn-primary:hover{transform:translateY(-3px) scale(1.03);}
+  .btn-primary:hover::after{opacity:0.9;}
+
+  .btn-ghost{
+    color:var(--ink);
+    background:rgba(255,255,255,0.02);
+    border:1px solid transparent;
+    background-image:linear-gradient(var(--bg),var(--bg)),linear-gradient(135deg,var(--blue),var(--purple));
+    background-origin:border-box;background-clip:padding-box,border-box;
+  }
+  .btn-ghost:hover{transform:translateY(-3px);background-image:linear-gradient(rgba(255,255,255,0.05),rgba(255,255,255,0.05)),linear-gradient(135deg,var(--blue),var(--purple));}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:160px 0 100px;z-index:2;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
+  @media (max-width:960px){.hero-grid{grid-template-columns:1fr;}}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);
+    border:1px solid rgba(0,210,255,0.3);padding:8px 16px;border-radius:999px;
+    background:rgba(0,210,255,0.06);margin-bottom:28px;
+  }
+  .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);animation:pulse-dot 2s infinite;}
+  @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+  .hero h1{
+    font-size:clamp(2.4rem,5.4vw,4.6rem);
+    font-weight:700;
+    margin:0 0 24px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.sub{
+    font-size:18px;color:var(--ink-dim);max-width:520px;line-height:1.65;margin-bottom:40px;
+  }
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+
+  .hero-visual{position:relative;height:520px;}
+  @media (max-width:960px){.hero-visual{height:360px;order:-1;}}
+  #cloudCanvas{width:100%;height:100%;display:block;}
+
+  .trust-row{display:flex;gap:36px;margin-top:64px;flex-wrap:wrap;color:var(--ink-dim);font-size:13px;}
+  .trust-row strong{display:block;color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;}
+
+  /* ---------- section shell ---------- */
+  section{position:relative;z-index:2;}
+  .section-pad{padding:140px 0;}
+  @media (max-width:768px){.section-pad{padding:90px 0;}}
+
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-tag{font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);font-weight:600;margin-bottom:16px;display:block;}
+  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.8rem);font-weight:700;margin:0 0 20px;}
+  .section-head p{color:var(--ink-dim);font-size:17px;line-height:1.7;}
+
+  /* ---------- problem/solution cards ---------- */
+  .who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:900px){.who-grid{grid-template-columns:1fr;}}
+
+  .who-card{
+    padding:36px 30px;border-radius:20px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid var(--line);
+    position:relative;overflow:hidden;
+    opacity:0;transform:translateY(40px);filter:blur(6px);
+    transition:border-color .4s ease, background .4s ease;
+  }
+  .who-card::before{
+    content:"";position:absolute;inset:0;border-radius:20px;padding:1px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:0;transition:opacity .4s ease;pointer-events:none;
+  }
+  .who-card:hover{background:rgba(255,255,255,0.045);backdrop-filter:blur(20px);}
+  .who-card:hover::before{opacity:1;}
+  .who-num{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--ink-dim);letter-spacing:0.08em;margin-bottom:24px;display:block;}
+  .who-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(0,210,255,0.15),rgba(138,43,226,0.15));
+    color:var(--blue);margin-bottom:24px;}
+  .who-card h3{font-size:21px;margin:0 0 12px;font-weight:600;}
+  .who-card p{color:var(--ink-dim);font-size:15px;line-height:1.65;margin:0;}
+
+  /* ---------- bento ---------- */
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(160px,auto);gap:20px;}
+  .bento-item{
+    border-radius:22px;border:1px solid var(--line);background:rgba(255,255,255,0.02);
+    padding:32px;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s ease;
+  }
+  .bento-item:hover{transform:translateY(-6px);border-color:rgba(0,210,255,0.35);}
+  .bento-a{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:flex-end;}
+  .bento-b{grid-column:span 2;grid-row:span 1;}
+  .bento-c{grid-column:span 1;grid-row:span 1;}
+  .bento-d{grid-column:span 1;grid-row:span 1;}
+  @media (max-width:900px){
+    .bento{grid-template-columns:repeat(2,1fr);}
+    .bento-a{grid-column:span 2;}
+    .bento-b{grid-column:span 2;}
+  }
+  @media (max-width:560px){
+    .bento{grid-template-columns:1fr;}
+    .bento-a,.bento-b,.bento-c,.bento-d{grid-column:span 1;}
+  }
+  .bento-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(0,210,255,0.15),rgba(138,43,226,0.15));color:var(--blue);margin-bottom:20px;}
+  .bento-icon svg{transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+  .bento-item:hover .bento-icon svg{transform:rotate(50deg);}
+  .bento-item.pulse:hover .bento-icon svg{transform:scale(1.15);animation:pulse-icon 1.4s ease-in-out infinite;}
+  @keyframes pulse-icon{0%,100%{opacity:1;}50%{opacity:0.55;}}
+  .bento-item h3{font-size:24px;margin:0 0 12px;font-weight:600;}
+  .bento-item p{color:var(--ink-dim);font-size:15px;line-height:1.65;margin:0;}
+  .bento-glow{position:absolute;width:220px;height:220px;border-radius:50%;background:var(--blue);filter:blur(90px);opacity:0.16;bottom:-60px;right:-60px;pointer-events:none;}
+
+  .stat-counter{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;
+    background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;}
+  .locations{display:flex;flex-direction:column;gap:14px;margin-top:6px;}
+  .loc-row{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-dim);}
+  .loc-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);flex:none;}
+  .loc-dot.alt{background:var(--purple);box-shadow:0 0 10px var(--purple);}
+
+  /* ---------- pricing ---------- */
+  .pricing-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+  @media (max-width:900px){.pricing-wrap{grid-template-columns:1fr;}}
+
+  .price-card{
+    border-radius:26px;padding:48px;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,rgba(0,210,255,0.08),rgba(138,43,226,0.06));
+    border:1px solid rgba(0,210,255,0.25);
+  }
+  .price-card::before{content:"";position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;
+    background:var(--purple);filter:blur(100px);opacity:0.3;}
+  .price-tag{font-size:14px;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:18px;display:block;}
+  .price-amount{font-family:'Space Grotesk',sans-serif;font-size:56px;font-weight:700;margin-bottom:6px;}
+  .price-amount span{font-size:18px;color:var(--ink-dim);font-family:'Inter',sans-serif;font-weight:500;}
+  .price-desc{color:var(--ink-dim);font-size:15px;margin-bottom:32px;line-height:1.6;}
+
+  .slider-wrap{margin-bottom:36px;}
+  .slider-label{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-dim);margin-bottom:12px;}
+  .slider-label b{color:var(--ink);font-family:'Space Grotesk',sans-serif;font-weight:600;}
+  input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:4px;
+    background:linear-gradient(90deg,var(--blue),var(--purple));outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+    background:#fff;box-shadow:0 0 0 4px rgba(0,210,255,0.25),0 0 20px rgba(0,210,255,0.6);cursor:pointer;
+    transition:transform .2s ease;}
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15);}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:none;
+    box-shadow:0 0 0 4px rgba(0,210,255,0.25),0 0 20px rgba(0,210,255,0.6);cursor:pointer;}
+
+  .price-list{list-style:none;padding:0;margin:0 0 36px;display:flex;flex-direction:column;gap:14px;}
+  .price-list li{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--ink-dim);}
+  .price-list svg{color:var(--blue);flex:none;}
+
+  .consult-card{border-radius:26px;padding:48px;border:1px solid var(--line);background:rgba(255,255,255,0.02);}
+  .consult-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--purple);
+    border:1px solid rgba(138,43,226,0.3);padding:6px 14px;border-radius:999px;background:rgba(138,43,226,0.06);margin-bottom:24px;}
+  .consult-card h3{font-size:26px;margin:0 0 14px;font-weight:600;}
+  .consult-card p{color:var(--ink-dim);font-size:15px;line-height:1.7;margin-bottom:28px;}
+  .consult-steps{display:flex;flex-direction:column;gap:18px;margin-bottom:32px;}
+  .consult-step{display:flex;gap:14px;align-items:flex-start;}
+  .consult-step .n{width:28px;height:28px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#08101f;
+    background:linear-gradient(135deg,var(--blue),var(--purple));}
+  .consult-step p{margin:0;font-size:14.5px;color:var(--ink-dim);}
+  .consult-step p b{color:var(--ink);font-weight:600;}
+
+  /* ---------- footer / final CTA ---------- */
+  .cta-final{position:relative;padding:160px 0 80px;overflow:hidden;text-align:center;}
+  .fog{position:absolute;bottom:-40%;left:-10%;width:120%;height:70%;
+    background:radial-gradient(ellipse at center,rgba(138,43,226,0.35),transparent 70%);
+    filter:blur(80px);animation:fog-drift 18s ease-in-out infinite alternate;pointer-events:none;}
+  @keyframes fog-drift{0%{transform:translateX(-4%) translateY(0);}100%{transform:translateX(4%) translateY(-2%);}}
+
+  .magnetic-cta{
+    position:relative;display:inline-block;margin:0 auto 40px;padding:70px 90px;border-radius:32px;
+    border:1px solid var(--line);background:rgba(255,255,255,0.02);cursor:pointer;
+  }
+  .magnetic-cta h2{font-size:clamp(2rem,4.4vw,3.2rem);margin:0 0 28px;font-weight:700;}
+  @media (max-width:640px){.magnetic-cta{padding:44px 26px;}}
+
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:820px;margin:0 auto;text-align:left;}
+  @media (max-width:768px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-item{padding:26px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,0.02);
+    display:flex;gap:14px;align-items:flex-start;}
+  .contact-item svg{color:var(--blue);flex:none;margin-top:2px;}
+  .contact-item .lbl{font-size:12px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+  .contact-item .val{font-size:15px;font-weight:600;font-family:'Space Grotesk',sans-serif;}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;position:relative;z-index:2;}
+  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;color:var(--ink-dim);font-size:13px;}
+
+  .reveal{opacity:0;transform:translateY(40px);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="pl"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;SirK Cloud | Kompleksowa opieka IT dla Twojej firmy&lt;/title&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Główne fonty: Epilogue pobierany z Google Fonts --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Biblioteka GSAP dla ultra-płynnych i wydajnych animacji wprowadzających --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer&gt;&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Style CSS witryny (Koncepcja Night Sky / Data Center) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* CSS Core Reset &amp; Variable Tokens */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>*, *::before, *::after {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>/* Paleta kolorystyczna — głęboki kosmiczny grafit, indygo i electric blue */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-main: #0a0c10;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-surface: #11151d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-indigo: #1e293b;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-electric: #3b82f6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-glow: #60a5fa;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-main: #f8fafc;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-muted: #94a3b8;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>/* Struktura i płynność */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--container-max: 1200px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--transition-smooth: 0.2s cubic-bezier(0.25, 1, 0.5, 1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--font-primary: 'Epilogue', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>html {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>scroll-behavior: smooth;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-primary);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow-x: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-font-smoothing: antialiased;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Kontenery strukturalne */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: var(--container-max);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0 24px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 100px 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.alt-bg {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(17, 21, 29, 0.6);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(8px);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* SYGNATUROWY ELEMENT W TLE: Siatka data center i poświaty chmurowe (Brak layout thrashing) */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.ambient-bg {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100vw;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.data-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 200%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 200%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: -50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: -50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-image:<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>linear-gradient(to right, rgba(59, 130, 246, 0.03) 1px, transparent 1px),</p>
-<p class="p1"><span class="Apple-converted-space">                </span>linear-gradient(to bottom, rgba(59, 130, 246, 0.03) 1px, transparent 1px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-size: 50px 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: perspective(500px) rotateX(60deg);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.7;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cloud-glow {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 600px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 600px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(30, 41, 59, 0) 70%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>filter: blur(60px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: -10%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>right: -10%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>will-change: transform;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cloud-glow.secondary {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 400px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 400px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: radial-gradient(circle, rgba(96, 165, 250, 0.05) 0%, rgba(10, 12, 16, 0) 70%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>bottom: 10%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: -10%;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Typografia */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1, h2, h3 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: -0.02em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.2;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Nawigacja / Header */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.main-header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 100;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(10, 12, 16, 0.8);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(12px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid rgba(255, 255, 255, 0.03);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 16px 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.header-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.logo-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.logo-img {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>object-fit: contain;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.logo-fallback {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 800;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.accent-text {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.main-nav ul {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>list-style: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.nav-link {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: color var(--transition-smooth);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.nav-link:hover, .nav-link:focus {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Przycisk System */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 14px 28px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-primary);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: transform var(--transition-smooth), background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-sm {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-primary {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid transparent;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-primary:hover, .btn-primary:focus {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-glow);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-secondary {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(255, 255, 255, 0.03);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(255, 255, 255, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-secondary:hover, .btn-secondary:focus {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(255, 255, 255, 0.08);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-full {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Hero Section */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-top: 180px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 120px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: 1.2fr 0.8fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 3.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 800;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, var(--text-main) 60%, var(--text-muted));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-background-clip: text;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-text-fill-color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-subtitle {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 600px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.7;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-meta {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.meta-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.02);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(255, 255, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.meta-item svg {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-actions {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Elementy graficzne w Hero łączące przestrzeń sieciową */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hero-visual {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.visual-datacenter-hub {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 260px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 260px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hub-core {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 30px var(--accent-glow);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hub-ring {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px dashed rgba(59, 130, 246, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hub-ring.r1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 140px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 140px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: rotateHub 20s linear infinite;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hub-ring.r2 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 240px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 240px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: rotateHubReverse 35s linear infinite;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: rgba(96, 165, 250, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes rotateHub {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>from { transform: translate(-50%, -50%) rotate(0deg); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>to { transform: translate(-50%, -50%) rotate(360deg); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes rotateHubReverse {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>from { transform: translate(-50%, -50%) rotate(360deg); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>to { transform: translate(-50%, -50%) rotate(0deg); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Wspólne nagłówki sekcji */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 60px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 700px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-tag {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 800;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 0.1em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Siatki layoutowe */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cards-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.layout-3-col {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(3, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.layout-2-col {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(2, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Karty sekcji: Dla kogo */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.interactive-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-surface);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(255, 255, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: border-color var(--transition-smooth);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.interactive-card:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: rgba(59, 130, 246, 0.3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.card-icon {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.interactive-card h3 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.35rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.interactive-card p {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Mikrointerakcja hover: Punkt świetlny podążający za myszą */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.card-glow {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 150px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 150px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>will-change: left, top;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.interactive-card:hover .card-glow {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Filary: O Nas */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filar-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.01);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 3px solid var(--accent-indigo);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: border-color var(--transition-smooth), background-color var(--transition-smooth);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filar-item:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left-color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.02);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filar-number {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 800;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filar-content h3 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.35rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filar-content p {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Sekcja Kontaktowa */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: 1.1fr 0.9fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 60px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-lead {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-details {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-method {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.02);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(255, 255, 255, 0.04);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: border-color var(--transition-smooth), background var(--transition-smooth);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-method:hover, .contact-method:focus {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: rgba(59, 130, 246, 0.3);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(59, 130, 246, 0.03);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outline: none;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.method-icon {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 48px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 48px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(59, 130, 246, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-electric);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.method-label {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 0.05em;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.method-value {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-cta-box {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-surface);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(59, 130, 246, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 48px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0,0,0,0.3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-cta-box h3 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.6rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-cta-box p {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Stopka */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.main-footer {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-top: 1px solid rgba(255, 255, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 40px 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #06080b;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.footer-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.footer-sub {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.7;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Widoczny Focus cyfrowy dla nawigacji klawiaturą */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>a:focus-visible, button:focus-visible {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outline: 2px solid var(--accent-glow);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outline-offset: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Stany początkowe dla Intersection Observer (Scroll Reveal) */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.scroll-reveal {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(20px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>will-change: transform, opacity;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.scroll-reveal.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* RWD: Responsywność */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 1024px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.hero-container, .contact-container {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>gap: 48px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.hero-visual {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>order: -1;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.layout-3-col, .layout-2-col {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.hero-title {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>font-size: 2.4rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.section-title {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>font-size: 1.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.main-nav {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>display: none; /* Lekki fallback dla mobile */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.hero-actions {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.btn {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Pełne poszanowanie dla prefers-reduced-motion systemowego */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (prefers-reduced-motion: reduce) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.scroll-reveal {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>opacity: 1 !important;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>transform: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>transition: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.cloud-glow, .hub-ring, .btn, .interactive-card, .filar-item, .contact-method {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>animation: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>transform: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>transition: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.card-glow {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>display: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Ambient Grid &amp; Cloud Layer (Sygnaturowy Element) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ambient-bg" aria-hidden="true"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="data-grid"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cloud-glow" id="hero-glow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cloud-glow secondary" id="secondary-glow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Header / Menu nawigacyjne --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="main-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="container header-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="logo-container" aria-label="Strona główna Sirk Cloud"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Obraz logotypu z natywnym fallbackiem tekstowym --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;img src="RGB_Sirk Cloud_Horizontal_White_www.png" alt="SirK Cloud Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="logo-fallback" style="display:none;"&gt;SirK &lt;span class="accent-text"&gt;Cloud&lt;/span&gt;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;nav class="main-nav" aria-label="Nawigacja główna"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#oferta" class="nav-link"&gt;Oferta&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#dla-kogo" class="nav-link"&gt;Dla kogo&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#o-nas" class="nav-link"&gt;O nas&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#kontakt" class="btn btn-secondary btn-sm"&gt;Konsultacja&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/nav&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;main&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Sekcja Hero --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section class="hero-section" id="oferta"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="container hero-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="hero-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h1 class="hero-title"&gt;Kompleksowa opieka IT dla Twojej firmy&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="hero-subtitle"&gt;Pomagam firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez niepotrzebnych komplikacji.&lt;/p&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="hero-meta" aria-label="Informacje o usłudze"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meta-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;rect width="20" height="14" x="2" y="3" rx="2"/&gt;&lt;line x1="8" x2="16" y1="21" y2="21"/&gt;&lt;line x1="12" x2="12" y1="17" y2="21"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;Zdalna obsługa cała Polska&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meta-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;line x1="12" x2="12" y1="1" y2="23"/&gt;&lt;path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;Od 250 zł miesięcznie&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="hero-actions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#dla-kogo" class="btn btn-primary"&gt;Sprawdź ofertę&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#kontakt" class="btn btn-secondary"&gt;Napisz do nas&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Grafik kompozycyjny akcentujący przestrzeń Data Center --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="hero-visual" aria-hidden="true"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="visual-datacenter-hub"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="hub-core"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="hub-ring r1"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="hub-ring r2"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Sekcja: Dla Kogo --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section class="section scroll-reveal" id="dla-kogo"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="section-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="section-tag"&gt;Dla kogo&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="section-title"&gt;Profile firm, które wspieramy na co dzień&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="cards-grid layout-3-col"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="interactive-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="card-icon"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/&gt;&lt;circle cx="9" cy="7" r="4"/&gt;&lt;path d="M22 21v-2a4 4 0 0 0-3-3.87"/&gt;&lt;path d="M16 3.13a4 4 0 0 1 0 7.75"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3&gt;Małe firmy bez działu IT&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Zdejmujemy z Twoich barków monitorowanie sprzętu, konfigurację sieci, kopie zapasowe i bieżące awarie, byś mógł skupić się na rozwoju biznesu.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="card-glow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="interactive-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="card-icon"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;circle cx="12" cy="12" r="10"/&gt;&lt;polyline points="12 6 12 12 16 14"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3&gt;Zespoły potrzebujące szybkiej reakcji&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Gdy technologia zawodzi, liczy się każda minuta. Oferujemy natychmiastowe wsparcie zdalne i sprawne działanie, eliminując przestoje w pracy.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="card-glow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="interactive-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="card-icon"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/&gt;&lt;path d="m10 10-1.5 1.5L7 10"/&gt;&lt;path d="m15 14-1.5 1.5L12 14"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3&gt;Firmy chcące IT dopasowanego do siebie&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Nie wierzymy w rozwiązania szablonowe. Analizujemy Twoje procesy, dobieramy bezpieczne rozwiązania chmurowe i infrastrukturę pod Twój budżet.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="card-glow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Sekcja: O nas / IT z ludzkim podejściem --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section class="section alt-bg scroll-reveal" id="o-nas"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="section-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="section-tag"&gt;O nas&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="section-title"&gt;IT z ludzkim podejściem&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="cards-grid layout-2-col"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="filar-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-number"&gt;01&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3&gt;Partner nie helpdesk&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;Nie jesteśmy tylko anonimową infolinią przyjmującą zgłoszenia. Doradzamy, rozmawiamy i wspólnie z Tobą planujemy jak optymalnie wykorzystać technologię do wzrostu zysków.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="filar-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-number"&gt;02&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3&gt;IT na którym możesz polegać&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;Zapewniamy ciągłość działania. Działamy prewencyjnie – monitorujemy systemy zanim pojawi się problem, zabezpieczając dane Twojej firmy 24/7.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="filar-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-number"&gt;03&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3&gt;Normalne IT dla firm&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;Tłumaczymy zawiłe kwestie techniczne na prosty język korzyści. Otrzymujesz jasne rekomendacje bez niezrozumiałego żargonu programistycznego i sieciowego.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="filar-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-number"&gt;04&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="filar-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3&gt;Obsługa zdalna i lokalna&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Sekcja: Kontakt --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;section class="section scroll-reveal" id="kontakt"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="container contact-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="contact-info-block"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="section-tag"&gt;Kontakt&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="section-title"&gt;Porozmawiajmy o Twoim IT&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="contact-lead"&gt;Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy Ci pomóc.&lt;/p&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="contact-details"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="method-icon"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="method-label"&gt;Telefon (Pon–Pt 8:00–18:00)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="method-value"&gt;+48 511 832 376&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/a&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="mailto:kjankowski@sirk.cloud" class="contact-method" aria-label="Wyślij wiadomość e-mail na adres kjankowski@sirk.cloud"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="method-icon"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;rect width="20" height="16" x="2" y="4" rx="2"/&gt;&lt;path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="method-label"&gt;Napisz bezpośrednio&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="method-value"&gt;kjankowski@sirk.cloud&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/a&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="https://instagram.com/sirk.cloud" target="_blank" rel="noopener noreferrer" class="contact-method" aria-label="Odwiedź nasz profil na Instagramie @sirk.cloud"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="method-icon"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;rect width="20" height="20" x="2" y="2" rx="5" ry="5"/&gt;&lt;path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/&gt;&lt;line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="method-label"&gt;Instagram&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="method-value"&gt;@sirk.cloud&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Karta akcji (Call to Action) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="contact-cta-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3&gt;Gotowy uprościć swoje systemy IT?&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;Wybierz najwygodniejszą formę kontaktu. Otrzymasz rzetelną wiedzę i profesjonalne spojrzenie bez branżowego owijania w bawełnę.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="mailto:kjankowski@sirk.cloud?subject=Bezp%C5%82atna%20konsultacja%20IT" class="btn btn-primary btn-full"&gt;Zarezerwuj bezpłatną konsultację&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Stopka --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer class="main-footer"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="container footer-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;&amp;copy; 2026 SirK Cloud. Wszelkie prawa zastrzeżone.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="footer-sub"&gt;Partner w IT dla sektora MŚP — Łódź i cała Polska.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Logika JavaScript (Orkiestracja Motion Designu i Logiki UI) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', () =&gt; {</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Weryfikacja preferencji redukcji ruchu użytkownika</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// 1. SEKWENCJA INTRO (Płynne wejście sekcji Hero przy załadowaniu)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const runHeroIntro = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (prefersReducedMotion) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (typeof gsap !== 'undefined') {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tl.from('.main-header', { opacity: 0, y: -20, duration: 0.8 })</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>.from('.hero-title', { opacity: 0, y: 30, duration: 0.8 }, '-=0.4')</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>.from('.hero-subtitle', { opacity: 0, y: 20, duration: 0.6 }, '-=0.5')</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>.from('.meta-item', { opacity: 0, y: 15, duration: 0.5, stagger: 0.1 }, '-=0.4')</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>.from('.hero-actions .btn', { opacity: 0, scale: 0.95, duration: 0.5, stagger: 0.15 }, '-=0.3')</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>.from('.hero-visual', { opacity: 0, scale: 0.9, duration: 1 }, '-=0.6');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Natywny fallback, gdyby CDN nie odpowiedział natychmiast</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>document.querySelectorAll('.hero-title, .hero-subtitle, .hero-actions').forEach(el =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>el.style.opacity = '1';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// 2. PARALAKSA MYSZOWA DLA AMBIENT GLOW (Sygnaturowy Element)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const initAmbientParallax = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (prefersReducedMotion) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const heroGlow = document.getElementById('hero-glow');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const secondaryGlow = document.getElementById('secondary-glow');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (!heroGlow) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>window.addEventListener('mousemove', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const moveX = (e.clientX - window.innerWidth / 2) * 0.03;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const moveY = (e.clientY - window.innerHeight / 2) * 0.03;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Wykorzystanie transformacji sprzętowej w celu eliminacji skoków wydajności</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>heroGlow.style.transform = `translate(${moveX}px, ${moveY}px)`;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>secondaryGlow.style.transform = `translate(${-moveX * 1.5}px, ${-moveY * 1.5}px)`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// 3. ŚLEDZENIE POZYCJI KURSORA NA KARTACH (Efekt podświetlenia siatki)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const initCardMicroInteractions = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (prefersReducedMotion) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const cards = document.querySelectorAll('.interactive-card');</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>cards.forEach(card =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const glow = card.querySelector('.card-glow');</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>card.addEventListener('mousemove', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const rect = card.getBoundingClientRect();</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const x = e.clientX - rect.left;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const y = e.clientY - rect.top;</p>
-<p class="p2"><span class="Apple-converted-space">                        </span></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>glow.style.left = `${x}px`;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>glow.style.top = `${y}px`;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// 4. SCROLL-TRIGGERED REVEAL ( Intersection Observer dla sekcji)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const initScrollReveal = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (prefersReducedMotion) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const revealElements = document.querySelectorAll('.scroll-reveal');</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const observerOptions = {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>root: null,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>threshold: 0.12, // Wyzwolenie animacji, gdy 12% wysokości elementu jest w rzucie ekranu</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>border: '0px'</p>
-<p class="p1"><span class="Apple-converted-space">                </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const observer = new IntersectionObserver((entries) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>entries.forEach(entry =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>if (entry.isIntersecting) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>entry.target.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>observer.unobserve(entry.target); // Animacja odpala się tylko raz</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}, observerOptions);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>revealElements.forEach(el =&gt; observer.observe(el));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Inicjalizacja wszystkich modułów UI</p>
-<p class="p1"><span class="Apple-converted-space">            </span>runHeroIntro();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>initAmbientParallax();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>initCardMicroInteractions();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>initScrollReveal();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="glow-field">
+  <div class="glow glow-blue"></div>
+  <div class="glow glow-purple"></div>
+  <div class="glow glow-blue2"></div>
+</div>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-mark"></span>
+      Sirk Cloud
+    </div>
+    <div class="nav-links">
+      <a href="#dla-kogo">Dla kogo</a>
+      <a href="#wartosci">O nas</a>
+      <a href="#cennik">Cennik</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+    <a href="#kontakt" class="nav-cta">Umów konsultację</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Outsourcing IT · Łódź &amp; cała Polska</div>
+      <h1>Kompleksowa opieka IT dla Twojej firmy. <span class="accent">Po prostu.</span></h1>
+      <p class="sub">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały. Bez straszenia technologią, bez komplikacji.</p>
+      <div class="hero-ctas">
+        <a href="#kontakt" class="btn btn-primary">Umów bezpłatną konsultację</a>
+        <a href="#cennik" class="btn btn-ghost">Zobacz ofertę</a>
+      </div>
+      <div class="trust-row">
+        <div><strong>250 zł</strong>punkt startowy miesięcznie</div>
+        <div><strong>20–30 min</strong>bezpłatna konsultacja</div>
+        <div><strong>8:00–18:00</strong>Pon–Pt, realny człowiek</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <canvas id="cloudCanvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- DLA KOGO -->
+<section id="dla-kogo" class="section-pad">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">IT z ludzkim podejściem</span>
+      <h2>Dla kogo pracujemy</h2>
+      <p>Nie obsługujemy wszystkich — obsługujemy dobrze. Sprawdź, czy to Ty.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who-card">
+        <span class="who-num">01 / Bez działu IT</span>
+        <div class="who-icon" data-lucide="building-2"></div>
+        <h3>Małe firmy bez własnego działu IT</h3>
+        <p>Ktoś musi ogarniać komputery, sieć i backupy — nie musi to być właściciel firmy. Przejmujemy IT, żebyś Ty mógł zajmować się biznesem.</p>
+      </div>
+      <div class="who-card">
+        <span class="who-num">02 / Szybka reakcja</span>
+        <div class="who-icon" data-lucide="zap"></div>
+        <h3>Zespoły potrzebujące szybkiej reakcji</h3>
+        <p>Awaria nie czeka na kolejkę zgłoszeń. Odpowiadamy szybko i konkretnie, bez przerzucania Cię między konsultantami.</p>
+      </div>
+      <div class="who-card">
+        <span class="who-num">03 / Szyte na miarę</span>
+        <div class="who-icon" data-lucide="settings-2"></div>
+        <h3>Firmy chcące IT dopasowanego do siebie</h3>
+        <p>Bez gotowych pakietów naciąganych na Twoją firmę. Poznajemy Twoje środowisko i dopasowujemy zakres opieki do realnych potrzeb.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WARTOŚCI / BENTO -->
+<section id="wartosci" class="section-pad">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">Dlaczego Sirk Cloud</span>
+      <h2>Normalne IT, prowadzone przez ludzi</h2>
+      <p>Zero korporacyjnego żargonu. Zero anonimowego helpdesku. Tylko konkretna opieka nad Twoim IT.</p>
+    </div>
+    <div class="bento">
+      <div class="bento-item bento-a reveal">
+        <div class="bento-glow"></div>
+        <div class="bento-icon pulse" data-lucide="handshake"></div>
+        <h3>Partner, nie helpdesk</h3>
+        <p>Znamy Twoje środowisko, Twoich ludzi i Twoje priorytety. Rozmawiasz zawsze z kimś, kto wie, o co chodzi — bez tłumaczenia wszystkiego od nowa przy każdym zgłoszeniu.</p>
+      </div>
+      <div class="bento-item bento-b reveal">
+        <div class="bento-icon" data-lucide="clock-4"></div>
+        <h3>Normalne IT dla firm</h3>
+        <p>Bez nieskończonych kolejek ticketów i automatycznych odpowiedzi. Szybki czas reakcji i jasne zasady współpracy od pierwszego dnia.</p>
+      </div>
+      <div class="bento-item bento-c reveal">
+        <div class="stat-counter" data-target="24">0</div>
+        <p>godziny obsługi krytycznych zgłoszeń w dni robocze</p>
+      </div>
+      <div class="bento-item bento-d reveal">
+        <div class="bento-icon" data-lucide="map-pin"></div>
+        <div class="locations">
+          <div class="loc-row"><span class="loc-dot"></span> Zdalnie — cała Polska</div>
+          <div class="loc-row"><span class="loc-dot alt"></span> Lokalnie — Łódź i okolice</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CENNIK -->
+<section id="cennik" class="section-pad">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">Przejrzyście, bez ukrytych kosztów</span>
+      <h2>Cennik dopasowany do zespołu</h2>
+      <p>Płacisz za realną opiekę, nie za sztywny pakiet. Im dokładniej znamy Twoją firmę, tym trafniejsza wycena.</p>
+    </div>
+    <div class="pricing-wrap">
+      <div class="price-card reveal">
+        <span class="price-tag">Obsługa IT</span>
+        <div class="price-amount">już od 250 zł<span> / mies.</span></div>
+        <p class="price-desc">Ostateczna cena zależy od wielkości zespołu i zakresu opieki — poniżej możesz to zobaczyć.</p>
+
+        <div class="slider-wrap">
+          <div class="slider-label">Wielkość zespołu: <b id="teamSizeLabel">10 osób</b></div>
+          <input type="range" min="1" max="60" value="10" id="teamSlider">
+        </div>
+
+        <div class="slider-label" style="margin-bottom:28px;">
+          Szacunkowa opieka miesięczna
+          <b id="priceEstimate" style="color:var(--blue);font-size:20px;">450 zł</b>
+        </div>
+
+        <ul class="price-list">
+          <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Zdalne wsparcie techniczne</li>
+          <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Monitoring i backupy</li>
+          <li><svg data-lucide="check-circle-2" width="18" height="18"></svg> Stały opiekun IT</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-primary" style="width:100%;justify-content:center;">Wycena dla mojej firmy</a>
+      </div>
+
+      <div class="consult-card reveal">
+        <span class="consult-badge"><svg data-lucide="calendar" width="14" height="14"></svg> Bezpłatnie, bez zobowiązań</span>
+        <h3>20–30 minut, żeby poznać Twoją firmę</h3>
+        <p>Zanim zaproponujemy zakres opieki, chcemy zrozumieć, jak realnie działa Twoje IT dziś — i gdzie najbardziej boli.</p>
+        <div class="consult-steps">
+          <div class="consult-step"><span class="n">1</span><p><b>Rozmowa</b> o Twoim zespole i obecnym IT</p></div>
+          <div class="consult-step"><span class="n">2</span><p><b>Diagnoza</b> najpilniejszych ryzyk i braków</p></div>
+          <div class="consult-step"><span class="n">3</span><p><b>Propozycja</b> zakresu opieki i wyceny</p></div>
+        </div>
+        <a href="#kontakt" class="btn btn-ghost" style="width:100%;justify-content:center;">Umów bezpłatną konsultację</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA / KONTAKT -->
+<section id="kontakt" class="cta-final">
+  <div class="fog"></div>
+  <div class="container">
+    <div class="magnetic-cta" id="magneticCta">
+      <h2>Porozmawiajmy<br>o Twoim IT.</h2>
+      <a href="mailto:kjankowski@sirk.cloud" class="btn btn-primary">Napisz do nas</a>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <svg data-lucide="phone" width="20" height="20"></svg>
+        <div><div class="lbl">Telefon</div><div class="val">+48 511 832 376</div></div>
+      </div>
+      <div class="contact-item">
+        <svg data-lucide="mail" width="20" height="20"></svg>
+        <div><div class="lbl">E-mail</div><div class="val">kjankowski@sirk.cloud</div></div>
+      </div>
+      <div class="contact-item">
+        <svg data-lucide="clock" width="20" height="20"></svg>
+        <div><div class="lbl">Godziny pracy</div><div class="val">Pon–Pt 8:00–18:00</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© <span id="year"></span> Sirk Cloud. Wszystkie prawa zastrzeżone.</div>
+    <div>sirk.cloud</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+lucide.createIcons();
+
+/* ---------------- NAV hide on scroll down ---------------- */
+(function(){
+  let lastY = window.scrollY;
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if(y > lastY && y > 120){ nav.style.transform = 'translateY(-100%)'; }
+    else { nav.style.transform = 'translateY(0)'; }
+    lastY = y;
+  }, {passive:true});
+})();
+
+/* ---------------- particle cloud (canvas) ---------------- */
+(function(){
+  const canvas = document.getElementById('cloudCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = window.innerWidth < 760;
+
+  function resize(){
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W+'px'; canvas.style.height = H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COUNT = isMobile ? 320 : 900;
+  const particles = [];
+  const cx = () => W/2, cy = () => H/2;
+  const radiusX = () => Math.min(W,H)*0.42;
+  const radiusY = () => Math.min(W,H)*0.30;
+
+  for(let i=0;i<COUNT;i++){
+    // distribute in a fluffy cloud blob shape using layered noise-ish randomness
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.random()*Math.PI;
+    const r = 0.55 + Math.random()*0.45;
+    particles.push({
+      baseX: Math.cos(theta)*Math.sin(phi)*r,
+      baseY: Math.cos(phi)*r*0.7,
+      baseZ: Math.sin(theta)*Math.sin(phi)*r,
+      size: Math.random()*1.8+0.6,
+      hue: Math.random() > 0.5 ? 'blue' : 'purple',
+      tw: Math.random()*Math.PI*2,
+      speed: Math.random()*0.4+0.15
+    });
+  }
+
+  let mouseX = 0, mouseY = 0, targetRotX = 0, targetRotY = 0, rotX = 0, rotY = 0;
+  window.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = (e.clientX - (rect.left+rect.width/2)) / rect.width;
+    mouseY = (e.clientY - (rect.top+rect.height/2)) / rect.height;
+    targetRotY = mouseX * 0.6;
+    targetRotX = mouseY * -0.4;
+  }, {passive:true});
+
+  let t = 0;
+  function draw(){
+    t += 0.006;
+    rotX += (targetRotX - rotX) * 0.04;
+    rotY += (targetRotY - rotY) * 0.04 + (reduceMotion ? 0 : 0.0022);
+
+    ctx.clearRect(0,0,W,H);
+
+    const sorted = particles.map(p => {
+      // rotate around Y then X
+      let x = p.baseX, y = p.baseY, z = p.baseZ;
+      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+      let x1 = x*cosY - z*sinY;
+      let z1 = x*sinY + z*cosY;
+      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+      let y1 = y*cosX - z1*sinX;
+      let z2 = y*sinX + z1*cosX;
+
+      const scale = 1 / (2 - z2*0.9);
+      const px = cx() + x1 * radiusX() * scale;
+      const py = cy() + y1 * radiusY() * scale;
+      return {px, py, scale, z2, p};
+    }).sort((a,b) => a.z2 - b.z2);
+
+    for(const s of sorted){
+      const flicker = 0.55 + 0.45*Math.sin(t*s.p.speed*6 + s.p.tw);
+      const alpha = Math.max(0, Math.min(1, s.scale)) * flicker * 0.9;
+      const size = s.p.size * s.scale * 2.2;
+      const color = s.p.hue === 'blue' ? `rgba(0,210,255,${alpha})` : `rgba(138,43,226,${alpha})`;
+      ctx.beginPath();
+      ctx.arc(s.px, s.py, Math.max(size,0.4), 0, Math.PI*2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ---------------- scroll reveals (GSAP) ---------------- */
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.utils.toArray('.who-card').forEach((card, i) => {
+  gsap.to(card, {
+    opacity:1, y:0, filter:'blur(0px)',
+    duration:0.9, ease:'power3.out', delay:i*0.08,
+    scrollTrigger:{trigger:card, start:'top 85%'}
+  });
+});
+
+gsap.utils.toArray('.reveal').forEach((el, i) => {
+  gsap.fromTo(el, {opacity:0, y:40}, {
+    opacity:1, y:0, duration:0.9, ease:'power3.out', delay:(i%4)*0.08,
+    scrollTrigger:{trigger:el, start:'top 88%'}
+  });
+});
+
+/* hero entrance */
+gsap.from('.hero .eyebrow', {opacity:0, y:20, duration:0.7, delay:0.1});
+gsap.from('.hero h1', {opacity:0, y:30, duration:0.9, delay:0.2});
+gsap.from('.hero p.sub', {opacity:0, y:20, duration:0.8, delay:0.35});
+gsap.from('.hero-ctas', {opacity:0, y:20, duration:0.8, delay:0.5});
+gsap.from('.trust-row', {opacity:0, y:20, duration:0.8, delay:0.65});
+
+/* counter */
+ScrollTrigger.create({
+  trigger:'.stat-counter', start:'top 90%', once:true,
+  onEnter:() => {
+    const el = document.querySelector('.stat-counter');
+    const target = parseInt(el.dataset.target,10);
+    let obj = {v:0};
+    gsap.to(obj, {v:target, duration:1.4, ease:'power2.out', onUpdate:() => { el.textContent = Math.round(obj.v)+'/7'; }});
+  }
+});
+
+/* ---------------- pricing slider ---------------- */
+(function(){
+  const slider = document.getElementById('teamSlider');
+  const sizeLabel = document.getElementById('teamSizeLabel');
+  const priceLabel = document.getElementById('priceEstimate');
+  function calc(){
+    const n = parseInt(slider.value,10);
+    sizeLabel.textContent = n + (n===1 ? ' osoba' : ' osób');
+    const price = Math.max(250, Math.round((250 + (n-1)*38)/10)*10);
+    priceLabel.textContent = price.toLocaleString('pl-PL') + ' zł';
+  }
+  slider.addEventListener('input', calc);
+  calc();
+})();
+
+/* ---------------- magnetic buttons ---------------- */
+(function(){
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  if(isTouch) return;
+  document.querySelectorAll('.btn, .magnetic-cta').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width/2;
+      const y = e.clientY - rect.top - rect.height/2;
+      gsap.to(el, {x:x*0.18, y:y*0.25, duration:0.5, ease:'power3.out'});
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, {x:0, y:0, duration:0.6, ease:'elastic.out(1,0.4)'});
+    });
+  });
+})();
+</script>
 </body>
 </html>
