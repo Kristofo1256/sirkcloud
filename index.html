@@ -130,7 +130,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal - Likwidacja paska przewijania poziomowego */
+        /* Terminal */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -138,7 +138,7 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 0 22px 22px 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
             text-align: left; position: relative; 
-            overflow: hidden; /* Blokada pasków przewijania */
+            overflow: hidden;
         }
 
         .terminal-header { 
@@ -251,7 +251,7 @@
             .contact-cta-box { padding: 24px; }
             .footer-container { flex-direction: column; text-align: center; gap: 12px; }
 
-            /* SUPER SZYBKA ANIMACJA POJAWIANIA SIĘ SEKCJI NA TELEFONIE */
+            /* SUPER SZYBKA ANIMACJA DLA TELEFONÓW */
             .scroll-animate-trigger {
                 opacity: 0;
                 transform: translateY(12px);
@@ -403,7 +403,7 @@
                         <div class="filar-number">04</div>
                         <div class="filar-content">
                             <h3>Obsługa zdalna i lokalna</h3>
-                            <p>Łączynie elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
+                            <p>Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne.</p>
                         </div>
                     </div>
                 </div>
@@ -502,7 +502,7 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
             const runAutoSequence = async () => {
-                // Szybka, bezawaryjna wersja mobilna (statyczna)
+                // Szybka wersja mobilna (statyczna)
                 if (window.innerWidth <= 768) {
                     terminalBody.innerHTML = `
                         <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> support-core --status</span>
@@ -515,7 +515,7 @@
                     return;
                 }
 
-                // NAPRAWIONA SEKWENCJA DESKTOP: Komenda wpisuje się idealnie w jednej linii z promptem
+                // Sekwencja Desktop
                 const firstRow = document.createElement('span');
                 firstRow.className = 'term-row';
                 firstRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
@@ -531,7 +531,6 @@
                     await sleep(60); 
                 }
                 
-                // Usunięcie kursora z pierwszej linii po wpisaniu komendy
                 const firstCursor = firstRow.querySelector('.term-cursor');
                 if(firstCursor) firstCursor.remove();
 
@@ -556,7 +555,7 @@
                     await sleep(40); 
                 }
 
-                // Stopniowe wypluwanie kolejnych logów (Naprawa "wszystko naraz")
+                // Stopniowe wypluwanie kolejnych logów
                 await sleep(600);
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
                 await sleep(700);
@@ -565,7 +564,9 @@
                 appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
-                await sleep(900);
+                
+                // ZADANY WAIT: krótka pauza (1.2 sekundy) przed wpisaniem polecenia wyjścia
+                await sleep(1200);
 
                 appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
                 await sleep(600);
@@ -578,7 +579,7 @@
                 createInteractivePromptLine();
             };
 
-            // Reakcje na wprowadzanie komend
+            // Interaktywność konsoli użytkownika
             terminalWindow.addEventListener('click', () => { 
                 if(isInteractiveEnabled && window.innerWidth > 768) hiddenInput.focus(); 
             });
@@ -608,7 +609,7 @@
 
             runAutoSequence();
 
-            // --- SYSTEM SCROLLSPY (Zoptymalizowany za pomocą throttling) ---
+            // --- SYSTEM SCROLLSPY (Throttling) ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
@@ -644,12 +645,12 @@
                         });
                     }
                     scrollTimeout = null;
-                }, 60); // Sprawdzanie co 60ms nie obciąża procesora na desktopie
+                }, 60); 
             };
 
             window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
 
-            // --- REVEAL INTERSECTION OBSERVER (Mobile & Desktop) ---
+            // --- REVEAL INTERSECTION OBSERVER ---
             const initScrollReveal = () => {
                 const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
                 const isMobile = window.innerWidth <= 768;
