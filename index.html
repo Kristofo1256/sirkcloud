@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Pobieranie czcionki bez blokowania renderowania strony -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -273,7 +271,6 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
-    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
             <a href="#" class="logo-container" data-scroll="oferta" aria-label="Przewiń na górę strony">
@@ -292,7 +289,6 @@
     </header>
 
     <main>
-        <!-- Sekcja Hero (Oferta) -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -325,7 +321,6 @@
                         </div>
                         
                         <div id="terminalBody" class="log-output">
-                            <!-- STATYCZNY FINISZUJĄCY OBRAZ TERMINALA DLA WERSJI MOBILNEJ (Domyślny stan HTML) -->
                             <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
                             <div class="progress-row-layout" style="color:#a7f3d0;">
                                 <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill">██████████████████████████████████████████</span>]</span>
@@ -345,7 +340,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -381,7 +375,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -425,7 +418,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
@@ -513,12 +505,11 @@
             };
             initScrollReveal();
 
-            // Zatrzymujemy wykonywanie skryptu terminala na mobile - zostaje sam czysty kod HTML (finiszujący obraz)
+            // Zatrzymujemy wykonywanie skryptu terminala na mobile
             if (window.innerWidth <= 768) {
                 return;
             }
 
-            // Czyszczenie body terminala na Desktopie pod animację sequencji
             terminalBody.innerHTML = "";
 
             const appendLog = (html) => {
@@ -547,7 +538,6 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
             const runAutoSequence = async () => {
-                // Sekwencja Desktop - Pierwsza komenda
                 const firstRow = document.createElement('span');
                 firstRow.className = 'term-row';
                 firstRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
@@ -568,7 +558,6 @@
 
                 await sleep(600);
                 
-                // Pasek ładowania rozciągnięty na całą linię konsoli
                 const progressRow = appendLog(`
                     <div class="progress-row-layout" style="color:#a7f3d0;">
                         <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill"></span>]</span>
@@ -579,7 +568,7 @@
                 const progressBarFill = progressRow.querySelector('.progress-bar-fill');
                 const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
                 
-                const totalBlocks = 41; // Maksymalna bezpieczna długość dla pełnej szerokości kontenera
+                const totalBlocks = 41; 
                 for (let i = 1; i <= totalBlocks; i++) {
                     progressBarFill.textContent += "█";
                     const percentage = Math.round((i / totalBlocks) * 100);
@@ -587,7 +576,6 @@
                     await sleep(35); 
                 }
 
-                // Logi statusowe
                 await sleep(600);
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
                 await sleep(700);
@@ -597,7 +585,6 @@
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
                 
-                // Prompt dla exit 0 pojawia się natychmiast
                 const exitRow = document.createElement('span');
                 exitRow.className = 'term-row';
                 exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
@@ -606,10 +593,8 @@
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
 
-                // Czekamy 3 sekundy
                 await sleep(3000);
 
-                // Płynne wpisywanie polecenia exit 0
                 const exitTextContainer = exitRow.querySelector('.exit-text-container');
                 const exitCommandText = "exit 0";
 
@@ -629,7 +614,6 @@
                 createInteractivePromptLine();
             };
 
-            // Obsługa konsoli użytkownika
             terminalWindow.addEventListener('click', () => { 
                 if(isInteractiveEnabled) hiddenInput.focus(); 
             });
@@ -660,8 +644,8 @@
             runAutoSequence();
         });
 
-        // --- ULTRA SZYBKIE NATIVE SCROLL & SCROLLSPY ---
-        // Autorska, natychmiastowa nawigacja bez blokowania pętli renderowania przeglądarki
+        // --- NATYCHMIASTOWY SPRZĘTOWY SKOK (Zoptymalizowana Nawigacja) ---
+        // Usunięto powolną animację smooth przeglądarki na rzecz bezpośredniego, natychmiastowego renderu pozycji
         document.querySelectorAll('[data-scroll]').forEach(trigger => {
             trigger.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -672,15 +656,15 @@
                 const menuOffset = window.innerWidth <= 768 ? 65 : 95;
                 const targetPosition = targetSection.offsetTop - menuOffset;
 
-                // Natychmiastowe płynne przewinięcie kontrolowane przez silnik przeglądarki
+                // Skok w czasie zerowym zarządzany natywnie przez GPU systemu operacyjnego
                 window.scrollTo({
                     top: targetPosition,
-                    behavior: 'smooth'
+                    behavior: 'auto'
                 });
             });
         });
 
-        // Lekki ScrollSpy zarządzający klasami aktywności bez lagów
+        // Lekki, odizolowany ScrollSpy zarządzający klasami menu
         const sections = document.querySelectorAll('section[id], #kontakt');
         const navLinks = document.querySelectorAll('.nav-link');
         const consultationBtn = document.getElementById('consultationBtn');
