@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>sirk.cloud — IT z ludzkim podejściem</title>
+<meta name="description" content="Kompleksowa opieka IT dla Twojej firmy. Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0B;
+    --card: #131316;
+    --fg: #FAFAFA;
+    --muted: #8A8A93;
+    --muted-50: rgba(138,138,147,0.5);
+    --primary: #FF6B35;
+    --border: #222226;
+    --radius: 0.75rem;
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--primary); color: #fff; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,107,53,0.6); }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* ---------- NAVBAR ---------- */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
+    border-bottom: 1px solid transparent;
+  }
+  .navbar.scrolled {
+    background: rgba(10,10,11,0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem clamp(1.5rem, 8vw, 5rem);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.625rem; }
+  .nav-dot { position: relative; display: inline-flex; width: 8px; height: 8px; }
+  .nav-dot::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: var(--primary); opacity: 0.75;
+    animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite;
+  }
+  .nav-dot::after {
+    content: ''; position: relative; display: inline-flex; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--primary);
+  }
+  @keyframes ping {
+    75%, 100% { transform: scale(2.2); opacity: 0; }
+  }
+  .nav-logo span { font-family: var(--font-mono); font-size: 0.875rem; letter-spacing: -0.01em; }
+  .nav-menu-btn {
+    font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(250,250,250,0.8);
+    transition: color 0.3s; padding: 0 0.5rem;
+  }
+  .nav-menu-btn:hover { color: var(--primary); }
+  .nav-menu-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
+
+  /* ---------- MENU OVERLAY ---------- */
+  .menu-overlay {
+    position: fixed; inset: 0; z-index: 40;
+    background: rgba(10,10,11,0.95);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .menu-overlay.open { opacity: 1; pointer-events: auto; }
+  .menu-overlay nav { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+  .menu-link {
+    font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4rem);
+    color: var(--fg); opacity: 0; transform: translateY(30px);
+    transition: color 0.3s;
+  }
+  .menu-overlay.open .menu-link { animation: menuIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+  .menu-overlay.open .menu-link:nth-child(1) { animation-delay: 0.08s; }
+  .menu-overlay.open .menu-link:nth-child(2) { animation-delay: 0.15s; }
+  .menu-overlay.open .menu-link:nth-child(3) { animation-delay: 0.22s; }
+  .menu-overlay.open .menu-phone { animation: menuIn 0.5s 0.4s cubic-bezier(0.22,1,0.36,1) forwards; }
+  @keyframes menuIn { to { opacity: 1; transform: translateY(0); } }
+  .menu-link:hover { color: var(--primary); }
+  .menu-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
+  .menu-phone {
+    margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.875rem;
+    color: var(--muted); opacity: 0; transition: color 0.3s;
+  }
+  .menu-phone:hover { color: var(--primary); }
+
+  /* ---------- HERO ---------- */
+  .hero { position: relative; min-height: 100vh; background: var(--bg); overflow: hidden; }
+  #particle-canvas { position: absolute; inset: 0; pointer-events: none; }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.04;
+    background-image:
+      linear-gradient(to right, #fff 1px, transparent 1px),
+      linear-gradient(to bottom, #fff 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .hero-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 12rem;
+    background: linear-gradient(to top, var(--bg), transparent); pointer-events: none; }
+  .hero-content {
+    position: relative; z-index: 10; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 7rem clamp(1.5rem, 8vw, 5rem) 6rem;
+  }
+
+  .terminal { max-width: 28rem; margin-bottom: 2.5rem; }
+  .terminal-window {
+    background: rgba(19,19,22,0.8); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  }
+  .terminal-bar {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.625rem 1rem; border-bottom: 1px solid var(--border);
+    background: rgba(26,26,30,0.4);
+  }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .term-dot.r { background: rgba(239,68,68,0.7); }
+  .term-dot.y { background: rgba(234,179,8,0.7); }
+  .term-dot.g { background: rgba(34,197,94,0.7); }
+  .terminal-bar span {
+    margin-left: 0.5rem; font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  }
+  .terminal-body { padding: 1rem; min-height: 120px; }
+  .term-line { display: flex; font-family: var(--font-mono); font-size: 0.75rem; margin-bottom: 0.375rem; }
+  @media (min-width: 768px) { .term-line { font-size: 0.875rem; } }
+  .term-prompt { color: var(--primary); flex-shrink: 0; }
+  .term-text { color: rgba(250,250,250,0.8); }
+  .term-text.ok { color: #4ade80; }
+  .term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--primary);
+    margin-left: 2px; align-self: center; animation: blink 1s steps(2) infinite; }
+  @media (min-width: 768px) { .term-cursor { height: 16px; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--primary); margin-bottom: 1.25rem;
+  }
+  @media (min-width: 768px) { .hero-eyebrow { font-size: 0.875rem; } }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(2.2rem, 7vw, 5.5rem); line-height: 0.98; letter-spacing: -0.02em;
+    max-width: 48rem;
+  }
+  .hero h1 .accent { color: var(--primary); }
+  .hero-sub {
+    font-size: 1rem; color: var(--muted); max-width: 36rem; margin-top: 1.75rem; line-height: 1.6;
+  }
+  @media (min-width: 768px) { .hero-sub { font-size: 1.125rem; } }
+  .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 2.5rem; }
+  .btn-primary {
+    position: relative; font-family: var(--font-mono); font-size: 0.875rem;
+    background: var(--primary); color: #fff; padding: 0.875rem 1.75rem; border-radius: 0.5rem;
+    transition: box-shadow 0.3s;
+  }
+  .btn-primary:hover { box-shadow: 0 0 30px rgba(255,107,53,0.5); }
+  .btn-primary:focus-visible, .btn-secondary:focus-visible {
+    outline: 2px solid var(--primary); outline-offset: 4px;
+  }
+  .btn-secondary {
+    font-family: var(--font-mono); font-size: 0.875rem; color: var(--fg);
+    border: 1px solid var(--border); padding: 0.875rem 1.75rem; border-radius: 0.5rem;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: 3rem;
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
+  }
+  .hero-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; display: inline-block; margin-right: 0.5rem; }
+  .hero-meta .sep { width: 1px; height: 12px; background: var(--border); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  }
+  .scroll-indicator span {
+    font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .scroll-line { width: 1px; height: 2rem; background: linear-gradient(to bottom, var(--primary), transparent);
+    animation: scrollPulse 1.6s ease-in-out infinite; }
+  @keyframes scrollPulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+  /* reveal helper */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal.delay-1 { transition-delay: 0.15s; }
+  .reveal.delay-2 { transition-delay: 0.3s; }
+  .reveal.delay-3 { transition-delay: 0.45s; }
+
+  /* ---------- MARQUEE ---------- */
+  .marquee {
+    position: relative; overflow: hidden; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); background: rgba(19,19,22,0.4); padding: 1rem 0;
+  }
+  .marquee-track { display: flex; gap: 2.5rem; white-space: nowrap; animation: marquee 32s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .marquee span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; }
+  @media (min-width: 768px) { .marquee span { font-size: 0.875rem; } }
+  .marquee .sep { color: var(--primary); }
+
+  /* ---------- SECTIONS ---------- */
+  .section { padding: 6rem clamp(1.5rem, 8vw, 5rem); }
+  @media (min-width: 768px) { .section { padding: 9rem clamp(1.5rem, 8vw, 5rem); } }
+  .container { max-width: 72rem; margin: 0 auto; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--primary); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(1.8rem, 4.5vw, 3.5rem); line-height: 1.1; letter-spacing: -0.02em;
+    max-width: 42rem;
+  }
+
+  /* ---------- AUDIENCE ---------- */
+  .audience-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 3.5rem; }
+  @media (min-width: 768px) { .audience-grid { grid-template-columns: repeat(3,1fr); gap: 1.5rem; } }
+  .audience-card {
+    position: relative; background: var(--card); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.75rem; overflow: hidden;
+    transition: border-color 0.5s;
+  }
+  @media (min-width: 768px) { .audience-card { padding: 2rem; } }
+  .audience-card:hover { border-color: rgba(255,107,53,0.4); }
+  .audience-card .glow {
+    position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+    background: radial-gradient(circle at 50% 0%, rgba(255,107,53,0.10), transparent 65%);
+  }
+  .audience-card:hover .glow { opacity: 1; }
+  .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .card-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--primary); }
+  .card-icon { font-family: var(--font-mono); font-size: 10px; color: rgba(138,138,147,0.5); transition: color 0.5s; }
+  .audience-card:hover .card-icon { color: var(--primary); }
+  .card-title {
+    font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 1rem; transition: color 0.5s;
+  }
+  @media (min-width: 768px) { .card-title { font-size: 1.5rem; } }
+  .audience-card:hover .card-title { color: var(--primary); }
+  .card-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+  @media (min-width: 768px) { .card-desc { font-size: 1rem; } }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .card-tag {
+    font-family: var(--font-mono); font-size: 10px; padding: 0.25rem 0.625rem;
+    border-radius: 9999px; border: 1px solid var(--border); color: var(--muted);
+    transition: border-color 0.5s;
+  }
+  .audience-card:hover .card-tag { border-color: rgba(255,107,53,0.3); }
+
+  /* ---------- ABOUT ---------- */
+  .about { background: rgba(19,19,22,0.3); position: relative; }
+  .about-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+  @media (min-width: 1024px) { .about-grid { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+  .about-header h2 { margin-bottom: 2rem; }
+  .status-panel {
+    background: rgba(19,19,22,0.8); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden; margin-top: 1rem;
+  }
+  .status-bar {
+    display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem;
+    border-bottom: 1px solid var(--border); background: rgba(26,26,30,0.3);
+  }
+  .status-bar span { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+  .status-body { padding: 1rem; display: flex; flex-direction: column; gap: 0.625rem; }
+  .status-row { display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; }
+  .status-row .k { color: var(--muted); }
+  .status-row .v { display: flex; align-items: center; gap: 0.5rem; color: rgba(250,250,250,0.8); }
+  .status-row .v::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
+
+  .stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; margin-top: 2rem; }
+  @media (min-width: 768px) { .stats { grid-template-columns: repeat(4,1fr); } }
+  .stat { border-left: 2px solid rgba(255,107,53,0.4); padding-left: 0.75rem; }
+  .stat .val { font-family: var(--font-display); font-size: 1.25rem; }
+  @media (min-width: 768px) { .stat .val { font-size: 1.25rem; } }
+  .stat .label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+
+  .values { display: flex; flex-direction: column; }
+  .value-item {
+    display: flex; align-items: flex-start; gap: 1.25rem; padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border); transition: color 0.5s;
+  }
+  .value-item:last-child { border-bottom: none; }
+  .value-item:hover .value-title { color: var(--primary); }
+  .value-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--primary); padding-top: 0.375rem; flex-shrink: 0; }
+  .value-title { font-family: var(--font-display); font-size: 1.125rem; margin-bottom: 0.5rem; transition: color 0.5s; }
+  @media (min-width: 768px) { .value-title { font-size: 1.25rem; } }
+  .value-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-links { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 3rem; }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+    padding: 1.25rem 1.5rem; background: var(--card); border: 1px solid var(--border);
+    border-radius: 0.75rem; transition: border-color 0.3s;
+  }
+  .contact-link:hover { border-color: rgba(255,107,53,0.4); }
+  .contact-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .contact-link .left { display: flex; align-items: center; gap: 1.25rem; }
+  .contact-icon {
+    width: 44px; height: 44px; border-radius: 0.5rem; background: #1A1A1E;
+    display: flex; align-items: center; justify-content: center; transition: background 0.3s;
+  }
+  .contact-link:hover .contact-icon { background: var(--primary); }
+  .contact-icon svg { width: 20px; height: 20px; color: var(--muted); transition: color 0.3s; }
+  .contact-link:hover .contact-icon svg { color: #fff; }
+  .contact-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+  .contact-value { font-size: 1rem; transition: color 0.3s; }
+  @media (min-width: 768px) { .contact-value { font-size: 1.125rem; } }
+  .contact-link:hover .contact-value { color: var(--primary); }
+  .contact-arrow { width: 20px; height: 20px; color: var(--muted); transition: color 0.3s, transform 0.3s; }
+  .contact-link:hover .contact-arrow { color: var(--primary); transform: translate(2px,-2px); }
+
+  .contact-cta { margin-top: 4rem; text-align: center; }
+  .contact-cta h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.75rem; }
+  @media (min-width: 768px) { .contact-cta h3 { font-size: 1.875rem; } }
+  .contact-cta p { font-size: 0.875rem; color: var(--muted); max-width: 28rem; margin: 0 auto 2rem; }
+
+  /* ---------- FOOTER ---------- */
+  .footer { position: relative; background: var(--card); border-top: 1px solid var(--border); overflow: hidden; }
+  .footer-main { position: relative; padding: 6rem clamp(1.5rem,8vw,5rem); overflow: hidden; }
+  @media (min-width: 768px) { .footer-main { padding: 8rem clamp(1.5rem,8vw,5rem); } }
+  .footer-bigtext {
+    position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%);
+    pointer-events: none; user-select: none; white-space: nowrap; text-align: center;
+    font-family: var(--font-display); font-size: 22vw; line-height: 1;
+    -webkit-text-stroke: 1px rgba(255,107,53,0.12); -webkit-text-fill-color: transparent;
+    will-change: transform;
+  }
+  .footer-grid { position: relative; z-index: 10; display: grid; grid-template-columns: 1fr; gap: 2.5rem; max-width: 72rem; margin: 0 auto; }
+  @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3,1fr); gap: 2rem; } }
+  .footer-brand { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 1rem; }
+  .footer-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; max-width: 20rem; }
+  .footer-heading { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); margin-bottom: 1rem; }
+  .footer-links { display: flex; flex-direction: column; gap: 0.625rem; }
+  .footer-link { font-size: 0.875rem; color: var(--muted); transition: color 0.3s; }
+  .footer-link:hover { color: var(--primary); }
+  .footer-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  .footer-strip {
+    display: block; width: 100%; padding: 1.25rem; text-align: center;
+    font-family: var(--font-mono); font-size: 0.875rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; background-color: var(--primary); transition: letter-spacing 0.5s;
+    will-change: background-color;
+  }
+  .footer-strip:hover { letter-spacing: 0.3em; }
+  .footer-bottom { padding: 1.25rem clamp(1.5rem,8vw,5rem); border-top: 1px solid var(--border); }
+  .footer-bottom p { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-align: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <button class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="nav-dot"></span>
+      <span>sirk.cloud</span>
+    </button>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Menu">[ menu ]</button>
+  </div>
+</header>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay">
+  <nav>
+    <a class="menu-link" href="#dla-kogo" data-close>Dla kogo</a>
+    <a class="menu-link" href="#o-nas" data-close>O nas</a>
+    <a class="menu-link" href="#kontakt" data-close>Kontakt</a>
+    <a class="menu-phone" href="tel:+48511832376">+48 511 832 376</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <!-- Terminal -->
+    <div class="terminal reveal visible">
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="term-dot r"></span>
+          <span class="term-dot y"></span>
+          <span class="term-dot g"></span>
+          <span>sirk-cloud — bash</span>
+        </div>
+        <div class="terminal-body" id="terminalBody"></div>
+      </div>
+    </div>
+
+    <p class="hero-eyebrow">// Kompleksowa opieka IT</p>
+    <h1>Twoje IT, <span class="accent">ogarnięte</span> na spokojnie.</h1>
+    <p class="hero-sub">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały — bez straszenia technologią i niepotrzebnych komplikacji.</p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#dla-kogo">Sprawdź ofertę →</a>
+      <a class="btn-secondary" href="#kontakt">Napisz do nas</a>
+    </div>
+    <div class="hero-meta">
+      <span><span class="dot"></span>Zdalna obsługa — cała Polska</span>
+      <span class="sep"></span>
+      <span>Od 250 zł miesięcznie</span>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- AUDIENCE -->
+<section class="section" id="dla-kogo">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">// Dla kogo</p>
+      <h2 class="section-title">Profile firm, które wspieramy na co dzień</h2>
+    </div>
+    <div class="audience-grid" id="audienceGrid"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about" id="o-nas">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <div class="about-header reveal">
+          <p class="eyebrow">// O nas</p>
+          <h2 class="section-title">IT z ludzkim podejściem</h2>
+        </div>
+        <div class="status-panel reveal delay-1">
+          <div class="status-bar"><span>system_status.json</span></div>
+          <div class="status-body" id="statusBody"></div>
+        </div>
+        <div class="stats" id="statsGrid"></div>
+      </div>
+      <div class="values" id="valuesList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="kontakt">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">// Kontakt</p>
+      <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
+      <p class="hero-sub" style="margin-top:1.5rem;max-width:42rem;">Zgłoś się na bezpłatną, 20–30-minutową konsultację (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań.</p>
+    </div>
+    <div class="contact-links" id="contactLinks"></div>
+    <div class="contact-cta reveal">
+      <h3>Gotowy uprościć swoje systemy IT?</h3>
+      <p>Wybierz najwygodniejszą formę kontaktu. Rzetelna wiedza i profesjonalne wsparcie bez branżowego owijania w bawełnę.</p>
+      <a class="btn-primary" href="mailto:kjankowski@sirk.cloud?subject=Bezp%C5%82atna%20konsultacja%20IT">Zarezerwuj bezpłatną konsultację →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="footer">
+  <div class="footer-main">
+    <div class="footer-bigtext" id="footerBigtext">sirk.cloud</div>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="nav-dot"></span>
+          <span style="font-family:var(--font-mono);font-size:0.875rem;">sirk.cloud</span>
+        </div>
+        <p class="footer-desc">Kompleksowa opieka IT dla Twojej firmy. Zdalna obsługa w całej Polsce, lokalna obecność w Łodzi.</p>
+      </div>
+      <div>
+        <p class="footer-heading">// Kontakt</p>
+        <div class="footer-links">
+          <a class="footer-link" href="tel:+48511832376">+48 511 832 376</a>
+          <a class="footer-link" href="mailto:kjankowski@sirk.cloud">kjankowski@sirk.cloud</a>
+          <a class="footer-link" href="https://instagram.com/sirk.cloud" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-heading">// Nawigacja</p>
+        <div class="footer-links">
+          <a class="footer-link" href="#dla-kogo" data-smooth>Dla kogo</a>
+          <a class="footer-link" href="#o-nas" data-smooth>O nas</a>
+          <a class="footer-link" href="#kontakt" data-smooth>Kontakt</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="footer-strip" id="footerStrip" href="mailto:kjankowski@sirk.cloud?subject=Bezp%C5%82atna%20konsultacja%20IT">Zarezerwuj konsultację →</a>
+  <div class="footer-bottom">
+    <p>© <span id="year"></span> sirk.cloud — root@wsparcie:~# wszelkie prawa zastrzeżone</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Year ---------- */
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Smooth scroll for in-page anchors ---------- */
+  function smoothTo(hash) {
+    var el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var href = a.getAttribute("href");
+      if (href.length > 1) {
+        e.preventDefault();
+        smoothTo(href);
+      }
+    });
+  });
+
+  /* ---------- Navbar scrolled state ---------- */
+  var navbar = document.getElementById("navbar");
+  function onScrollNav() {
+    if (window.scrollY > 40) navbar.classList.add("scrolled");
+    else navbar.classList.remove("scrolled");
+  }
+  window.addEventListener("scroll", onScrollNav, { passive: true });
+  onScrollNav();
+
+  /* ---------- Menu overlay ---------- */
+  var menuBtn = document.getElementById("menuBtn");
+  var menuOverlay = document.getElementById("menuOverlay");
+  function toggleMenu(open) {
+    var isOpen = open !== undefined ? open : !menuOverlay.classList.contains("open");
+    menuOverlay.classList.toggle("open", isOpen);
+    menuBtn.textContent = isOpen ? "[ zamknij ]" : "[ menu ]";
+  }
+  menuBtn.addEventListener("click", function () { toggleMenu(); });
+  menuOverlay.querySelectorAll("[data-close]").forEach(function (link) {
+    link.addEventListener("click", function () {
+      toggleMenu(false);
+      var href = link.getAttribute("href");
+      setTimeout(function () { smoothTo(href); }, 150);
+    });
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !prefersReduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("visible"); });
+  }
+
+  /* ---------- Marquee ---------- */
+  var marqueeItems = ["Sieci i infrastruktura","Rozwiązania chmurowe","Kopie zapasowe","Cyberbezpieczeństwo","Wsparcie zdalne","Administracja sprzętem","Obsługa Łódź i okolice","Cała Polska"];
+  var track = document.getElementById("marqueeTrack");
+  var html = "";
+  for (var r = 0; r < 2; r++) {
+    marqueeItems.forEach(function (item) {
+      html += '<span>' + item + '</span><span class="sep">/</span>';
+    });
+  }
+  track.innerHTML = html;
+
+  /* ---------- Audience cards ---------- */
+  var profiles = [
+    { num:"01", title:"Małe firmy bez działu IT", desc:"Zdejmujemy z Twoich barków administrowanie sprzętem, konfigurację sieci, wykonywanie kopii zapasowych i usuwanie bieżących awarii.", tags:["Sprzęt","Sieć","Backup"] },
+    { num:"02", title:"Zespoły potrzebujące szybkiej reakcji", desc:"Gdy technologia zawodzi, liczy się każda minuta. Oferujemy natychmiastowe wsparcie zdalne i sprawne działanie, eliminując przestoje w pracy.", tags:["Wsparcie zdalne","Szybka reakcja"] },
+    { num:"03", title:"Firmy chcące IT dopasowanego do siebie", desc:"Nie wierzymy w rozwiązania szablonowe. Analizujemy Twoje procesy, dobieramy bezpieczne rozwiązania chmurowe i infrastrukturę pod Twój budżet.", tags:["Chmura","Infrastruktura","Bezpieczeństwo"] }
+  ];
+  var grid = document.getElementById("audienceGrid");
+  profiles.forEach(function (p) {
+    var tagsHtml = p.tags.map(function (t) { return '<span class="card-tag">' + t + '</span>'; }).join("");
+    var card = document.createElement("div");
+    card.className = "audience-card reveal";
+    card.innerHTML = '<div class="glow"></div>' +
+      '<div class="card-top"><span class="card-num">' + p.num + '</span><span class="card-icon">▢</span></div>' +
+      '<h3 class="card-title">' + p.title + '</h3>' +
+      '<p class="card-desc">' + p.desc + '</p>' +
+      '<div class="card-tags">' + tagsHtml + '</div>';
+    grid.appendChild(card);
+  });
+  // re-observe newly added reveals
+  if (window.io) revealEls = document.querySelectorAll(".reveal");
+  document.querySelectorAll(".audience-card.reveal").forEach(function (el) {
+    if ("IntersectionObserver" in window && !prefersReduced) {
+      var o = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add("visible"); o.unobserve(entry.target); }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
+      o.observe(el);
+    } else { el.classList.add("visible"); }
+  });
+
+  /* ---------- About: values + status + stats ---------- */
+  var values = [
+    { num:"01", title:"Partner, nie helpdesk", desc:"Nie jesteśmy tylko anonimową infolinią przyjmującą zgłoszenia. Doradzamy, rozmawiamy i wspólnie z Tobą planujemy, jak optymalnie wykorzystać technologię do wzrostu biznesu." },
+    { num:"02", title:"IT, na którym możesz polegać", desc:"Zapewniamy ciągłość działania. Działamy prewencyjnie — optymalizujemy i weryfikujemy systemy, zanim pojawi się problem, trwale zabezpieczając dane Twojej firmy." },
+    { num:"03", title:"Prosty język, jasne zasady", desc:"Tłumaczymy zawiłe kwestie techniczne na prosty język korzyści. Otrzymujesz jasne rekomendacje bez niezrozumiałego żargonu programistycznego i sieciowego." },
+    { num:"04", title:"Obsługa zdalna i lokalna", desc:"Łączymy elastyczność i szybkość wsparcia online dla firm w całej Polsce z fizyczną, profesjonalną obecnością inżyniera na terenie Łodzi i okolic, kiedy to konieczne." }
+  ];
+  var valuesList = document.getElementById("valuesList");
+  values.forEach(function (v, i) {
+    var item = document.createElement("div");
+    item.className = "value-item reveal";
+    if (i > 0) item.classList.add("delay-" + Math.min(i, 3));
+    item.innerHTML = '<span class="value-num">' + v.num + '</span><div><h3 class="value-title">' + v.title + '</h3><p class="value-desc">' + v.desc + '</p></div>';
+    valuesList.appendChild(item);
+  });
+  document.querySelectorAll(".value-item.reveal").forEach(function (el) {
+    if ("IntersectionObserver" in window && !prefersReduced) {
+      var o2 = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add("visible"); o2.unobserve(entry.target); }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
+      o2.observe(el);
+    } else { el.classList.add("visible"); }
+  });
+
+  var statusRows = [
+    { k:"uptime", v:"99.9%" },
+    { k:"monitoring", v:"aktywny" },
+    { k:"backup", v:"zsynchronizowany" },
+    { k:"wsparcie", v:"online" }
+  ];
+  document.getElementById("statusBody").innerHTML = statusRows.map(function (r) {
+    return '<div class="status-row"><span class="k">"' + r.k + '"</span><span class="v">: "' + r.v + '"</span></div>';
+  }).join("");
+
+  var stats = [
+    { value:"24/7", label:"Monitorowanie" },
+    { value:"Cała PL", label:"Zasięg zdalny" },
+    { value:"Łódź", label:"Obecność lokalna" },
+    { value:"250 zł+", label:"Miesięcznie od" }
+  ];
+  document.getElementById("statsGrid").innerHTML = stats.map(function (s) {
+    return '<div class="stat"><p class="val">' + s.value + '</p><p class="label">' + s.label + '</p></div>';
+  }).join("");
+
+  /* ---------- Contact links ---------- */
+  var iconSvg = {
+    phone: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    mail: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+    instagram: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
+    arrow: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>'
+  };
+  var contacts = [
+    { icon:iconSvg.phone, label:"Telefon · Pon–Pt 8:00–18:00", value:"+48 511 832 376", href:"tel:+48511832376", ext:false },
+    { icon:iconSvg.mail, label:"Email · Napisz bezpośrednio", value:"kjankowski@sirk.cloud", href:"mailto:kjankowski@sirk.cloud", ext:false },
+    { icon:iconSvg.instagram, label:"Instagram · @sirk.cloud", value:"@sirk.cloud", href:"https://instagram.com/sirk.cloud", ext:true }
+  ];
+  document.getElementById("contactLinks").innerHTML = contacts.map(function (c) {
+    return '<a class="contact-link reveal" href="' + c.href + '"' + (c.ext ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' +
+      '<div class="left"><div class="contact-icon">' + c.icon + '</div>' +
+      '<div><p class="contact-label">' + c.label + '</p><p class="contact-value">' + c.value + '</p></div></div>' +
+      '<div class="contact-arrow">' + iconSvg.arrow + '</div></a>';
+  }).join("");
+  document.querySelectorAll(".contact-link.reveal").forEach(function (el, i) {
+    el.style.transitionDelay = (i * 0.08) + "s";
+    if ("IntersectionObserver" in window && !prefersReduced) {
+      var o3 = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add("visible"); o3.unobserve(entry.target); }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+      o3.observe(el);
+    } else { el.classList.add("visible"); }
+  });
+
+  /* ---------- Terminal typing ---------- */
+  var termLines = [
+    { prompt:"root@sirk-cloud:~# ", text:"./start_support --init", ok:false },
+    { prompt:"> ", text:"Inicjalizacja systemu wsparcia IT...", ok:false },
+    { prompt:"> ", text:"Obszar działania: cała Polska", ok:false },
+    { prompt:"> ", text:"Status: online", ok:true }
+  ];
+  var termBody = document.getElementById("terminalBody");
+  function runTerminal() {
+    var lineIdx = 0, charIdx = 0;
+    function render() {
+      var html = "";
+      for (var i = 0; i < lineIdx; i++) {
+        html += '<div class="term-line"><span class="term-prompt">' + termLines[i].prompt + "</span><span class=\"term-text" + (termLines[i].ok ? " ok" : "") + "\">" + termLines[i].text + "</span></div>";
+      }
+      if (lineIdx < termLines.length) {
+        var cur = termLines[lineIdx];
+        var shown = cur.text.slice(0, charIdx);
+        html += '<div class="term-line"><span class="term-prompt">' + cur.prompt + "</span><span class=\"term-text" + (cur.ok ? " ok" : "") + "\">" + shown + "</span><span class=\"term-cursor\"></span></div>";
+      }
+      termBody.innerHTML = html;
+    }
+    function step() {
+      if (lineIdx >= termLines.length) {
+        // restart after pause
+        setTimeout(function () { lineIdx = 0; charIdx = 0; step(); }, 4000);
+        return;
+      }
+      var cur = termLines[lineIdx];
+      if (charIdx < cur.text.length) {
+        charIdx++;
+        render();
+        setTimeout(step, 38);
+      } else {
+        render();
+        lineIdx++;
+        charIdx = 0;
+        setTimeout(step, 420);
+      }
+    }
+    step();
+  }
+  if (prefersReduced) {
+    termBody.innerHTML = termLines.map(function (l) {
+      return '<div class="term-line"><span class="term-prompt">' + l.prompt + "</span><span class=\"term-text" + (l.ok ? " ok" : "") + "\">" + l.text + "</span></div>";
+    }).join("");
+  } else {
+    runTerminal();
+  }
+
+  /* ---------- Particle network ---------- */
+  var canvas = document.getElementById("particle-canvas");
+  var ctx = canvas.getContext("2d");
+  var particles = [];
+  var mouse = { x: null, y: null, radius: 160 };
+  var animId;
+
+  function resizeCanvas() {
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = canvas.offsetWidth * dpr;
+    canvas.height = canvas.offsetHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function initParticles() {
+    particles = [];
+    var w = canvas.offsetWidth, h = canvas.offsetHeight;
+    var count = Math.min(Math.floor((w * h) / 13000), 110);
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        size: Math.random() * 1.4 + 0.4
+      });
+    }
+  }
+  function drawParticles() {
+    var w = canvas.offsetWidth, h = canvas.offsetHeight;
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,107,53,0.55)";
+      ctx.fill();
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx = p.x - particles[j].x, dy = p.y - particles[j].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = "rgba(255,107,53," + (0.13 * (1 - dist / 130)) + ")";
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+      if (mouse.x !== null) {
+        var mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+        var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (mdist < mouse.radius) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = "rgba(255,107,53," + (0.35 * (1 - mdist / mouse.radius)) + ")";
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    animId = requestAnimationFrame(drawParticles);
+  }
+  function drawStatic() {
+    var w = canvas.offsetWidth, h = canvas.offsetHeight;
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,107,53,0.4)";
+      ctx.fill();
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx = p.x - particles[j].x, dy = p.y - particles[j].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = "rgba(255,107,53,0.1)";
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+  if (!prefersReduced) {
+    resizeCanvas(); initParticles(); drawParticles();
+    window.addEventListener("resize", function () { resizeCanvas(); initParticles(); });
+    window.addEventListener("mousemove", function (e) {
+      var rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    window.addEventListener("mouseout", function () { mouse.x = null; mouse.y = null; });
+  } else {
+    resizeCanvas(); initParticles(); drawStatic();
+    window.addEventListener("resize", function () { resizeCanvas(); initParticles(); drawStatic(); });
+  }
+
+  /* ---------- Footer scroll animations ---------- */
+  var footer = document.getElementById("footer");
+  var bigtext = document.getElementById("footerBigtext");
+  var strip = document.getElementById("footerStrip");
+  function onFooterScroll() {
+    var rect = footer.getBoundingClientRect();
+    var vh = window.innerHeight;
+    // progress: 0 when footer top enters bottom of viewport, 1 when footer bottom at viewport bottom
+    var total = rect.height + vh;
+    var passed = vh - rect.top;
+    var progress = Math.max(0, Math.min(1, passed / total));
+    // bigtext slide from -100% to 0
+    var x = (1 - progress) * -100;
+    bigtext.style.transform = "translateY(-50%) translateX(" + x + "%)";
+    // strip color shift in last portion
+    var stripProgress = Math.max(0, Math.min(1, (progress - 0.5) / 0.5));
+    strip.style.backgroundColor = "#FF6B35"; // already ember; keep consistent
+  }
+  window.addEventListener("scroll", onFooterScroll, { passive: true });
+  onFooterScroll();
+
+})();
+</script>
+</body>
+</html>
