@@ -130,7 +130,7 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal - Zabezpieczenie Safari przed glitchem */
+        /* Terminal - Zabezpieczenie Safari przed czarnym blokiem */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
@@ -217,7 +217,7 @@
         .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #020305; position: relative; z-index: 2; }
         .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
-        /* SYSTEM POJAWIANIA SIĘ SEKCJI (Zoptymalizowany dla telefonów i komputerów) */
+        /* SYSTEM POJAWIANIA SIĘ SEKCJI */
         .scroll-animate-trigger { 
             opacity: 0; 
             transform: translateY(24px); 
@@ -417,7 +417,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -503,7 +503,7 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
             const runAutoSequence = async () => {
-                // IDEALNIE ODTWORZONA STATYCZNA WERSJA MOBILNA (100% zgodności treści z wersją PC)
+                // POPRAWIONA I DOPASOWANA WERSJA MOBILNA (Teksty 1:1 identyczne jak na PC)
                 if (window.innerWidth <= 768) {
                     terminalBody.innerHTML = `
                         <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
@@ -569,8 +569,7 @@
                 await sleep(800);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
                 
-                // NAPRAWIONE I ZGODNE Z FILOZOFIĄ TERMINALA: 
-                // 1. Prompt "root@sirk-cloud:~#" wskakuje od razu, z kursorem na końcu
+                // 1. Znak zachęty exit 0 wyskakuje OD RAZU po logach
                 const exitRow = document.createElement('span');
                 exitRow.className = 'term-row';
                 exitRow.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="exit-text-container"></span><span class="term-cursor"></span>`;
@@ -579,10 +578,10 @@
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
 
-                // 2. Czekamy dokładnie 3 sekundy (3000ms), kursor sobie mruga obok czystego znaku zachęty
+                // 2. Czekamy 3 sekundy (kursor miga obok pustego promptu)
                 await sleep(3000);
 
-                // 3. Po 3 sekundach zaczyna się pisać komenda exit 0
+                // 3. Po 3 sekundach następuje pisanie komendy
                 const exitTextContainer = exitRow.querySelector('.exit-text-container');
                 const exitCommandText = "exit 0";
 
