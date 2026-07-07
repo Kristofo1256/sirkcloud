@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SirK Cloud | Nowoczesny Outsourcing IT</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Pobieranie czcionki bez blokowania renderowania strony -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
     <style>
         /* CSS Core Reset & Smooth Scroll */
@@ -130,15 +129,14 @@
         }
         .hero-actions { display: flex; gap: 16px; }
 
-        /* Terminal */
+        /* Terminal - Zoptymalizowany pod kątem CSS GPU hardware acceleration */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
             width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
             background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 0 22px 22px 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
-            text-align: left; position: relative; 
-            overflow: hidden;
+            text-align: left; position: relative; overflow: hidden;
         }
 
         .terminal-header { 
@@ -154,6 +152,21 @@
         .log-output { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; overflow-x: auto; }
         .term-row { display: block; line-height: 1.4; white-space: nowrap; }
         
+        /* Ekstremalnie wydajna animacja pisania za pomocą czystego CSS */
+        .css-typing {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typingEffect 1.5s steps(30, end) forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes typingEffect {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
         .progress-row-layout { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; }
         .progress-bar-wrapper { display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
         .progress-bar-fill { color: #38bdf8; letter-spacing: 1px; }
@@ -216,7 +229,7 @@
         .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #020305; position: relative; z-index: 2; }
         .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
-        /* WYREGULOWANY SYSTEM POJAWIANIA SIĘ TEKSTU (Brak zacięć) */
+        /* WYREGULOWANY SYSTEM POJAWIANIA SIĘ TEKSTU */
         .scroll-animate-trigger { 
             opacity: 0; 
             transform: translateY(24px); 
@@ -244,13 +257,23 @@
             .main-header { padding: 10px 0; }
             .main-nav { display: none; }
             
-            /* Wygląd terminala dostosowany do małych ekranów (zapobiega psuciu układu) */
             .production-terminal { font-size: 11px; min-height: 310px; max-height: 310px; padding: 0 16px 16px 16px; cursor: default; }
             
             .section-title { font-size: 1.7rem; }
             .filar-item { flex-direction: column; gap: 12px; border-left: none; border-top: 3px solid rgba(37, 99, 235, 0.3); padding: 20px; border-radius: 0 0 6px 6px; }
             .contact-cta-box { padding: 24px; }
             .footer-container { flex-direction: column; text-align: center; gap: 12px; }
+
+            /* SUPER SZYBKA ANIMACJA DLA TELEFONÓW */
+            .scroll-animate-trigger {
+                opacity: 0;
+                transform: translateY(12px);
+                transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+            }
+            .scroll-animate-trigger.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -262,7 +285,6 @@
         <div class="aurora-glow aurora-2"></div>
     </div>
 
-    <!-- Header / Nawigacja -->
     <header class="main-header">
         <div class="container header-container">
             <a href="#" class="logo-container" aria-label="Przewiń na górę strony">
@@ -281,7 +303,6 @@
     </header>
 
     <main>
-        <!-- Sekcja Hero (Oferta) -->
         <section class="hero-section" id="oferta">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -313,14 +334,15 @@
                             <div class="term-dot green"></div>
                         </div>
                         
-                        <div id="terminalBody" class="log-output"></div>
+                        <div id="terminalBody" class="log-output">
+                            <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="css-typing">run sirk-business-support-core</span><span class="term-cursor"></span></span>
+                        </div>
                         <input type="text" id="terminalHiddenInput" autocomplete="off">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Sekcja: Dla Kogo -->
         <section class="section scroll-animate-trigger" id="dla-kogo">
             <div class="container">
                 <div class="section-header">
@@ -356,7 +378,6 @@
             </div>
         </section>
 
-        <!-- Sekcja: O nas -->
         <section class="section scroll-animate-trigger" id="o-nas">
             <div class="container">
                 <div class="section-header">
@@ -400,13 +421,12 @@
             </div>
         </section>
 
-        <!-- Sekcja: Kontakt -->
         <section class="section scroll-animate-trigger" id="kontakt">
             <div class="container contact-container">
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną konsultację 20–30 minut (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas pod numer +48 511 832 376">
@@ -483,8 +503,6 @@
                 while (terminalBody.children.length > 11) {
                     terminalBody.removeChild(terminalBody.firstChild);
                 }
-                
-                // Interaktywność odpala się TYLKO na desktopie (chroni klawiaturę na mobile)
                 if (window.innerWidth > 768) {
                     hiddenInput.value = "";
                     hiddenInput.focus();
@@ -494,23 +512,21 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
             const runAutoSequence = async () => {
-                const row = document.createElement('span');
-                row.className = 'term-row';
-                row.innerHTML = `<span class="t-bold">root@sirk-cloud:~#</span> <span class="term-text-container"></span><span class="term-cursor"></span>`;
-                terminalBody.appendChild(row);
-                
-                await sleep(3200);
-                
-                const textContainer = row.querySelector('.term-text-container');
-                const commandText = "run sirk-business-support-core";
-                
-                for (let i = 0; i < commandText.length; i++) {
-                    textContainer.textContent += commandText[i];
-                    const randomTypingDelay = Math.floor(Math.random() * (140 - 60 + 1)) + 60;
-                    await sleep(randomTypingDelay);
+                if (window.innerWidth <= 768) {
+                    terminalBody.innerHTML = `
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> support-core --status</span>
+                        <span class="term-row">&gt; System status: <span class="t-success">[OK] Active</span></span>
+                        <span class="term-row">&gt; Connection: <span class="t-success">Stable</span></span>
+                        <span class="term-row">&gt; Security check: <span class="t-success">0 errors</span></span>
+                        <span class="term-row">&gt; All systems running smoothly.</span>
+                        <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> <span class="term-cursor"></span></span>
+                    `;
+                    return;
                 }
-                
-                await sleep(600);
+
+                // Zoptymalizowana sekwencja JS na desktop – usunięto emulację pisania pętlą, zostawiając samo ładowanie logów.
+                // Dzięki temu procesor nie jest obciążany mikro-zadaniami.
+                await sleep(2200);
                 
                 const progressRow = appendLog(`
                     <div class="progress-row-layout" style="color:#a7f3d0;">
@@ -527,32 +543,30 @@
                     progressBarFill.textContent += "█";
                     const percentage = Math.round((i / totalBlocks) * 100);
                     progressPercentageVal.textContent = `${percentage}%`;
-                    await sleep(75); 
+                    await sleep(30); // Przyspieszony czas animacji ładowania paska
                 }
 
-                await sleep(600);
+                await sleep(300);
                 appendLog(`&gt; Infrastruktura zoptymalizowana.`);
-                await sleep(1200);
+                await sleep(400);
                 appendLog(`&gt; Services status: <span class="t-success">[0] Active / Running</span>`);
-                await sleep(1300);
+                await sleep(400);
                 appendLog(`&gt; System health check: <span class="t-success">0 errors</span> / <span class="t-warn">0 warnings</span>`);
-                await sleep(1400);
+                await sleep(500);
                 appendLog(`&gt; Mission completed. All systems are stable.`);
-                await sleep(1100);
+                await sleep(600);
 
                 appendLog(`<span class="t-bold">root@sirk-cloud:~#</span> exit 0`);
-                await sleep(600);
+                await sleep(300);
                 appendLog(`&gt; Connection closed.`);
-                await sleep(400);
                 
-                // Na komputerach włączamy edycję, na mobile skrypt zostaje statyczny (tylko wyświetlanie)
                 if (window.innerWidth > 768) {
                     isInteractiveEnabled = true;
                 }
                 createInteractivePromptLine();
             };
 
-            // Blokada zdarzeń wejściowych dla telefonów komórkowych
+            // Obsługa wprowadzania komend przez użytkownika
             terminalWindow.addEventListener('click', () => { 
                 if(isInteractiveEnabled && window.innerWidth > 768) hiddenInput.focus(); 
             });
@@ -582,57 +596,65 @@
 
             runAutoSequence();
 
-            // --- BEZBŁĘDNY SYSTEM SCROLLSPY (DESKTOP ONLY) ---
+            // --- ZOPTYMALIZOWANY SYSTEM SCROLLSPY (Throttling) ---
             const sections = document.querySelectorAll('section[id], #kontakt');
             const navLinks = document.querySelectorAll('.nav-link');
             const consultationBtn = document.getElementById('consultationBtn');
             const menuOffset = 95;
 
+            let scrollTimeout;
             const updateActiveMenuLink = () => {
                 if (window.innerWidth <= 768) return;
 
-                let currentActiveId = "oferta";
-                const scrollPosition = window.scrollY + menuOffset + 10;
-                const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 15;
+                // Throttling zapobiega ciągłemu wywoływaniu funkcji milisekunda po milisekundzie przy skrolowaniu desktopowym
+                if (scrollTimeout) return;
 
-                sections.forEach(section => {
-                    if (scrollPosition >= section.offsetTop) {
-                        currentActiveId = section.getAttribute('id');
-                    }
-                });
+                scrollTimeout = setTimeout(() => {
+                    let currentActiveId = "oferta";
+                    const scrollPosition = window.scrollY + menuOffset + 10;
+                    const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 15;
 
-                if (isAtBottom) {
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    consultationBtn.classList.add('consultation-active');
-                } else {
-                    consultationBtn.classList.remove('consultation-active');
-                    navLinks.forEach(link => {
-                        if (link.getAttribute('href') === `#${currentActiveId}`) {
-                            link.classList.add('active');
-                        } else {
-                            link.classList.remove('active');
+                    sections.forEach(section => {
+                        if (scrollPosition >= section.offsetTop) {
+                            currentActiveId = section.getAttribute('id');
                         }
                     });
-                }
+
+                    if (isAtBottom) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        consultationBtn.classList.add('consultation-active');
+                    } else {
+                        consultationBtn.classList.remove('consultation-active');
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${currentActiveId}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                    scrollTimeout = null;
+                }, 50);
             };
 
             window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
 
-            // --- ZOPTYMALIZOWANY OBSERVER REVEALU (100% REAKCJI BEZ ZACIĘĆ) ---
+            // --- REVEAL INTERSECTION OBSERVER ---
             const initScrollReveal = () => {
                 const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
+                const isMobile = window.innerWidth <= 768;
                 
                 const observerOptions = {
-                    root: null, // okno przeglądarki
-                    threshold: 0, // reaguje natychmiast po wejściu pierwszego piksela sekcji
-                    rootMargin: "0px 0px -50px 0px" // lekki offset dla lepszego, naturalnego efektu wizualnego
+                    root: null,
+                    threshold: 0, 
+                    rootMargin: isMobile ? "0px 0px 0px 0px" : "0px 0px -50px 0px"
                 };
 
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('active');
-                            observer.unobserve(entry.target); // odpala animację raz i zdejmuje nasłuch
+                            observer.unobserve(entry.target);
                         }
                     });
                 }, observerOptions);
