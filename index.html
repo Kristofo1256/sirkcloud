@@ -18,7 +18,7 @@
         :root {
             --bg-main: #060913; 
             --bg-surface: #0b1120; 
-            --bg-card: #111a2e;
+            --bg-card: #0d1527;
             --accent-cyan: #00D2FF; 
             --accent-purple: #8A2BE2; 
             --accent-blue: #2563eb;
@@ -92,16 +92,25 @@
         .btn-secondary { 
             background: rgba(255, 255, 255, 0.03); color: var(--text-main); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
+            transition: all 0.3s ease;
         }
         .btn-secondary:hover { 
             background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); 
             border-color: var(--accent-cyan);
         }
+        
+        /* Klasa aktywowana na samym dole strony */
+        .btn-secondary.consultation-active {
+            border-color: var(--accent-cyan);
+            background-color: rgba(0, 210, 255, 0.15);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            color: #ffffff;
+        }
         .btn-full { width: 100%; }
 
         /* --- HERO SECTION --- */
         .hero-section { padding-top: 220px; padding-bottom: 120px; }
-        .hero-container { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 60px; align-items: center; }
+        .hero-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
         
         .hero-title {
             font-family: var(--font-header); font-size: 3.8rem; font-weight: 800; margin-bottom: 24px; line-height: 1.1;
@@ -116,10 +125,10 @@
         }
         .hero-actions { display: flex; gap: 20px; }
 
-        /* --- TWÓJ ORYGINALNY TERMINAL (PC / MOBILE) --- */
+        /* --- POSZERZONY TERMINAL --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
         .production-terminal {
-            width: 100%; max-width: 480px; min-height: 330px; max-height: 330px;
+            width: 100%; max-width: 580px; min-height: 330px; max-height: 330px;
             background: #020408; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6); padding: 0 22px 22px 22px;
             font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #38bdf8;
@@ -154,7 +163,7 @@
         }
         .section-title { font-family: var(--font-header); font-size: 2.8rem; font-weight: 700; line-height: 1.15; }
 
-        /* --- SEKCJA DLA KOGO (INTERAKTYWNE KARTY GLASSMORPHISM) --- */
+        /* --- SEKCJA DLA KOGO --- */
         .cards-grid { display: grid; gap: 32px; }
         .layout-3-col { grid-template-columns: repeat(3, 1fr); }
         
@@ -176,24 +185,66 @@
         .interactive-card h3 { font-family: var(--font-header); font-size: 1.4rem; margin-bottom: 16px; }
         .interactive-card p { color: var(--text-muted); font-size: 0.98rem; }
 
-        /* --- SEKCJA O NAS (BENTO GRID SYSTEM) --- */
+        /* --- SEKCJA O NAS (BENTO) --- */
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .bento-item { 
             background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.04);
             padding: 40px; border-radius: 16px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .bento-item:hover { border-color: var(--accent-purple); background: rgba(255, 255, 255, 0.03); }
-        
         .bento-large { grid-column: span 2; }
         .bento-medium { grid-column: span 1; }
         .bento-full-row { grid-column: span 3; display: flex; justify-content: space-between; align-items: center; }
-        
         .bento-item h3 { font-family: var(--font-header); font-size: 1.5rem; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
         .bento-item p { color: var(--text-muted); font-size: 0.98rem; }
         .bento-counter { font-family: var(--font-header); font-size: 3rem; font-weight: 800; color: var(--accent-cyan); }
 
-        /* --- SEKCJA CENNIK --- */
-        .pricing-center { max-width: 600px; margin: 0 auto; text-align: center; }
+        /* --- INTERAKTYWNY CENNIK (ZGODNY Z MAKIETĄ) --- */
+        .pricing-section { display: flex; justify-content: center; }
+        .pricing-container {
+            width: 100%; max-width: 680px; background: #09101e; border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px; padding: 48px; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+        }
+        .pricing-badge {
+            display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 30px; font-size: 0.85rem;
+            color: var(--text-muted); font-weight: 500; margin-bottom: 28px;
+        }
+        .pricing-title { font-family: var(--font-header); font-size: 2.3rem; font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+        .pricing-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 40px; line-height: 1.5; }
+        
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .slider-label { font-size: 1rem; font-weight: 600; color: #a1b0cb; }
+        .slider-value-display { font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); }
+        
+        /* Custom stylizacja suwaka input range */
+        .range-slider {
+            width: 100%; -webkit-appearance: none; appearance: none; height: 6px; 
+            background: #1e293b; border-radius: 3px; outline: none; margin-bottom: 12px;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 24px; height: 24px;
+            border-radius: 50%; background: var(--accent-cyan); cursor: pointer;
+            box-shadow: 0 0 15px var(--accent-cyan); transition: transform 0.1s ease;
+        }
+        .range-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+        
+        .slider-limits { display: flex; justify-content: space-between; font-size: 0.85rem; color: #475569; margin-bottom: 44px; }
+        
+        /* Box wynikowy abonamentu */
+        .result-box {
+            background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 14px; padding: 36px; text-align: center; margin-bottom: 32px;
+        }
+        .result-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: #64748b; margin-bottom: 8px; font-weight: 700; }
+        .result-price { font-family: var(--font-header); font-size: 3.5rem; font-weight: 800; color: #ffffff; line-height: 1; }
+        .result-price span { font-family: var(--font-body); font-size: 1.2rem; color: var(--text-muted); font-weight: 500; }
+        .result-subtext { font-size: 0.85rem; color: #475569; margin-top: 10px; }
+        
+        /* Lista ficzorów */
+        .features-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; padding-left: 20px; align-items: flex-start; width: 100%; }
+        .feature-item { display: flex; align-items: center; gap: 14px; font-size: 0.95rem; color: #cbd5e1; text-align: left; }
+        .feature-item svg { color: var(--accent-cyan); flex-shrink: 0; }
 
         /* --- SEKCJA KONTAKT --- */
         .contact-container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
@@ -209,7 +260,6 @@
         .method-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
         .method-value { font-weight: 700; font-size: 1.15rem; }
         
-        /* Premium CTA Magnetic Box */
         .contact-cta-box { 
             background: linear-gradient(145deg, #0d1527 0%, #16223f 100%); border: 1px solid rgba(255, 255, 255, 0.06); 
             padding: 50px; border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); transition: transform 0.3s ease;
@@ -222,7 +272,7 @@
         .main-footer { border-top: 1px solid rgba(255, 255, 255, 0.04); padding: 40px 0; background-color: #03050a; position: relative; z-index: 2; }
         .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 0.9rem; }
 
-        /* --- SILNIK OBSERWERA SCROLLA --- */
+        /* --- ANIMACJE INTERSECTION OBSERVER --- */
         .scroll-animate-trigger { 
             opacity: 0; transform: translateY(40px); filter: blur(4px);
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
@@ -230,13 +280,13 @@
         }
         .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); filter: blur(0); }
 
-        /* --- SKALOWANIE RESPONSYWNE (MOBILE OPTIMIZATION) --- */
+        /* --- RESPONSYWNOŚĆ MOBILNA --- */
         @media (max-width: 1024px) {
             .hero-container, .contact-container { grid-template-columns: 1fr; gap: 40px; }
             .hero-visual { order: 1; margin-top: 20px; }
             .layout-3-col, .bento-grid { grid-template-columns: 1fr; }
             .bento-large, .bento-medium { grid-column: span 1; }
-            .bento-full-row { grid-direction: column; flex-direction: column; gap: 20px; text-align: center; }
+            .bento-full-row { flex-direction: column; gap: 20px; text-align: center; }
         }
 
         @media (max-width: 768px) {
@@ -251,9 +301,8 @@
             .main-nav { display: none; }
             .section-title { font-size: 1.9rem; }
             .production-terminal { font-size: 11px; min-height: 310px; max-height: 310px; padding: 0 16px 16px 16px; cursor: default; }
+            .pricing-container { padding: 24px; }
             .footer-container { flex-direction: column; text-align: center; gap: 12px; }
-            
-            /* Wyłączenie ciężkich blurów i przesunięć na telefonach dla oszczędności baterii */
             .scroll-animate-trigger { opacity: 0; transform: translateY(15px); filter: none; transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
             .scroll-animate-trigger.active { opacity: 1; transform: translateY(0); }
         }
@@ -304,7 +353,7 @@
 
                     <div class="hero-actions">
                         <a href="#kontakt" data-scroll="kontakt" class="btn btn-primary">Umów bezpłatną konsultację</a>
-                        <a href="#dla-kogo" data-scroll="dla-kogo" class="btn btn-secondary">Zobacz ofertę</a>
+                        <a href="#cennik" data-scroll="cennik" class="btn btn-secondary">Zobacz cennik</a>
                     </div>
                 </div>
                 
@@ -318,7 +367,7 @@
                         <div id="terminalBody" class="log-output">
                             <span class="term-row"><span class="t-bold">root@sirk-cloud:~#</span> run sirk-business-support-core</span>
                             <div class="progress-row-layout" style="color:#a7f3d0;">
-                                <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill">██████████████████████████████████████████</span>]</span>
+                                <span class="progress-bar-wrapper">&gt;&nbsp;[<span class="progress-bar-fill">█████████████████████████████████████████████████████</span>]</span>
                                 <span class="progress-percentage-val">100%</span>
                             </div>
                             <span class="term-row">&gt; Infrastruktura zoptymalizowana.</span>
@@ -421,13 +470,47 @@
             </div>
         </section>
 
-        <section class="section scroll-animate-trigger">
-            <div class="container">
-                <div class="interactive-card pricing-center">
-                    <span class="section-tag" style="margin-bottom:8px;">Transparentne warunki</span>
-                    <h3 style="font-size: 2.2rem; font-family:var(--font-header); margin-bottom: 16px;">Obsługa już od 250 zł miesięcznie</h3>
-                    <p style="color:var(--text-muted); margin-bottom: 28px;">Koszt wsparcia dopasowujemy idealnie do wielkości Twojego zespołu i realnych potrzeb infrastrukturalnych. Brak ukrytych opłat.</p>
-                    <a href="#kontakt" data-scroll="kontakt" class="btn btn-primary">Poproś o indywidualną wycenę</a>
+        <section class="section scroll-animate-trigger" id="cennik">
+            <div class="container pricing-section">
+                <div class="pricing-container">
+                    <div class="pricing-badge">// Przejrzyste warunki współpracy</div>
+                    <h2 class="pricing-title">Dopasuj budżet do skali swojego zespołu</h2>
+                    <p class="pricing-subtitle">Przesuń suwak, aby oszacować orientacyjny koszt stałej opieki IT. Każda wycena jest elastyczna i dostosowywana indywidualnie po darmowym audycie.</p>
+                    
+                    <div class="slider-box">
+                        <div class="slider-header">
+                            <span class="slider-label">Liczba stanowisk komputerowych:</span>
+                            <span class="slider-value-display" id="sliderValue">5</span>
+                        </div>
+                        <input type="range" min="1" max="25" value="5" class="range-slider" id="priceSlider">
+                        <div class="slider-limits">
+                            <span>1 stanowisko</span>
+                            <span>25 stanowisk</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <div class="result-label">Szacunkowy abonament</div>
+                        <div class="result-price" id="calculatedPrice">650 <span>zł / mc</span></div>
+                        <div class="result-subtext">* Obsługa już od 250 zł miesięcznie</div>
+                    </div>
+                    
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Helpdesk i wsparcie zdalne użytkowników</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Monitoring serwerów i sieci firmowej</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Nadzór nad kopiami zapasowymi (Backup)</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#kontakt" data-scroll="kontakt" class="btn btn-primary btn-full">Zarezerwuj bezpłatną konsultację</a>
                 </div>
             </div>
         </section>
@@ -437,7 +520,7 @@
                 <div class="contact-info-block">
                     <span class="section-tag">Kontakt</span>
                     <h2 class="section-title">Porozmawiajmy o Twoim IT</h2>
-                    <p class="contact-lead">Zgłoś się na bezpłatną, 20–30-minutową konsultację (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiązań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
+                    <p class="contact-lead">Zgłoś się na bezpłatną, 20–30-minutową konsultację (telefonicznie lub online). Bez presji sprzedażowej, bez jakichkolwiek zobowiedzań. Sprawdźmy, jak możemy pomóc usprawnić Twoje systemy.</p>
                     
                     <div class="contact-details">
                         <a href="tel:+48511832376" class="contact-method" aria-label="Zadzwoń do nas">
@@ -495,7 +578,7 @@
             const hiddenInput = document.getElementById('terminalHiddenInput');
             let isInteractiveEnabled = false;
 
-            // --- 1. WYDAJNE I SZYBKIE IMPLEMENTOWANIE ELEMENTÓW INTERFEJSU (Intersection Observer) ---
+            // --- INTERSECTION OBSERVER ---
             const initScrollReveal = () => {
                 const sectionsToObserve = document.querySelectorAll('.scroll-animate-trigger');
                 const isMobile = window.innerWidth <= 768;
@@ -519,8 +602,10 @@
             };
             initScrollReveal();
 
-            // --- 2. ZACHOWANY AUTENTYCZNY SKRYPT TERMINALA (PC ONLY) ---
-            if (window.innerWidth <= 768) return; // Na mobile zostaje perfekcyjny statyczny HTML
+            // Zatrzymujemy wykonywanie skryptu terminala na mobile
+            if (window.innerWidth <= 768) {
+                return;
+            }
 
             terminalBody.innerHTML = "";
 
@@ -579,7 +664,7 @@
                 const progressBarFill = progressRow.querySelector('.progress-bar-fill');
                 const progressPercentageVal = progressRow.querySelector('.progress-percentage-val');
                 
-                const totalBlocks = 41; 
+                const totalBlocks = 51; // Dostosowane do nowej, większej szerokości terminala
                 for (let i = 1; i <= totalBlocks; i++) {
                     progressBarFill.textContent += "█";
                     const percentage = Math.round((i / totalBlocks) * 100);
@@ -652,7 +737,7 @@
             runAutoSequence();
         });
 
-        // --- 3. SKRYPT INTERAKTYWNEJ CHMURY CZĄSTECZEK (CANVAS 3D PARALLAX EFFECT) ---
+        // --- INTERAKTYWNA CHMURA CZĄSTECZEK (CANVAS EFFECT) ---
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -677,7 +762,6 @@
 
             class Particle {
                 constructor() {
-                    // Generowanie punktów w kształcie elipsy/chmury na środku ekranu
                     const angle = Math.random() * Math.PI * 2;
                     const radius = Math.random() * 260 + 40;
                     this.baseX = window.innerWidth * 0.75 + Math.cos(angle) * radius * 1.3;
@@ -697,7 +781,6 @@
                     ctx.fill();
                 }
                 update() {
-                    // Delikatny, ciągły szum/pływanie chmury
                     this.baseX += Math.sin(Date.now() * 0.001 + this.density) * 0.1;
                     this.baseY += Math.cos(Date.now() * 0.001 + this.density) * 0.08;
 
@@ -715,12 +798,8 @@
                             this.x -= directionX;
                             this.y -= directionY;
                         } else {
-                            if (this.x !== this.baseX) {
-                                this.x -= (this.x - this.baseX) * 0.08;
-                            }
-                            if (this.y !== this.baseY) {
-                                this.y -= (this.y - this.baseY) * 0.08;
-                            }
+                            if (this.x !== this.baseX) this.x -= (this.x - this.baseX) * 0.08;
+                            if (this.y !== this.baseY) this.y -= (this.y - this.baseY) * 0.08;
                         }
                     } else {
                         if (this.x !== this.baseX) this.x -= (this.x - this.baseX) * 0.05;
@@ -749,7 +828,35 @@
             animateParticles();
         }
 
-        // --- 4. WYDAJNA NAWIGACJA SMOOTH SCROLL & SCROLLSPY ---
+        // --- LOGIKA KALKULATORA CENOWEGO (SUWAKA) ---
+        const slider = document.getElementById('priceSlider');
+        const sliderValue = document.getElementById('sliderValue');
+        const calculatedPrice = document.getElementById('calculatedPrice');
+
+        const updatePrice = () => {
+            const count = parseInt(slider.value);
+            sliderValue.textContent = count;
+            
+            let price = 0;
+            // Algorytm zniżki hurtowej (Volume Discount): 
+            // pierwsze 4 maszyny po 250zł/szt, od 5 do 12 maszyn po 100zł/szt, powyżej 12 maszyn po 80zł/szt
+            if (count === 1) {
+                price = 250;
+            } else if (count <= 4) {
+                price = count * 250;
+            } else if (count <= 12) {
+                price = (4 * 250) + ((count - 4) * 100);
+            } else {
+                price = (4 * 250) + (8 * 100) + ((count - 12) * 80);
+            }
+
+            calculatedPrice.innerHTML = `${price} <span>zł / mc</span>`;
+        };
+
+        slider.addEventListener('input', updatePrice);
+        updatePrice(); // Wywołanie startowe
+
+        // --- SMOOTH SCROLL ---
         document.querySelectorAll('[data-scroll]').forEach(trigger => {
             trigger.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -765,15 +872,20 @@
             });
         });
 
+        // --- SCROLLSPY Z PODŚWIETLANIEM KONSULTACJI NA SAMYM DOLE ---
         const sections = document.querySelectorAll('section[id], #kontakt');
         const navLinks = document.querySelectorAll('.nav-link');
         const consultationBtn = document.getElementById('consultationBtn');
+        const menuOffset = 105;
 
         const updateActiveMenuLink = () => {
             if (window.innerWidth <= 768) return;
+
             let currentActiveId = "oferta";
-            const scrollPosition = window.scrollY + 105;
-            const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 20;
+            const scrollPosition = window.scrollY + menuOffset;
+            
+            // Sprawdzenie, czy użytkownik dotarł do samego dołu ekranu
+            const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 30;
 
             sections.forEach(section => {
                 if (scrollPosition >= section.offsetTop) {
@@ -783,9 +895,9 @@
 
             if (isAtBottom) {
                 navLinks.forEach(link => link.classList.remove('active'));
-                consultationBtn.classList.add('consultation-active');
+                consultationBtn.classList.add('consultation-active'); // Aktywacja rozświetlenia
             } else {
-                consultationBtn.classList.remove('consultation-active');
+                consultationBtn.classList.remove('consultation-active'); // Dezaktywacja
                 navLinks.forEach(link => {
                     if (link.getAttribute('data-scroll') === currentActiveId) {
                         link.classList.add('active');
@@ -795,6 +907,7 @@
                 });
             }
         };
+
         window.addEventListener('scroll', updateActiveMenuLink, { passive: true });
     </script>
 </body>
