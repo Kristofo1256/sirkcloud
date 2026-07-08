@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+<!-- Silniki animacji i ikony -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -156,7 +157,7 @@
   .infra-metric .val { font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); font-weight: 600; }
   .infra-metric .label { font-family: var(--font-mono); font-size: 9px; color: var(--ink-dim); text-transform: uppercase; margin-top: 4px; display: block; }
 
-  /* NAPRAWIONA KARUZELA MARQUEE (PŁYNNE PRZESUWANIE CSS) */
+  /* KARUZELA MARQUEE */
   .marquee {
     position: relative; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
     background: rgba(19, 19, 22, 0.4); padding: 16px 0; margin-top: 60px; z-index: 2; width: 100%;
@@ -222,10 +223,50 @@
   /* FOOTER */
   .footer { border-top: 1px solid var(--border); padding: 44px 0; background: #060608; font-size: 13px; color: var(--ink-dim); position: relative; z-index: 2; }
   .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .footer-left { display: flex; flex-direction: column; gap: 8px; }
+  .privacy-trigger { color: var(--ink-dim); text-decoration: underline; cursor: pointer; transition: color 0.2s; }
+  .privacy-trigger:hover { color: var(--blue); }
   .footer-socials { display: flex; align-items: center; gap: 24px; }
   .footer-socials a { color: var(--ink-dim); transition: color 0.3s; text-decoration: none; font-family: var(--font-mono); display: inline-flex; align-items: center; gap: 8px; }
   .footer-socials a:hover { color: var(--blue); }
-  .footer-socials i { vertical-align: middle; display: inline-block; }
+
+  /* CYBER BANER COOKIES */
+  .cookie-banner {
+    position: fixed; bottom: -100px; left: 24px; right: 24px; max-width: 500px; margin: 0 auto 24px 24px;
+    background: rgba(19, 19, 22, 0.95); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; backdrop-filter: blur(16px); z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; gap: 14px; transition: bottom 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .cookie-banner.show { bottom: 0; }
+  .cookie-text { font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
+  .cookie-text b { color: var(--ink); }
+  .cookie-btn {
+    background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #0A0A0B;
+    border: none; padding: 10px 18px; font-weight: 700; font-size: 12px; font-family: var(--font-mono);
+    border-radius: 6px; cursor: pointer; align-self: flex-end; transition: transform 0.2s ease;
+  }
+  .cookie-btn:hover { transform: scale(1.02); }
+
+  /* MODAL MODERNE DLA PRIVACY POLICY */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+    z-index: 2000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 24px;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal-window {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px;
+    max-width: 650px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 36px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 20px; right: 20px; background: transparent; border: none;
+    color: var(--ink-dim); cursor: pointer; transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--ink); }
+  .modal-window h2 { font-size: 26px; margin-bottom: 20px; color: var(--ink); }
+  .modal-window h3 { font-size: 16px; margin: 20px 0 10px; color: var(--blue); font-family: var(--font-mono); }
+  .modal-window p { font-size: 14px; color: var(--ink-dim); line-height: 1.6; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -234,10 +275,12 @@
 <div class="cursor-glow" id="cursorGlow"></div>
 <div class="noise"></div>
 
+<!-- TŁO SIECIOWE -->
 <div class="network-bg-field">
   <canvas id="networkCanvas"></canvas>
 </div>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
     <div class="logo">
@@ -254,6 +297,7 @@
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="container hero-grid">
     <div>
@@ -266,6 +310,7 @@
       </div>
     </div>
     
+    <!-- TERMINAL BASH -->
     <div>
       <div class="terminal-window">
         <div class="terminal-header">
@@ -322,10 +367,12 @@
   </div>
 </section>
 
+<!-- KARUZELA MARQUEE -->
 <div class="marquee">
   <div class="marquee-track" id="marqueeTrack"></div>
 </div>
 
+<!-- SEKCJA BENTO (OFERTA) -->
 <section id="uslugi" class="section-pad">
   <div class="container">
     <div class="section-head">
@@ -354,6 +401,7 @@
   </div>
 </section>
 
+<!-- SEKCJA CENNIKA -->
 <section id="cennik" class="section-pad">
   <div class="container">
     <div class="calc-grid">
@@ -387,6 +435,7 @@
   </div>
 </section>
 
+<!-- KONTAKT -->
 <section id="kontakt" class="section-pad">
   <div class="container contact-box">
     <div class="section-head" style="margin-bottom:0;">
@@ -421,9 +470,42 @@
   </div>
 </section>
 
+<!-- COOKIES BANER -->
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-text">
+    Strona <b>sirk.cloud</b> używa podstawowych plików cookies w celu poprawnego działania interaktywnych elementów kalkulatora oraz zbierania anonimowych statystyk.
+  </div>
+  <button class="cookie-btn" id="acceptCookiesBtn">Akceptuję</button>
+</div>
+
+<!-- MODAL POLITYKI PRYWATNOŚCI -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal-window">
+    <button class="modal-close" id="closePrivacyBtn"><i data-lucide="x" size="20"></i></button>
+    <h2>Polityka Prywatności sirk.cloud</h2>
+    <p>Dbamy o bezpieczeństwo Twoich danych tak samo, jak dbamy o infrastrukturę naszych klientów. Poniżej znajdują się najważniejsze informacje dotyczące przetwarzania danych.</p>
+    
+    <h3>1. Administrator Danych</h3>
+    <p>Administratorem danych osobowych zbieranych za pośrednictwem strony sirk.cloud oraz kanałów kontaktu jest Krzysztof Jankowski, kontakt: kjankowski@sirk.cloud.</p>
+    
+    <h3>2. Cel Przetwarzania</h3>
+    <p>Twoje dane (takie jak e-mail czy numer telefonu) przetwarzane są wyłącznie w celu udzielenia odpowiedzi na przesłane zapytania ofertowe, rezerwacji bezpłatnych konsultacji technicznych oraz realizacji usług IT.</p>
+    
+    <h3>3. Pliki Cookies</h3>
+    <p>Strona wykorzystuje pliki cookies do zachowania stanów lokalnych (np. ukrycie tego baneru po akceptacji) oraz optymalizacji renderowania skryptów animacji sieciowych. Dane te nie są przekazywane podmiotom trzecim w celach marketingowych.</p>
+    
+    <h3>4. Twoje Prawa</h3>
+    <p>Masz pełne prawo do wglądu w swoje dane, ich poprawiania, ograniczenia przetwarzania lub całkowitego usunięcia. W tym celu wystarczy krótka wiadomość na adres administratora.</p>
+  </div>
+</div>
+
+<!-- STOPKA -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div>© <span id="year"></span> sirk.cloud — Wszelkie prawa zastrzeżone.</div>
+    <div class="footer-left">
+      <div>© <span id="year"></span> sirk.cloud — Wszelkie prawa zastrzeżone.</div>
+      <div><span class="privacy-trigger" id="privacyLink">Polityka prywatności</span></div>
+    </div>
     <div class="footer-socials">
       <a href="tel:+48511832376"><i data-lucide="phone" size="14"></i> +48 511 832 376</a>
       <a href="mailto:kjankowski@sirk.cloud"><i data-lucide="mail" size="14"></i> kjankowski@sirk.cloud</a>
@@ -437,6 +519,29 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
   lucide.createIcons();
+
+  /* LOGIKA BANERU COOKIES (LOCALSTORAGE) */
+  (function(){
+    const banner = document.getElementById('cookieBanner');
+    const btn = document.getElementById('acceptCookiesBtn');
+    if (!localStorage.getItem('sirk_cookies_accepted')) {
+      setTimeout(() => { banner.classList.add('show'); }, 1200);
+    }
+    btn.addEventListener('click', () => {
+      localStorage.setItem('sirk_cookies_accepted', 'true');
+      banner.classList.remove('show');
+    });
+  })();
+
+  /* LOGIKA MODALA POLITYKI PRYWATNOŚCI */
+  (function(){
+    const modal = document.getElementById('privacyModal');
+    const link = document.getElementById('privacyLink');
+    const closeBtn = document.getElementById('closePrivacyBtn');
+    link.addEventListener('click', () => modal.classList.add('open'));
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+  })();
 
   /* BŁYSK MENU */
   document.querySelectorAll('.nav-cta').forEach(btn => {
@@ -537,12 +642,11 @@
     print();
   })();
 
-  /* DYNAMICZNY PODWÓJNY MARQUEE DLA EFEKTU PŁYNNEGO ZAPĘTLENIA CSS */
+  /* MARQUEE TRACK */
   (function(){
     const items = ["Infrastruktura", "Rozwiązania chmurowe", "Kopie zapasowe", "Cyberbezpieczeństwo", "Wsparcie zdalne", "Administracja sprzętem"];
     const track = document.getElementById('marqueeTrack');
     let html = "";
-    // Generujemy dwukrotnie zestaw, aby stworzyć idealną pętlę bez przeskoków wizualnych
     for(let r=0; r<2; r++) {
       items.forEach(item => { html += `<span>${item}</span><span class="sep"> / </span>`; });
     }
