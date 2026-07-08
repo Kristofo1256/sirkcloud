@@ -231,14 +231,15 @@
   .footer-socials a:hover { color: var(--blue); }
   .footer-socials i { vertical-align: middle; display: inline-block; }
 
-  /* BANER COOKIES */
+  /* BANER COOKIES (POPRAWIONY) */
   .cookie-banner {
-    position: fixed; bottom: -120px; left: 24px; right: 24px; max-width: 500px; margin: 0 auto 24px 24px;
+    position: fixed; bottom: -130px; left: 24px; right: 24px; max-width: 500px; margin: 0 auto 24px 24px;
     background: rgba(19, 19, 22, 0.95); border: 1px solid var(--border); border-radius: 12px;
     padding: 20px; backdrop-filter: blur(16px); z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    display: flex; flex-direction: column; gap: 14px; transition: bottom 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex; flex-direction: column; gap: 14px; 
+    opacity: 0; transition: bottom 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease;
   }
-  .cookie-banner.show { bottom: 0; }
+  .cookie-banner.show { bottom: 0; opacity: 1; }
   .cookie-text { font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
   .cookie-text b { color: var(--ink); }
   .cookie-btn {
@@ -248,7 +249,7 @@
   }
   .cookie-btn:hover { transform: scale(1.02); }
 
-  /* OKNO POLITYKI PRYWATNOŚCI (DOPASOWANE DO SIRK.CLOUD) */
+  /* OKNO POLITYKI PRYWATNOŚCI (POPRAWIONE LITERÓWKI) */
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
     z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -266,7 +267,6 @@
   }
   .modal-close:hover { color: var(--ink); }
   
-  /* Style tekstu wewnątrz polityki */
   .modal-content { text-align: left; font-family: var(--font-body); }
   .modal-content h2 { font-size: 24px; margin-bottom: 24px; color: var(--ink); border-bottom: 1px solid var(--border); padding-bottom: 12px; }
   .modal-content h3 { font-size: 14px; margin: 24px 0 12px; color: var(--blue); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -299,7 +299,7 @@
       <div class="nav-links">
         <a href="#uslugi">Oferta</a>
         <a href="#cennik">Cennik</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="#kontakt">Contact</a>
       </div>
       <a href="#kontakt" class="nav-cta">Konsultacja IT</a>
     </div>
@@ -487,13 +487,13 @@
   <button class="cookie-btn" id="acceptCookiesBtn">Akceptuję</button>
 </div>
 
-<!-- INTERAKTYWNE MODAL OKNO: TWOJA POLITYKA PRYWATNOŚCI (SPERSONALIZOWANA) -->
+<!-- OKNO MODALNE POLITYKI PRYWATNOŚCI -->
 <div class="modal-overlay" id="privacyModal">
   <div class="modal-window">
     <button class="modal-close" id="closePrivacyBtn"><i data-lucide="x" size="20"></i></button>
     <div class="modal-content">
       <h2>POLITYKA PRYWATNOŚCI<br>I INFORMACJE OGÓLNE</h2>
-      <p>Niniejsza Polityka Prywatności określa sposób pozyskiwania, przetwarzania oraz zabezpieczania danych osobowych w rozumieniu ustawy o ochronie danych osobowych z dnia 29 sierpnia 1997 roku (Dz.U. Nr 133, poz. 883 z póź. zm.) oraz ustawą o świadczeniu usług drogą elektroniczną z dnia 18 lipca 2002 r. (Dz.U. Nr 144, poz. 1204 z póź. zm.)</p>
+      <p>Niniejsza Polityka Prywatności określa sposób pozyskiwania, przetwarzania oraz zabezpieczania danych osobowych w rozumieniu ustawy o ochronie danych osobowych z dnia 29 sierpnia 1997 roku (Dz.U. Nr 133, poz. 883 z późn. zm.) oraz ustawy o świadczeniu usług drogą elektroniczną z dnia 18 lipca 2002 r. (Dz.U. Nr 144, poz. 1204 z późn. zm.)</p>
       <p>Właścicielem strony internetowej <b>www.sirk.cloud</b> oraz administratorem danych osobowych jest firma sirk.cloud, reprezentowana przez Krzysztofa Jankowskiego, z siedzibą w Łodzi, woj. łódzkie.</p>
       
       <h3>II DANE OSOBOWE</h3>
@@ -501,7 +501,7 @@
       <p>Dane osobowe są pozyskiwane podczas wysyłania zapytania poprzez bezpośredni kontakt e-mail oraz telefoniczny.</p>
       <p>Dane osobowe są wykorzystywane wyłącznie w celu udzielenia odpowiedzi, kalkulacji wyceny usług outsourcingu IT oraz realizacji późniejszego wsparcia, o ile użytkownik wyraził na to zgodę.</p>
       <p>Zawartość strony internetowej można przeglądać bez podawania jakichkolwiek danych osobowych.</p>
-      <p>Każda osoba, która udostępniła swoje dane osobowe, ma prawo do dostępu do ich treści oraz możliwość ich poprawiania, uaktualniania, uzupełniania, jak i również żądania zaprzestania przetwarzania danych osobowych oraz wniesienia sprzeciwu wobec przetwarzania danych osobowych. Wymienione czynności można dokonać poprzez wysłanie stosownego oświadczenia na adres e-mail: <a href="mailto:kjankowski@sirk.cloud">kjankowski@sirk.cloud</a>.</p>
+      <p>Każda osoba, która udostępniła swoje dane osobowe, ma prawo do dostępu do ich treści oraz możliwość ich poprawiania, uaktualniania, uzupełniania, jak również żądania zaprzestania przetwarzania danych osobowych oraz wniesienia sprzeciwu wobec przetwarzania danych osobowych. Wymienionych czynności można dokonać poprzez wysłanie stosownego oświadczenia na adres e-mail: <a href="mailto:kjankowski@sirk.cloud">kjankowski@sirk.cloud</a>.</p>
       <p>Pozyskane przez administratora dane osobowe są przechowywane, przetwarzane i chronione zgodnie z obowiązującymi przepisami prawa.</p>
       <p>Administrator chroni zgromadzone dane osobowe, korzystając z następujących środków:</p>
       <ul>
@@ -511,12 +511,12 @@
 
       <h3>III INFORMACJA O PLIKACH COOKIES</h3>
       <p>Serwis korzysta z plików cookies.</p>
-      <p>Pliki cookies (tzw. “ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
+      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
       <p>Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu.</p>
-      <p>Pliki cookies wykorzystywane zijn w następujących celach:</p>
+      <p>Pliki cookies wykorzystywane są w następujących celach:</p>
       <ul>
         <li>tworzenia anonimowych statystyk, które pomagają zrozumieć, w jaki sposób Użytkownicy Serwisu korzystają ze stron internetowych, co umożliwia ulepszanie ich struktury, responsywności i zawartości;</li>
-        <li>utrzymania stanów logicznych (np. zapamiętanie decyzji o zamknięciu tego okna), dzięki czemu interaktywne elementy strony nie wymagają ponownej konfiguracji przy odświeżeniu;</li>
+        <li>utrzymania stanów lokalnych (np. zapamiętanie decyzji o zamknięciu okna), dzięki czemu interaktywne elementy strony nie wymagają ponownej konfiguracji przy odświeżeniu;</li>
         <li>określania profilu użytkownika w celu wyświetlania mu dopasowanych materiałów technicznych w sieciach reklamowych, w szczególności sieci Google.</li>
       </ul>
       <p>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne” (session cookies) oraz „stałe” (persistent cookies). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez czas określony w parametrach plików cookies lub do czasu ich usunięcia przez Użytkownika.</p>
@@ -560,12 +560,11 @@
   document.getElementById('year').textContent = new Date().getFullYear();
   lucide.createIcons();
 
-  /* LOGIKA BANERU COOKIES - NAPRAWIONA I SPRAWDZONA */
+  /* LOGIKA BANERU COOKIES - NAPRAWIONA (TERAZ CALKOWICIE ZNIKA) */
   (function(){
     const banner = document.getElementById('cookieBanner');
     const btn = document.getElementById('acceptCookiesBtn');
     
-    // Pokazuje baner tylko jeśli brak zapisu w pamięci podręcznej Maca / Windowsa
     if (!localStorage.getItem('sirk_cookies_accepted')) {
       setTimeout(() => { banner.classList.add('show'); }, 1200);
     }
@@ -573,6 +572,10 @@
     btn.addEventListener('click', () => {
       localStorage.setItem('sirk_cookies_accepted', 'true');
       banner.classList.remove('show');
+      // Po animacji zjazdu, całkowicie usuwamy blokadę z układu strony
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 500);
     });
   })();
 
