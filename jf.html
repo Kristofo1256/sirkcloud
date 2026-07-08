@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JF Development — Profesjonalna Firma Budowlana | Domy, Apartamenty, Bloki</title>
+    <meta name="description" content="JF Development — profesjonalna firma budowlana z ponad 18-letnim doświadczeniem. Budujemy domy jednorodzinne, apartamenty i bloki mieszkalne. Ponad 120 zrealizowanych zleceń." />
+    <meta property="og:title" content="JF Development — Budujemy Trwałość" />
+    <meta property="og:description" content="Profesjonalna firma budowlana z ponad 18-letnim doświadczeniem. Ponad 120 zadowolonych klientów." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --obsidian: #121212;
+        --bone: #F5F5F5;
+        --orange: #FF4F00;
+        --cement: #4A4A4A;
+        --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: var(--font);
+        background: var(--obsidian);
+        color: var(--bone);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      #root { display: none; }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: var(--obsidian); }
+      ::-webkit-scrollbar-thumb { background: var(--cement); }
+      ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+      a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+        outline: 3px solid var(--orange);
+        outline-offset: 2px;
+      }
+      img { max-width: 100%; display: block; }
+      section { position: relative; }
+      .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+      @media (min-width: 1024px) { .container { padding: 0 48px; } }
+      .section-label { display: flex; align-items: center; gap: 16px; margin-bottom: 80px; }
+      .section-label .line { width: 48px; height: 1px; background: var(--orange); }
+      .section-label span { color: var(--orange); font-size: 12px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
+
+      /* NAVBAR */
+      .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 80px; display: flex; align-items: center; transition: all 0.5s ease; }
+      .navbar.scrolled { background: rgba(18,18,18,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(74,74,74,0.3); }
+      .navbar .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+      .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+      .logo .jf { color: var(--orange); font-weight: 900; font-size: 20px; letter-spacing: -0.02em; }
+      .logo .dev { color: var(--bone); font-weight: 700; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+      @media (max-width: 640px) { .logo .dev { display: none; } }
+      .nav-links { display: none; align-items: center; gap: 40px; }
+      @media (min-width: 1024px) { .nav-links { display: flex; } }
+      .nav-links a { color: rgba(245,245,245,0.7); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; padding: 8px 4px; }
+      .nav-links a:hover { color: var(--orange); }
+      .btn-cta { display: none; border: 1px solid var(--orange); color: var(--orange); text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 24px; transition: all 0.3s; align-items: center; min-height: 48px; background: transparent; cursor: pointer; }
+      @media (min-width: 1024px) { .btn-cta { display: inline-flex; } }
+      .btn-cta:hover { background: var(--orange); color: #fff; }
+      .mobile-toggle { display: flex; background: none; border: none; color: var(--bone); cursor: pointer; padding: 8px; min-width: 48px; min-height: 48px; align-items: center; justify-content: center; }
+      @media (min-width: 1024px) { .mobile-toggle { display: none; } }
+      .mobile-menu { display: none; flex-direction: column; gap: 24px; padding: 32px 24px; background: rgba(18,18,18,0.98); backdrop-filter: blur(12px); border-top: 1px solid rgba(74,74,74,0.3); }
+      .mobile-menu.open { display: flex; }
+      .mobile-menu a { color: rgba(245,245,245,0.8); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; min-height: 48px; display: flex; align-items: center; }
+      .mobile-menu .btn-cta-mobile { display: flex; border: 1px solid var(--orange); color: var(--orange); font-size: 14px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px; justify-content: center; min-height: 48px; text-decoration: none; }
+
+      /* HERO */
+      .hero { height: 100vh; min-height: 600px; overflow: hidden; display: flex; align-items: center; justify-content: center; text-align: center; }
+      .hero-bg { position: absolute; inset: 0; }
+      .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+      .hero-bg::after { content: ''; position: absolute; inset: 0; background: rgba(18,18,18,0.7); }
+      .hero-grid { position: absolute; inset: 0; opacity: 0.03; pointer-events: none; background-image: linear-gradient(rgba(245,245,245,1) 1px, transparent 1px), linear-gradient(90deg, rgba(245,245,245,1) 1px, transparent 1px); background-size: 60px 60px; }
+      .hero-content { position: relative; z-index: 2; padding: 0 24px; max-width: 1152px; }
+      .hero-tag { color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+      @media (min-width: 640px) { .hero-tag { font-size: 14px; } }
+      .hero h1 { color: var(--bone); font-weight: 900; line-height: 1; letter-spacing: -0.02em; font-size: 3rem; margin-bottom: 32px; opacity: 0; animation: fadeUp 1s 0.4s forwards; }
+      @media (min-width: 640px) { .hero h1 { font-size: 4.5rem; } }
+      @media (min-width: 768px) { .hero h1 { font-size: 6rem; } }
+      @media (min-width: 1024px) { .hero h1 { font-size: 7.5rem; } }
+      @media (min-width: 1280px) { .hero h1 { font-size: 8rem; } }
+      .hero h1 .accent { color: var(--orange); }
+      .hero-sub { color: rgba(245,245,245,0.6); font-size: 1.0625rem; max-width: 640px; margin: 0 auto 48px; line-height: 1.8; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+      @media (min-width: 640px) { .hero-sub { font-size: 1.125rem; } }
+      .hero-actions { display: flex; flex-direction: column; gap: 16px; align-items: center; justify-content: center; opacity: 0; animation: fadeUp 0.8s 1s forwards; }
+      @media (min-width: 640px) { .hero-actions { flex-direction: row; } }
+      .btn-ghost { border: 2px solid var(--orange); color: var(--orange); text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px 40px; transition: all 0.3s; min-height: 48px; display: inline-flex; align-items: center; }
+      .btn-ghost:hover { background: var(--orange); color: #fff; }
+      .btn-text { color: rgba(245,245,245,0.5); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px 40px; transition: color 0.3s; min-height: 48px; display: inline-flex; align-items: center; }
+      .btn-text:hover { color: var(--bone); }
+      .scroll-indicator { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2; }
+      .scroll-line { width: 1px; height: 64px; background: linear-gradient(to bottom, var(--orange), transparent); animation: scrollBounce 2s infinite; }
+      @keyframes scrollBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* ABOUT */
+      .about { padding: 128px 0; border-top: 1px solid rgba(74,74,74,0.3); }
+      @media (min-width: 1024px) { .about { padding: 176px 0; } }
+      .about-grid { display: grid; gap: 64px; }
+      @media (min-width: 1024px) { .about-grid { grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; } }
+      .about h2 { color: var(--bone); font-weight: 900; font-size: 2.25rem; line-height: 1.1; margin-bottom: 32px; }
+      @media (min-width: 640px) { .about h2 { font-size: 3rem; } }
+      @media (min-width: 1024px) { .about h2 { font-size: 3.75rem; } }
+      .about h2 .accent { color: var(--orange); }
+      .about .lead { color: rgba(245,245,245,0.6); font-size: 1.125rem; line-height: 1.8; margin-bottom: 48px; }
+      .badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .badge { border: 1px solid rgba(74,74,74,0.3); padding: 20px; transition: border-color 0.3s; }
+      .badge:hover { border-color: rgba(255,79,0,0.5); }
+      .badge .icon { color: var(--orange); margin-bottom: 12px; }
+      .badge .value { color: var(--orange); font-weight: 900; font-size: 1.5rem; margin-bottom: 4px; }
+      .badge .label { color: rgba(245,245,245,0.5); font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+      .about-img-wrap { position: relative; }
+      .about-img-wrap img { width: 100%; height: 500px; object-fit: cover; }
+      @media (min-width: 1024px) { .about-img-wrap img { height: 600px; } }
+      .about-img-corner { position: absolute; bottom: -12px; right: -12px; width: 96px; height: 96px; border-bottom: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+
+      /* PROCESS */
+      .process { padding: 128px 0; border-top: 1px solid rgba(74,74,74,0.3); }
+      @media (min-width: 1024px) { .process { padding: 176px 0; } }
+      .process h2 { color: var(--bone); font-weight: 900; font-size: 2.25rem; line-height: 1.1; margin-bottom: 24px; }
+      @media (min-width: 640px) { .process h2 { font-size: 3rem; } }
+      @media (min-width: 1024px) { .process h2 { font-size: 3.75rem; } }
+      .process h2 .accent { color: var(--orange); }
+      .process .lead { color: rgba(245,245,245,0.5); font-size: 1.125rem; line-height: 1.7; max-width: 768px; margin-bottom: 80px; }
+      .steps { display: grid; gap: 0; }
+      @media (min-width: 768px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+      .step { position: relative; padding: 32px; border: 1px solid rgba(74,74,74,0.2); transition: all 0.5s; overflow: hidden; }
+      @media (min-width: 768px) { .step:not(:last-child) { border-right: none; } }
+      @media (min-width: 1024px) { .step { padding: 48px; } }
+      .step:hover { background: rgba(74,74,74,0.1); }
+      .step-num { position: absolute; top: 16px; right: 24px; color: var(--orange); font-weight: 900; font-size: 4.5rem; opacity: 0.2; transition: opacity 0.5s; }
+      @media (min-width: 1024px) { .step-num { font-size: 5rem; } }
+      .step:hover .step-num { opacity: 0.4; }
+      .step-content { position: relative; z-index: 1; }
+      .step .icon { color: var(--orange); margin-bottom: 24px; }
+      .step h3 { color: var(--bone); font-weight: 700; font-size: 1.125rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+      .step p { color: rgba(245,245,245,0.5); font-size: 1rem; line-height: 1.8; }
+      .step-accent { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background: var(--orange); transition: width 0.7s; }
+      .step:hover .step-accent { width: 100%; }
+
+      /* SERVICES */
+      .services { padding: 128px 0; background: var(--bone); color: var(--obsidian); }
+      @media (min-width: 1024px) { .services { padding: 176px 0; } }
+      .services h2 { color: var(--obsidian); font-weight: 900; font-size: 2.25rem; line-height: 1.1; margin-bottom: 24px; }
+      @media (min-width: 640px) { .services h2 { font-size: 3rem; } }
+      @media (min-width: 1024px) { .services h2 { font-size: 3.75rem; } }
+      .services h2 .accent { color: var(--orange); }
+      .services .lead { color: var(--cement); font-size: 1.125rem; line-height: 1.7; max-width: 768px; margin-bottom: 80px; }
+      .services-grid { display: grid; gap: 32px; }
+      @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+      .service-card { background: #fff; border: 1px solid rgba(18,18,18,0.1); padding: 40px; transition: all 0.5s; position: relative; overflow: hidden; }
+      @media (min-width: 1024px) { .service-card { padding: 48px; } }
+      .service-card:hover { border-color: rgba(255,79,0,0.5); }
+      .service-card .top-line { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
+      .service-card:hover .top-line { transform: scaleX(1); }
+      .service-card .icon { color: var(--orange); margin-bottom: 24px; }
+      .service-card h3 { color: var(--obsidian); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+      .service-card p { color: var(--cement); font-size: 1rem; line-height: 1.8; }
+
+      /* GALLERY */
+      .gallery { padding: 128px 0; border-top: 1px solid rgba(74,74,74,0.3); }
+      @media (min-width: 1024px) { .gallery { padding: 176px 0; } }
+      .gallery-header { display: flex; flex-direction: column; gap: 24px; margin-bottom: 64px; }
+      @media (min-width: 640px) { .gallery-header { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
+      .gallery h2 { color: var(--bone); font-weight: 900; font-size: 2.25rem; line-height: 1.1; }
+      @media (min-width: 640px) { .gallery h2 { font-size: 3rem; } }
+      @media (min-width: 1024px) { .gallery h2 { font-size: 3.75rem; } }
+      .gallery h2 .accent { color: var(--orange); }
+      .gallery-nav { display: flex; gap: 12px; }
+      .gallery-nav button { width: 48px; height: 48px; border: 1px solid rgba(74,74,74,0.4); color: rgba(245,245,245,0.6); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+      .gallery-nav button:hover { border-color: var(--orange); color: var(--orange); }
+      .gallery-scroll { display: flex; gap: 24px; overflow-x: auto; padding: 0 24px 16px; scrollbar-width: thin; scrollbar-color: var(--orange) var(--obsidian); }
+      @media (min-width: 1024px) { .gallery-scroll { padding: 0 48px 16px; } }
+      .gallery-scroll::-webkit-scrollbar { height: 4px; }
+      .gallery-scroll::-webkit-scrollbar-track { background: var(--obsidian); }
+      .gallery-scroll::-webkit-scrollbar-thumb { background: var(--orange); }
+      .gallery-item { flex-shrink: 0; width: 300px; }
+      @media (min-width: 640px) { .gallery-item { width: 350px; } }
+      @media (min-width: 1024px) { .gallery-item { width: 400px; } }
+      .gallery-img-wrap { position: relative; overflow: hidden; aspect-ratio: 3/4; }
+      .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s; }
+      .gallery-item:hover .gallery-img-wrap img { transform: scale(1.1); }
+      .gallery-overlay { position: absolute; inset: 0; background: rgba(18,18,18,0); transition: background 0.5s; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; opacity: 0; }
+      .gallery-item:hover .gallery-overlay { background: rgba(18,18,18,0.6); opacity: 1; }
+      .gallery-overlay .loc { color: var(--orange); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
+      .gallery-overlay .params { color: var(--bone); font-size: 14px; }
+      .gallery-info { margin-top: 16px; }
+      .gallery-info h3 { color: var(--bone); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
+      .gallery-info .loc { color: var(--cement); font-size: 12px; letter-spacing: 0.1em; margin-top: 4px; }
+
+      /* WHY US */
+      .why { padding: 128px 0; border-top: 1px solid rgba(74,74,74,0.3); }
+      @media (min-width: 1024px) { .why { padding: 176px 0; } }
+      .why h2 { color: var(--bone); font-weight: 900; font-size: 2.25rem; line-height: 1.1; margin-bottom: 24px; max-width: 1024px; }
+      @media (min-width: 640px) { .why h2 { font-size: 3rem; } }
+      @media (min-width: 1024px) { .why h2 { font-size: 3.75rem; } }
+      .why h2 .accent { color: var(--orange); }
+      .why .lead { color: rgba(245,245,245,0.5); font-size: 1.125rem; line-height: 1.7; max-width: 768px; margin-bottom: 80px; }
+      .stats { display: grid; gap: 0; }
+      @media (min-width: 768px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+      .stat { border: 1px solid rgba(74,74,74,0.2); padding: 40px; text-align: center; transition: all 0.5s; position: relative; overflow: hidden; }
+      @media (min-width: 1024px) { .stat { padding: 56px; } }
+      @media (min-width: 768px) { .stat:not(:last-child) { border-right: none; } }
+      .stat:hover { background: rgba(74,74,74,0.1); }
+      .stat .number { color: var(--orange); font-weight: 900; font-size: 3.75rem; display: block; margin-bottom: 16px; }
+      @media (min-width: 1024px) { .stat .number { font-size: 4.5rem; } }
+      .stat h3 { color: var(--bone); font-weight: 700; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+      .stat p { color: rgba(245,245,245,0.4); font-size: 14px; line-height: 1.7; }
+      .stat-accent { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background: var(--orange); transition: width 0.7s; }
+      .stat:hover .stat-accent { width: 100%; }
+
+      /* CONTACT */
+      .contact { padding: 128px 0; background: var(--bone); color: var(--obsidian); }
+      @media (min-width: 1024px) { .contact { padding: 176px 0; } }
+      .contact h2 { color: var(--obsidian); font-weight: 900; font-size: 2.25rem; line-height: 1.1; margin-bottom: 80px; }
+      @media (min-width: 640px) { .contact h2 { font-size: 3rem; } }
+      @media (min-width: 1024px) { .contact h2 { font-size: 3.75rem; } }
+      .contact h2 .accent { color: var(--orange); }
+      .contact-grid { display: grid; gap: 64px; }
+      @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1fr 1fr; gap: 96px; } }
+      .contact-info-list { display: flex; flex-direction: column; gap: 32px; margin-bottom: 48px; }
+      .contact-info-item { display: flex; gap: 20px; align-items: flex-start; text-decoration: none; min-height: 48px; }
+      .contact-info-item .icon-box { width: 48px; height: 48px; border: 1px solid rgba(18,18,18,0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+      .contact-info-item:hover .icon-box { border-color: var(--orange); background: rgba(255,79,0,0.05); }
+      .contact-info-item .icon-box .icon { color: var(--orange); }
+      .contact-info-item .label { color: var(--cement); font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+      .contact-info-item .value { color: var(--obsidian); font-weight: 600; font-size: 1.125rem; transition: color 0.3s; }
+      .contact-info-item:hover .value { color: var(--orange); }
+      .map-wrap { border: 1px solid rgba(18,18,18,0.1); overflow: hidden; }
+      .map-wrap iframe { width: 100%; height: 256px; filter: grayscale(1) contrast(1.25); border: 0; }
+      .contact-form { display: flex; flex-direction: column; gap: 24px; }
+      .form-group label { color: var(--cement); font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; display: block; }
+      .form-group input, .form-group textarea { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(18,18,18,0.2); color: var(--obsidian); font-size: 1.125rem; padding: 12px 0; outline: none; transition: border-color 0.3s; font-family: var(--font); resize: none; min-height: 48px; }
+      .form-group input:focus, .form-group textarea:focus { border-bottom-color: var(--orange); }
+      .form-group textarea { min-height: 120px; }
+      .btn-submit { background: var(--orange); color: #fff; border: none; font-weight: 700; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px 40px; cursor: pointer; transition: all 0.3s; min-height: 48px; margin-top: 16px; font-family: var(--font); }
+      .btn-submit:hover { background: rgba(255,79,0,0.9); }
+      .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+      .form-success { text-align: center; padding: 48px 0; }
+      .form-success .check-box { width: 64px; height: 64px; border: 2px solid var(--orange); margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; }
+      .form-success .check-box .icon { color: var(--orange); }
+      .form-success h3 { color: var(--obsidian); font-weight: 700; font-size: 1.5rem; margin-bottom: 12px; }
+      .form-success p { color: var(--cement); }
+      .form-success .again { color: var(--orange); font-weight: 600; font-size: 14px; letter-spacing: 0.1em; margin-top: 24px; background: none; border: none; cursor: pointer; font-family: var(--font); min-height: 48px; }
+      .form-success .again:hover { text-decoration: underline; }
+
+      /* FOOTER */
+      .footer { background: var(--obsidian); border-top: 1px solid rgba(74,74,74,0.2); color: var(--bone); }
+      .footer-inner { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
+      @media (min-width: 1024px) { .footer-inner { padding: 80px 48px; } }
+      .footer-grid { display: grid; gap: 48px; }
+      @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 80px; } }
+      .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+      .footer-logo .jf { color: var(--orange); font-weight: 900; font-size: 24px; }
+      .footer-logo .dev { color: var(--bone); font-weight: 700; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+      .footer-desc { color: rgba(245,245,245,0.4); font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
+      .footer-spec { color: var(--cement); font-size: 12px; letter-spacing: 0.1em; }
+      .footer h4 { color: rgba(245,245,245,0.3); font-size: 12px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 24px; }
+      .footer-table { border: 1px solid rgba(74,74,74,0.2); }
+      .footer-table a { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; color: rgba(245,245,245,0.6); text-decoration: none; font-size: 14px; letter-spacing: 0.05em; transition: all 0.3s; min-height: 48px; }
+      .footer-table a:not(:last-child) { border-bottom: 1px solid rgba(74,74,74,0.2); }
+      .footer-table a:hover { color: var(--orange); background: rgba(74,74,74,0.1); }
+      .footer-table a .num { color: rgba(74,74,74,0.4); font-size: 12px; }
+      .footer-contact-item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; color: rgba(245,245,245,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s; min-height: 48px; }
+      .footer-contact-item:not(:last-child) { border-bottom: 1px solid rgba(74,74,74,0.2); }
+      .footer-contact-item:hover { color: var(--orange); }
+      .footer-contact-item .icon { color: var(--orange); flex-shrink: 0; }
+      .footer-bottom { border-top: 1px solid rgba(74,74,74,0.2); }
+      .footer-bottom-inner { max-width: 1280px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+      @media (min-width: 640px) { .footer-bottom-inner { flex-direction: row; justify-content: space-between; padding: 24px 48px; } }
+      .footer-bottom p { color: rgba(74,74,74,0.5); font-size: 12px; letter-spacing: 0.05em; }
+      .footer-bottom .rev { color: rgba(74,74,74,0.3); font-size: 12px; letter-spacing: 0.05em; }
+
+      /* ANIMATIONS */
+      .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s, transform 0.8s; }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+      <div class="container">
+        <a href="#hero" class="logo">
+          <span class="jf">JF</span>
+          <span class="dev">DEVELOPMENT</span>
+        </a>
+        <div class="nav-links">
+          <a href="#about">O Nas</a>
+          <a href="#process">Proces</a>
+          <a href="#gallery">Realizacje</a>
+          <a href="#why">Dlaczego My</a>
+          <a href="#contact">Kontakt</a>
+        </div>
+        <a href="#contact" class="btn-cta">ZACZNIJ PROJEKT</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+          <svg id="menuIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about">O Nas</a>
+      <a href="#process">Proces</a>
+      <a href="#gallery">Realizacje</a>
+      <a href="#why">Dlaczego My</a>
+      <a href="#contact">Kontakt</a>
+      <a href="#contact" class="btn-cta-mobile">ZACZNIJ PROJEKT</a>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+      <div class="hero-bg">
+        <img src="https://media.base44.com/images/public/6a4d0d595f64921e49090f28/fbbd0568a_generated_b29bf5d3.png" alt="Nowoczesna konstrukcja budowlana — JF Development" />
+      </div>
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <p class="hero-tag">JF DEVELOPMENT — FIRMA BUDOWLANA</p>
+        <h1>BUDUJEMY<br><span class="accent">TRWAŁOŚĆ</span></h1>
+        <p class="hero-sub">Profesjonalna firma budowlana z ponad 18-letnim doświadczeniem. Od fundamentów po klucz — realizujemy Twoje marzenia o idealnym domu.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-ghost">ZACZNIJ PROJEKT</a>
+          <a href="#about" class="btn-text">POZNAJ NAS →</a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="about" id="about">
+      <div class="container">
+        <div class="section-label reveal">
+          <div class="line"></div>
+          <span>CZYM SIĘ ZAJMUJEMY</span>
+        </div>
+        <div class="about-grid">
+          <div>
+            <h2 class="reveal">PROFESJONALNA<br>FIRMA<br><span class="accent">BUDOWLANA</span></h2>
+            <p class="lead reveal">Poszukujesz doświadczonej firmy budowlanej w Polsce? JF Development to klucz do sukcesu Twojego projektu! Nasza firma wywodzi się z solidności i profesjonalizmu. Specjalizujemy się w kompleksowej konstrukcji budowlanej od A do Z.</p>
+            <div class="badges reveal">
+              <div class="badge">
+                <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <p class="value">ISO</p>
+                <p class="label">Certyfikowana Firma</p>
+              </div>
+              <div class="badge">
+                <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <p class="value">18+</p>
+                <p class="label">Lat Doświadczenia</p>
+              </div>
+              <div class="badge">
+                <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <p class="value">30+</p>
+                <p class="label">Doświadczony Zespół</p>
+              </div>
+            </div>
+          </div>
+          <div class="about-img-wrap reveal">
+            <img src="https://media.base44.com/images/public/6a4d0d595f64921e49090f28/6ec90cfe1_generated_26f5985a.png" alt="Detal konstrukcyjny budowy — stal i beton" />
+            <div class="about-img-corner"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROCESS ===== -->
+    <section class="process" id="process">
+      <div class="container">
+        <div class="section-label reveal">
+          <div class="line"></div>
+          <span>O NAS</span>
+        </div>
+        <h2 class="reveal">ZREALIZUJEMY TWOJE<br><span class="accent">MARZENIA</span></h2>
+        <p class="lead reveal">Nasi pracownicy to nie tylko doświadczeni fachowcy, ale także pasjonaci budownictwa. Dzięki temu osiągamy rezultaty najwyższej jakości. JF Development dostarcza klientom funkcjonalne i trwałe rozwiązania.</p>
+        <div class="steps">
+          <div class="step reveal">
+            <span class="step-num">01</span>
+            <div class="step-content">
+              <svg class="icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <h3>SKONTAKTUJ SIĘ</h3>
+              <p>Od tego zacznijmy. Skontaktuj się z nami, powiedz czego potrzebujesz, umówmy się na spotkanie i ustalmy szczegóły współpracy.</p>
+            </div>
+            <div class="step-accent"></div>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">02</span>
+            <div class="step-content">
+              <svg class="icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7"/><path d="M2 13h20v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/><path d="M12 22v-3"/></svg>
+              <h3>SPOTKANIE</h3>
+              <p>Spotkajmy się i omówmy szczegóły współpracy. JF Development zrobi dla Ciebie indywidualną wycenę, dostosowaną do budżetu.</p>
+            </div>
+            <div class="step-accent"></div>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">03</span>
+            <div class="step-content">
+              <svg class="icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22a8 8 0 0 1 16 0"/><path d="M10 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M19 12c2 2 2 5 0 7"/></svg>
+              <h3>REALIZACJA</h3>
+              <p>Na tym etapie nasz zespół zaczyna działać. Cały czas na bieżąco klient jest informowany o postępach.</p>
+            </div>
+            <div class="step-accent"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-label reveal">
+          <div class="line"></div>
+          <span>REALIZACJE</span>
+        </div>
+        <h2 class="reveal">W JF DEVELOPMENT KAŻDE ZLECENIE<br>WYCENIANE JEST <span class="accent">INDYWIDUALNIE</span></h2>
+        <p class="lead reveal">Specjalizujemy się w trzech kluczowych obszarach budownictwa mieszkaniowego. Każdy projekt realizujemy z najwyższą dbałością o każdy detal.</p>
+        <div class="services-grid">
+          <div class="service-card reveal">
+            <div class="top-line"></div>
+            <svg class="icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <h3>Domy Jednorodzinne</h3>
+            <p>Budujemy nowoczesne domy jednorodzinne od fundamentów po dach. Każdy projekt dostosowany do indywidualnych potrzeb klienta.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="top-line"></div>
+            <svg class="icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>
+            <h3>Apartamenty</h3>
+            <p>Realizujemy kompleksy apartamentowe łączące komfort mieszkania z najwyższą jakością wykonania i nowoczesnym designem.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="top-line"></div>
+            <svg class="icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            <h3>Bloki Mieszkalne</h3>
+            <p>Budowa wielorodzinnych bloków mieszkalnych z zachowaniem najwyższych standardów bezpieczeństwa i funkcjonalności.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GALLERY ===== -->
+    <section class="gallery" id="gallery">
+      <div class="container">
+        <div class="gallery-header">
+          <div>
+            <div class="section-label reveal" style="margin-bottom: 32px;">
+              <div class="line"></div>
+              <span>GALERIA</span>
+            </div>
+            <h2 class="reveal">NASZE <span class="accent">REALIZACJE</span></h2>
+          </div>
+          <div class="gallery-nav">
+            <button id="galleryPrev" aria-label="Poprzedni projekt">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button id="galleryNext" aria-label="Następny projekt">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-scroll" id="galleryScroll">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="https://media.base44.com/images/public/6a4d0d595f64921e49090f28/02f7cde5c_generated_530ed673.png" alt="Dom Jednorodzinny — Andrespol" />
+            <div class="gallery-overlay">
+              <p class="loc">Andrespol</p>
+              <p class="params">240 m² · 8 miesięcy</p>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h3>Dom Jednorodzinny</h3>
+            <p class="loc">Andrespol</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="https://media.base44.com/images/public/6a4d0d595f64921e49090f28/0cb02b5cb_generated_2875bff9.png" alt="Apartamentowiec — Łódź" />
+            <div class="gallery-overlay">
+              <p class="loc">Łódź</p>
+              <p class="params">1 200 m² · 14 miesięcy</p>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h3>Apartamentowiec</h3>
+            <p class="loc">Łódź</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="https://media.base44.com/images/public/6a4d0d595f64921e49090f28/58fab2a54_generated_a1d86255.png" alt="Blok Mieszkalny — Warszawa" />
+            <div class="gallery-overlay">
+              <p class="loc">Warszawa</p>
+              <p class="params">3 500 m² · 18 miesięcy</p>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h3>Blok Mieszkalny</h3>
+            <p class="loc">Warszawa</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="https://media.base44.com/images/public/6a4d0d595f64921e49090f28/6f7878680_generated_79194077.png" alt="Dom Jednorodzinny — Koluszki" />
+            <div class="gallery-overlay">
+              <p class="loc">Koluszki</p>
+              <p class="params">180 m² · 6 miesięcy</p>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h3>Dom Jednorodzinny</h3>
+            <p class="loc">Koluszki</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHY US ===== -->
+    <section class="why" id="why">
+      <div class="container">
+        <div class="section-label reveal">
+          <div class="line"></div>
+          <span>DLACZEGO JFDEVELOPMENT</span>
+        </div>
+        <h2 class="reveal">GOTOWI NA <span class="accent">KAŻDE</span> ZLECENIE</h2>
+        <p class="lead reveal">JF Development jest gotowy na każde zlecenie. W realizacji marzeń zapewniamy Ci nie tylko solidne wykonanie, ale także terminową realizację projektu.</p>
+        <div class="stats">
+          <div class="stat reveal">
+            <span class="number">18+</span>
+            <h3>LAT DOŚWIADCZENIA</h3>
+            <p>Na rynku budowlanym od 2006 roku</p>
+            <div class="stat-accent"></div>
+          </div>
+          <div class="stat reveal">
+            <span class="number">120+</span>
+            <h3>ZREALIZOWANYCH ZLECEŃ</h3>
+            <p>Każde wykonane z najwyższą starannością</p>
+            <div class="stat-accent"></div>
+          </div>
+          <div class="stat reveal">
+            <span class="number">120+</span>
+            <h3>ZADOWOLONYCH KLIENTÓW</h3>
+            <p>Klienci, którzy nam zaufali i polecają dalej</p>
+            <div class="stat-accent"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="section-label reveal">
+          <div class="line"></div>
+          <span>KONTAKT</span>
+        </div>
+        <h2 class="reveal">POROZMAWIAJMY O TWOIM <span class="accent">PROJEKCIE</span></h2>
+        <div class="contact-grid">
+          <div class="reveal">
+            <div class="contact-info-list">
+              <a href="tel:535252621" class="contact-info-item">
+                <div class="icon-box">
+                  <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div>
+                  <p class="label">Telefon</p>
+                  <p class="value">535 252 621</p>
+                </div>
+              </a>
+              <a href="mailto:jfdevelopment@wp.pl" class="contact-info-item">
+                <div class="icon-box">
+                  <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div>
+                  <p class="label">Email</p>
+                  <p class="value">jfdevelopment@wp.pl</p>
+                </div>
+              </a>
+              <a href="https://maps.google.com/?q=Lipowa+7+Andrespol" target="_blank" rel="noopener noreferrer" class="contact-info-item">
+                <div class="icon-box">
+                  <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <p class="label">Adres</p>
+                  <p class="value">Lipowa 7, 95-020 Andrespol</p>
+                </div>
+              </a>
+            </div>
+            <div class="map-wrap">
+              <iframe title="Lokalizacja JF Development" src="https://www.openstreetmap.org/export/embed.html?bbox=19.57%2C51.72%2C19.63%2C51.76&layer=mapnik&marker=51.74%2C19.60" loading="lazy"></iframe>
+            </div>
+          </div>
+          <div class="reveal">
+            <form class="contact-form" id="contactForm">
+              <div class="form-group">
+                <label for="name">Imię i Nazwisko</label>
+                <input type="text" id="name" name="name" required placeholder="Jan Kowalski" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="jan@email.com" />
+              </div>
+              <div class="form-group">
+                <label for="phone">Telefon</label>
+                <input type="tel" id="phone" name="phone" placeholder="500 000 000" />
+              </div>
+              <div class="form-group">
+                <label for="message">Wiadomość</label>
+                <textarea id="message" name="message" required rows="4" placeholder="Opisz swój projekt..."></textarea>
+              </div>
+              <button type="submit" class="btn-submit" id="submitBtn">WYŚLIJ WIADOMOŚĆ</button>
+            </form>
+            <div class="form-success" id="formSuccess" style="display:none;">
+              <div class="check-box">
+                <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </div>
+              <h3>Wiadomość wysłana!</h3>
+              <p>Skontaktujemy się z Tobą najszybciej jak to możliwe.</p>
+              <button class="again" id="againBtn">WYŚLIJ KOLEJNĄ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <span class="jf">JF</span>
+              <span class="dev">DEVELOPMENT</span>
+            </div>
+            <p class="footer-desc">Profesjonalna firma budowlana z ponad 18-letnim doświadczeniem. Budujemy domy, apartamenty i bloki mieszkalne w całej Polsce.</p>
+            <p class="footer-spec">NR SPEC: JFD/2006/PL</p>
+          </div>
+          <div>
+            <h4>ZESTAWIENIE — LINKI</h4>
+            <div class="footer-table">
+              <a href="#about"><span>O Nas</span><span class="num">01</span></a>
+              <a href="#services"><span>Oferta</span><span class="num">02</span></a>
+              <a href="#gallery"><span>Galeria</span><span class="num">03</span></a>
+              <a href="#contact"><span>Kontakt</span><span class="num">04</span></a>
+            </div>
+          </div>
+          <div>
+            <h4>ZESTAWIENIE — KONTAKT</h4>
+            <div class="footer-table">
+              <a href="tel:535252621" class="footer-contact-item">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>535 252 621</span>
+              </a>
+              <a href="mailto:jfdevelopment@wp.pl" class="footer-contact-item">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span style="word-break:break-all;">jfdevelopment@wp.pl</span>
+              </a>
+              <a href="https://maps.google.com/?q=Lipowa+7+Andrespol" target="_blank" rel="noopener noreferrer" class="footer-contact-item">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Lipowa 7, 95-020 Andrespol</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+          <p>© <span id="year"></span> JF DEVELOPMENT. WSZELKIE PRAWA ZASTRZEŻONE.</p>
+          <p class="rev">REV.01 — LIPOWA 7, ANDRESPOL</p>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      });
+      var mobileToggle = document.getElementById('mobileToggle');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var menuIcon = document.getElementById('menuIcon');
+      var menuOpen = false;
+      var openIcon = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+      var closeIcon = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+      mobileToggle.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        menuIcon.innerHTML = menuOpen ? closeIcon : openIcon;
+      });
+      mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          menuOpen = false;
+          mobileMenu.classList.remove('open');
+          menuIcon.innerHTML = openIcon;
+        });
+      });
+      var galleryScroll = document.getElementById('galleryScroll');
+      document.getElementById('galleryPrev').addEventListener('click', function() {
+        galleryScroll.scrollBy({ left: -400, behavior: 'smooth' });
+      });
+      document.getElementById('galleryNext').addEventListener('click', function() {
+        galleryScroll.scrollBy({ left: 400, behavior: 'smooth' });
+      });
+      var form = document.getElementById('contactForm');
+      var formSuccess = document.getElementById('formSuccess');
+      var submitBtn = document.getElementById('submitBtn');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+        var message = document.getElementById('message').value;
+        var subject = 'Nowe zapytanie od ' + name;
+        var body = 'Imię: ' + name + '\nEmail: ' + email + '\nTelefon: ' + phone + '\n\nWiadomość:\n' + message;
+        window.location.href = 'mailto:jfdevelopment@wp.pl?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        submitBtn.textContent = 'WYSYŁANIE...';
+        submitBtn.disabled = true;
+        setTimeout(function() {
+          form.style.display = 'none';
+          formSuccess.style.display = 'block';
+          submitBtn.textContent = 'WYŚLIJ WIADOMOŚĆ';
+          submitBtn.disabled = false;
+          form.reset();
+        }, 800);
+      });
+      document.getElementById('againBtn').addEventListener('click', function() {
+        formSuccess.style.display = 'none';
+        form.style.display = 'flex';
+      });
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>
