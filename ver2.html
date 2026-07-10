@@ -133,24 +133,13 @@
   @media (max-width: 1024px) { .hero-tags-box { justify-content: center; margin: 0 auto 24px; } }
   .hero-tag-pill { font-family: var(--font-mono); font-size: 11px; color: rgba(250,250,250,0.4); background: rgba(19,19,22,0.6); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
 
-  /* STYLE DLA WARIANTÓW UZUPEŁNIENIA DOLNEJ PRZESTRZENI */
+  /* PANEL METRYK BIZNESOWYCH (DÓŁ LEWEJ KOLUMNY) */
   .variant-container { max-width: 500px; width: 100%; font-family: var(--font-mono); text-align: left; }
   @media (max-width: 1024px) { .variant-container { margin: 0 auto; } }
-
-  /* Wariant 1: Statyczne metryki */
   .v1-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .v1-box { background: rgba(19,19,22,0.4); border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
   .v1-val { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
   .v1-lbl { font-size: 10px; color: var(--ink-dim); line-height: 1.3; text-transform: uppercase; }
-
-  /* Wariant 2: Status page */
-  .v2-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(19,19,22,0.4); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; font-size: 11px; }
-  .v2-name { color: var(--ink); }
-  .v2-status { color: #4ade80; font-size: 10px; font-weight: 700; }
-
-  /* Wariant 3: Certyfikaty */
-  .v3-flex { display: flex; gap: 10px; flex-wrap: wrap; }
-  .v3-badge { border: 1px dashed rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.02); color: var(--cyan); padding: 8px 14px; border-radius: 4px; font-size: 11px; }
 
   .btn {
     padding: 16px 32px; border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none;
@@ -178,11 +167,11 @@
   .t-prompt { color: var(--blue); }
   .t-success { color: #4ade80; }
   
-  /* Rozciągnięty i szeroki kontener dla paska progressu */
   .t-progress-container { width: 100%; white-space: nowrap; overflow: hidden; display: block; color: var(--blue); font-family: var(--font-mono); }
 
-  .term-cursor { display: inline-block; width: 8px; height: 15px; background: var(--blue); margin-left: 2px; animation: blink 1s infinite steps(2); vertical-align: middle; }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  /* SYSTEMOWE, BINARNE MRUGANIE KURSORA (0-1-0-1 bez wygładzania barw i poświaty) */
+  .term-cursor { display: inline-block; width: 8px; height: 15px; background: var(--blue); margin-left: 2px; animation: binBlink 1s infinite steps(1); vertical-align: middle; }
+  @keyframes binBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
   
   .terminal-input-line { display: flex; align-items: center; gap: 4px; margin-top: 4px; }
   .terminal-hidden-input { position: absolute; opacity: 0; pointer-events: none; left: -9999px; }
@@ -404,19 +393,16 @@
         <a data-target="kontakt" class="btn btn-ghost">Napisz do nas</a>
       </div>
 
+      <!-- Zmieniono powtórzony tag SLA na CyberResilience -->
       <div class="hero-tags-box">
-        <span class="hero-tag-pill">SLA 99.9%</span>
+        <span class="hero-tag-pill">CyberResilience</span>
         <span class="hero-tag-pill">Helpdesk 24/7</span>
         <span class="hero-tag-pill">Cloud Hybrid</span>
         <span class="hero-tag-pill">NextGen Security</span>
         <span class="hero-tag-pill">DevOps</span>
       </div>
 
-      <!-- ========================================================================= -->
-      <!-- WYBÓR WARIANU UZUPEŁNIENIA DOLNEJ PRZESTRZENI (Odkomentuj ten, który chcesz) -->
-      <!-- ========================================================================= -->
-
-      <!-- WARIANT 1: Zaufane metryki biznsowe (Aktualnie włączony, statyczny i czysty) -->
+      <!-- Zaufane metryki biznesowe (Statyczne i czytelne) -->
       <div class="variant-container">
         <div class="v1-grid">
           <div class="v1-box"><div class="v1-val">&lt; 15m</div><div class="v1-lbl">Średni czas reakcji</div></div>
@@ -424,30 +410,6 @@
           <div class="v1-box"><div class="v1-val">24/7</div><div class="v1-lbl">Nadzór inżynierski</div></div>
         </div>
       </div>
-
-      <!-- WARIANT 2: Interaktywny status usług (Jeśli wolisz ten, usuń komentarz poniżej i zakomentuj wariant 1) -->
-      <!-- 
-      <div class="variant-container">
-        <div class="v2-row"><span class="v2-name">Zdalny Helpdesk IT</span><span class="v2-status">[ OPERACYJNY ]</span></div>
-        <div class="v2-row"><span class="v2-name">Magazyny Kopii Zapasowych</span><span class="v2-status">[ OPERACYJNY ]</span></div>
-        <div class="v2-row"><span class="v2-name">Szyfrowane Tunele VPN</span><span class="v2-status">[ OPERACYJNY ]</span></div>
-      </div>
-      -->
-
-      <!-- WARIANT 3: Standardy i Certyfikaty (Jeśli wolisz ten, usuń komentarz poniżej i zakomentuj wariant 1) -->
-      <!-- 
-      <div class="variant-container">
-        <div class="v3-flex">
-          <span class="v3-badge">✓ RODO / GDPR Compliant</span>
-          <span class="v3-badge">✓ ISO 27001 Ready</span>
-          <span class="v3-badge">✓ AES-256 Encryption Standard</span>
-        </div>
-      </div>
-      -->
-
-      <!-- WARIANT 4: Całkowicie pusta przestrzeń (Zostają same tagi, brak klocków niżej) -->
-      <!-- Po prostu zakomentuj wszystkie warianty od góry do dołu -->
-
     </div>
     
     <!-- PRAWA KOLUMNA -->
@@ -464,7 +426,7 @@
         </div>
       </div>
 
-      <!-- MONITOR INFRASTRUKTURY (Podmieniona chmura na Proxmox) -->
+      <!-- MONITOR INFRASTRUKTURY -->
       <div class="infra-card">
         <div class="terminal-header" style="margin-bottom:12px; padding-bottom:8px;">
           <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
@@ -658,7 +620,7 @@
       <p>Serwis korzysta z plików cookies.</p>
       <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
       <p>Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu.</p>
-      <p>Pliki cookies wykorzystywane zijn w następujących celach:</p>
+      <p>Pliki cookies wykorzystywane są w następujących celach:</p>
       <ul>
         <li>tworzenia anonimowych statystyk, które pomagają zrozumieć, w jaki sposób Użytkownicy Serwisu korzystają ze stron internetowych, co umożliwia ulepszanie ich struktury, responsywności i zawartości;</li>
         <li>utrzymania stanów lokalnych (np. zapamiętanie decyzji o zamknięciu okna), dzięki czemu interaktywne elementy strony nie wymagają ponownej konfiguracji przy odświeżeniu;</li>
@@ -837,7 +799,7 @@
     gsap.ticker.add(() => { gsap.set(glow, {x: mx, y: my}); });
   })();
 
-  /* SEKWENCJA STARTOWA I INPUT TERMINALA (Ulepszony szeroki Progress Bar) */
+  /* SEKWENCJA STARTOWA I INPUT TERMINALA */
   (function(){
     const term = document.getElementById('terminalBody');
     const windowEl = document.getElementById('terminalWindow');
@@ -890,9 +852,9 @@
       progressLine.style.marginBottom = "6px";
       term.appendChild(progressLine);
       
-      const totalSteps = 40; // Zwiększono liczbę kwadracików dwukrotnie
+      const totalSteps = 40; 
       let currentStep = 0;
-      const duration = 3000; // Czas trwania to nadal dokładnie 3 sekundy
+      const duration = 3000; 
       const intervalTime = duration / totalSteps;
       
       const interval = setInterval(() => {
