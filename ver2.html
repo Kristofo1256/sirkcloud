@@ -77,12 +77,11 @@
   .network-bg-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; }
   #networkCanvas { width: 100%; height: 100%; display: block; }
 
-  /* NAVBAR */
+  /* NAVBAR (Nagłówek widoczny na stałe) */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 50;
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     background: rgba(10, 10, 11, 0.7); border-bottom: 1px solid var(--border);
-    transition: transform 0.4s ease;
   }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 1200px; margin: 0 auto; }
   .logo-img { height: 46px; width: auto; object-fit: contain; display: block; }
@@ -187,7 +186,7 @@
   .marquee span { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; }
   .marquee .sep { color: var(--blue); }
 
-  /* BENTO GRID (Statyczne klocki - brak gibania) */
+  /* BENTO GRID */
   .section-pad { padding: 140px 0; position: relative; z-index: 2; }
   .section-head { max-width: 650px; margin-bottom: 60px; }
   .section-tag { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 12px; display: block; font-family: var(--font-mono); }
@@ -209,7 +208,7 @@
   .bento-card p { color: var(--ink-dim); font-size: 15px; line-height: 1.65; }
   .bento-icon { color: var(--blue); margin-bottom: 24px; }
 
-  /* KALKULATOR CENNIKA (Statyczny) */
+  /* KALKULATOR CENNIKA */
   .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
   @media (max-width: 900px) { .calc-grid { grid-template-columns: 1fr; } }
   .price-card {
@@ -267,7 +266,7 @@
   .method-icon { width: 44px; height: 44px; border-radius: 8px; background: rgba(10, 245, 192, 0.08); color: var(--blue); display: flex; align-items: center; justify-content: center; }
   .method-icon svg { display: block; }
   
-  /* FOOTER */
+  /* FOOTER (Ulepszone podświetlanie wszystkich ikonek oraz linków) */
   .footer { border-top: 1px solid var(--border); padding: 44px 0; background: #060608; font-size: 13px; color: var(--ink-dim); position: relative; z-index: 2; }
   .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
   .footer-left { display: flex; flex-direction: column; gap: 8px; }
@@ -275,8 +274,11 @@
   .privacy-trigger:hover { color: var(--blue); }
   .footer-socials { display: flex; align-items: center; gap: 24px; }
   .footer-socials a { color: var(--ink-dim); transition: color 0.3s; text-decoration: none; font-family: var(--font-mono); display: inline-flex; align-items: center; gap: 8px; }
+  .footer-socials a svg { fill: none; stroke: var(--ink-dim); transition: stroke 0.3s; }
+  
+  /* Efekt rozświetlenia całego linku i ikony jednocześnie na kolor --blue */
   .footer-socials a:hover { color: var(--blue); }
-  .footer-socials svg { vertical-align: middle; }
+  .footer-socials a:hover svg { stroke: var(--blue); }
 
   /* BANER COOKIES */
   .cookie-banner {
@@ -336,7 +338,7 @@
   <canvas id="networkCanvas"></canvas>
 </div>
 
-<!-- NAV (Linki wyzwalają bezpieczny skrypt JS przewijania bez dodawania hash # do adresu) -->
+<!-- NAV -->
 <nav class="nav" id="mainNav">
   <div class="nav-inner">
     <div class="logo">
@@ -522,7 +524,6 @@
         </div>
       </a>
       <a href="https://instagram.com/sirk.cloud" target="_blank" rel="noopener noreferrer" class="contact-method">
-        <!-- RĘCZNIE WPISANA WYDAJNA IKONA INSTAGRAMA W ULTRA OSTREJ JAKOŚCI SVG -->
         <div class="method-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
@@ -571,7 +572,7 @@
 
       <h3>III INFORMACJA O PLIKACH COOKIES</h3>
       <p>Serwis korzysta z plików cookies.</p>
-      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane sunt w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
+      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
       <p>Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu.</p>
       <p>Pliki cookies wykorzystywane są w następujących celach:</p>
       <ul>
@@ -607,11 +608,21 @@
       <div><span class="privacy-trigger" id="privacyLink">Polityka prywatności</span></div>
     </div>
     <div class="footer-socials">
-      <a href="tel:+48511832376"><i data-lucide="phone" size="14"></i> +48 511 832 376</a>
-      <a href="mailto:kjankowski@sirk.cloud"><i data-lucide="mail" size="14"></i> kjankowski@sirk.cloud</a>
+      <a href="tel:+48511832376">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        +48 511 832 376
+      </a>
+      <a href="mailto:kjankowski@sirk.cloud">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="14" x="2" y="5" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+        kjankowski@sirk.cloud
+      </a>
       <a href="https://instagram.com/sirk.cloud" target="_blank" rel="noopener noreferrer">
-        <!-- DRUGA NIEZAWODNA IKONA INSTAGRAMA SVG W STOPCE -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
           <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
           <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
@@ -635,7 +646,6 @@
       const targetElement = document.getElementById(targetId);
       
       if(targetElement) {
-        // Obliczamy pozycję z uwzględnieniem marginesu na nagłówek (100px)
         const elementPosition = targetElement.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.scrollY - 90;
         
@@ -917,7 +927,7 @@
     calculate();
   })();
 
-  /* PRZECHYŁ 3D GSAP (Tylko dla klocków kontaktowych - bento i cennik całkowicie wykluczone) */
+  /* PRZECHYŁ 3D GSAP (Tylko sekcja kontaktowa) */
   if(!window.matchMedia('(hover: none)').matches) {
     document.querySelectorAll('.contact-method').forEach(card => {
       card.addEventListener('mousemove', (e) => {
@@ -931,18 +941,6 @@
       });
     });
   }
-
-  /* AUTOMATYCZNE CHOWANIE MENU */
-  (function(){
-    let lastY = window.scrollY;
-    const nav = document.getElementById('mainNav');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if(y > lastY && y > 150) nav.style.transform = 'translateY(-100%)';
-      else nav.style.transform = 'translateY(0)';
-      lastY = y;
-    }, {passive:true});
-  })();
 
   /* SCROLL ANIMACJE */
   gsap.registerPlugin(ScrollTrigger);
