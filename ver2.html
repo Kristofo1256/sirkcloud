@@ -126,7 +126,7 @@
     padding: 16px 32px; border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none;
     transition: transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease; font-family: var(--font-mono);
   }
-  .btn-primary { background: linear-gradient(135deg, var(--primary), var(--cyan)); color: #fff; }
+  .btn-primary { background: linear-gradient(135deg, var(--primary), var(--cyan)); color: #fff; border: none; }
   .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); }
   .btn-ghost { color: var(--ink); border: 1px solid var(--border); background: rgba(255,255,255,0.01); }
   .btn-ghost:hover { transform: translateY(-3px); border-color: var(--blue); background: rgba(255,255,255,0.03); }
@@ -135,13 +135,22 @@
   .terminal-window {
     background: rgba(19, 19, 22, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 24px;
     box-shadow: 0 30px 60px rgba(0,0,0,0.5); font-family: var(--font-mono); font-size: 13px; color: var(--ink); text-align: left;
-    min-height: 160px; backdrop-filter: blur(12px);
+    min-height: 230px; backdrop-filter: blur(12px); display: flex; flex-direction: column; cursor: text;
   }
   .terminal-header { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-  .terminal-body { line-height: 1.6; }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .term-dot.r { background: #ef4444; }
+  .term-dot.y { background: #f59e0b; }
+  .term-dot.g { background: #10b981; }
+  .terminal-body { line-height: 1.6; flex-grow: 1; overflow-y: auto; }
   .t-prompt { color: var(--blue); }
   .t-success { color: #4ade80; }
-  .term-cursor { display: inline-block; width: 8px; height: 15px; background: var(--blue); margin-left: 4px; animation: blink 1s infinite steps(2); vertical-align: middle; }
+  .term-cursor { display: inline-block; width: 8px; height: 15px; background: var(--blue); margin-left: 2px; animation: blink 1s infinite steps(2); vertical-align: middle; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  
+  .terminal-input-line { display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+  .terminal-hidden-input { position: absolute; opacity: 0; pointer-events: none; left: -9999px; }
+  .terminal-editable-text { white-space: pre-wrap; word-break: break-all; color: var(--ink); }
 
   /* INFRA MONITOR VISUAL */
   .infra-card { background: rgba(19, 19, 22, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 100%; max-width: 440px; margin-top: 32px; backdrop-filter: blur(12px); }
@@ -164,7 +173,7 @@
   }
   .marquee-track { 
     display: inline-flex; gap: 40px; white-space: nowrap; 
-    animation: marqueeMove 32s linear infinite; 
+    animation: marqueeMove 40s linear infinite; 
   }
   @keyframes marqueeMove { 
     0% { transform: translateX(0%); } 
@@ -173,7 +182,7 @@
   .marquee span { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; }
   .marquee .sep { color: var(--blue); }
 
-  /* BENTO GRID */
+  /* BENTO GRID (Statyczne, delikatnie podświetlane) */
   .section-pad { padding: 140px 0; position: relative; z-index: 2; }
   .section-head { max-width: 650px; margin-bottom: 60px; }
   .section-tag { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 12px; display: block; font-family: var(--font-mono); }
@@ -184,9 +193,13 @@
   @media (max-width: 900px) { .bento { grid-template-columns: 1fr; } }
   .bento-card {
     background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px;
-    transition: border-color 0.4s ease, transform 0.4s ease; position: relative; overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden;
   }
-  .bento-card:hover { border-color: rgba(10, 245, 192, 0.4); }
+  .bento-card:hover { 
+    border-color: rgba(10, 245, 192, 0.45); 
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(10, 245, 192, 0.03);
+  }
   .bento-card h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 14px; font-weight: 600; }
   .bento-card p { color: var(--ink-dim); font-size: 15px; line-height: 1.65; }
   .bento-icon { color: var(--blue); margin-bottom: 24px; }
@@ -202,12 +215,41 @@
   .slider-container { margin: 24px 0; }
   .slider-header { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-dim); margin-bottom: 14px; }
   .slider-header b { color: var(--ink); font-family: var(--font-display); font-size: 16px; }
-  .price-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+  
+  /* Szerszy, ulepszony suwak */
+  #machineSlider {
+    -webkit-appearance: none; width: 100%; height: 8px; border-radius: 999px;
+    background: var(--border); outline: none; margin: 12px 0; cursor: pointer;
+  }
+  #machineSlider::-webkit-slider-runnable-track { width: 100%; height: 8px; border-radius: 999px; }
+  #machineSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; height: 22px; width: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--blue)); cursor: pointer; margin-top: -7px;
+    box-shadow: 0 0 10px rgba(10, 245, 192, 0.6); transition: transform 0.1s;
+  }
+  #machineSlider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  #machineSlider::-moz-range-thumb {
+    height: 22px; width: 22px; border: none; border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--blue)); cursor: pointer;
+    box-shadow: 0 0 10px rgba(10, 245, 192, 0.6); transition: transform 0.1s;
+  }
+  #machineSlider::-moz-range-thumb:hover { transform: scale(1.15); }
+
+  .price-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; margin-bottom: 28px; }
   .metric-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 20px; border-radius: 12px; }
   .metric-box.active { border-color: rgba(10, 245, 192, 0.3); background: rgba(10, 245, 192, 0.02); }
   .metric-lbl { font-size: 11px; color: var(--ink-dim); text-transform: uppercase; margin-bottom: 6px; font-family: var(--font-mono); }
   .metric-num { font-size: 32px; font-weight: 700; font-family: var(--font-display); }
   .metric-num small { font-size: 14px; color: var(--ink-dim); font-family: var(--font-body); }
+  
+  /* Przycisk mailowy pod suwakiem */
+  .calc-email-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+    padding: 16px; border-radius: 12px; background: linear-gradient(135deg, var(--cyan), var(--blue));
+    color: #0A0A0B; font-weight: 700; font-size: 15px; text-decoration: none; font-family: var(--font-mono);
+    box-shadow: 0 4px 20px rgba(10, 245, 192, 0.15); transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .calc-email-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(10, 245, 192, 0.3); }
 
   /* KONTAKT */
   .contact-box { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; }
@@ -231,7 +273,7 @@
   .footer-socials a:hover { color: var(--blue); }
   .footer-socials i { vertical-align: middle; display: inline-block; }
 
-  /* BANER COOKIES (POPRAWIONY) */
+  /* BANER COOKIES */
   .cookie-banner {
     position: fixed; bottom: -130px; left: 24px; right: 24px; max-width: 500px; margin: 0 auto 24px 24px;
     background: rgba(19, 19, 22, 0.95); border: 1px solid var(--border); border-radius: 12px;
@@ -249,7 +291,7 @@
   }
   .cookie-btn:hover { transform: scale(1.02); }
 
-  /* OKNO POLITYKI PRYWATNOŚCI (POPRAWIONE LITERÓWKI) */
+  /* OKNO POLITYKI PRYWATNOŚCI */
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
     z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -299,7 +341,7 @@
       <div class="nav-links">
         <a href="#uslugi">Oferta</a>
         <a href="#cennik">Cennik</a>
-        <a href="#kontakt">Contact</a>
+        <a href="#kontakt">Kontakt</a>
       </div>
       <a href="#kontakt" class="nav-cta">Konsultacja IT</a>
     </div>
@@ -321,7 +363,7 @@
     
     <!-- TERMINAL BASH -->
     <div>
-      <div class="terminal-window">
+      <div class="terminal-window" id="terminalWindow">
         <div class="terminal-header">
           <span class="term-dot r"></span>
           <span class="term-dot y"></span>
@@ -439,6 +481,11 @@
             <div class="metric-num" style="color:var(--blue);" id="totalPrice">250 <small>zł</small></div>
           </div>
         </div>
+        
+        <!-- Przycisk Zapytania Ofertowego Mailto -->
+        <a href="#" id="queryMailtoBtn" class="calc-email-btn">
+          <i data-lucide="mail" size="18"></i> Wyślij zapytanie
+        </a>
       </div>
     </div>
   </div>
@@ -503,7 +550,7 @@
       <p>Zawartość strony internetowej można przeglądać bez podawania jakichkolwiek danych osobowych.</p>
       <p>Każda osoba, która udostępniła swoje dane osobowe, ma prawo do dostępu do ich treści oraz możliwość ich poprawiania, uaktualniania, uzupełniania, jak również żądania zaprzestania przetwarzania danych osobowych oraz wniesienia sprzeciwu wobec przetwarzania danych osobowych. Wymienionych czynności można dokonać poprzez wysłanie stosownego oświadczenia na adres e-mail: <a href="mailto:kjankowski@sirk.cloud">kjankowski@sirk.cloud</a>.</p>
       <p>Pozyskane przez administratora dane osobowe są przechowywane, przetwarzane i chronione zgodnie z obowiązującymi przepisami prawa.</p>
-      <p>Administrator chroni zgromadzone dane osobowe, korzystając z następujących środków:</p>
+      <p>Administrator protects collected personal data using secure tech channels:</p>
       <ul>
         <li>szyfrowanie danych przesyłanych w ramach zapytań technicznych</li>
         <li>zabezpieczenie zbioru danych oraz klastrów monitoringu przed nieuprawnionym dostępem zewnętrznym</li>
@@ -560,7 +607,7 @@
   document.getElementById('year').textContent = new Date().getFullYear();
   lucide.createIcons();
 
-  /* LOGIKA BANERU COOKIES - NAPRAWIONA (TERAZ CALKOWICIE ZNIKA) */
+  /* LOGIKA BANERU COOKIES */
   (function(){
     const banner = document.getElementById('cookieBanner');
     const btn = document.getElementById('acceptCookiesBtn');
@@ -572,7 +619,6 @@
     btn.addEventListener('click', () => {
       localStorage.setItem('sirk_cookies_accepted', 'true');
       banner.classList.remove('show');
-      // Po animacji zjazdu, całkowicie usuwamy blokadę z układu strony
       setTimeout(() => {
         banner.style.display = 'none';
       }, 500);
@@ -648,7 +694,7 @@
         let mDist = Math.hypot(a.x - mouse.x, a.y - mouse.y);
         if(mDist < 190) {
           ctx.strokeStyle = `rgba(10, 245, 192, ${0.35 * (1 - mDist/190)})`;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); stroke();
           a.x += (mouse.x - a.x) * 0.018;
           a.y += (mouse.y - a.y) * 0.018;
         }
@@ -667,9 +713,10 @@
     gsap.ticker.add(() => { gsap.set(glow, {x: mx, y: my}); });
   })();
 
-  /* ZWALNIONA O 40% SEKWENCJA STARTOWA */
+  /* SEKWENCJA STARTOWA I INTERAKTYWNY INPUT W TERMINALU */
   (function(){
     const term = document.getElementById('terminalBody');
+    const windowEl = document.getElementById('terminalWindow');
     const logs = [
       "<span class='t-prompt'>root@sirk-cloud:~#</span> ./start_support --init",
       "&gt; Inicjalizacja systemu wsparcia IT...",
@@ -677,21 +724,82 @@
       "&gt; Status: <span class='t-success'>online</span>"
     ];
     let idx = 0;
+    
     function print() {
-      if(idx >= logs.length) return;
-      const d = document.createElement('div');
-      d.style.marginBottom = "6px";
-      d.innerHTML = logs[idx] + (idx === logs.length - 1 ? "<span class='term-cursor'></span>" : "");
-      term.appendChild(d);
-      idx++;
-      setTimeout(print, 1400);
+      if(idx < logs.length) {
+        const d = document.createElement('div');
+        d.style.marginBottom = "6px";
+        d.innerHTML = logs[idx];
+        term.appendChild(d);
+        idx++;
+        setTimeout(print, 1400);
+      } else {
+        createInteractiveInput();
+      }
     }
+    
+    function createInteractiveInput() {
+      const inputLine = document.createElement('div');
+      inputLine.className = 'terminal-input-line';
+      inputLine.innerHTML = `
+        <span class='t-prompt'>root@sirk-cloud:~#</span>
+        <span class='terminal-editable-text'></span><span class='term-cursor'></span>
+        <input type='text' class='terminal-hidden-input' autofocus />
+      `;
+      term.appendChild(inputLine);
+      
+      const hiddenInput = inputLine.querySelector('.terminal-hidden-input');
+      const editableText = inputLine.querySelector('.terminal-editable-text');
+      
+      // Focusowanie inputu przy kliknięciu w okno terminala
+      windowEl.addEventListener('click', () => {
+        hiddenInput.focus();
+      });
+      
+      hiddenInput.focus();
+      
+      hiddenInput.addEventListener('input', (e) => {
+        editableText.textContent = e.target.value;
+      });
+      
+      hiddenInput.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') {
+          const command = hiddenInput.value.trim();
+          
+          // Usuwamy stary kursor z tej linii
+          const cursor = inputLine.querySelector('.term-cursor');
+          if(cursor) cursor.remove();
+          hiddenInput.remove();
+          
+          if(command.length > 0) {
+            const responseLine = document.createElement('div');
+            responseLine.style.color = '#ef4444';
+            responseLine.style.marginBottom = '6px';
+            responseLine.textContent = `-bash: ${command}: command not found`;
+            term.appendChild(responseLine);
+          }
+          
+          // Automatyczne przewijanie na dół terminala
+          windowEl.scrollTop = windowEl.scrollHeight;
+          
+          // Tworzenie nowego promptu czekającego na input
+          createInteractiveInput();
+        }
+      });
+    }
+    
     print();
   })();
 
-  /* MARQUEE TRACK */
+  /* ROZBUDOWANA KARUZELA MARQUEE */
   (function(){
-    const items = ["Infrastruktura", "Rozwiązania chmurowe", "Kopie zapasowe", "Cyberbezpieczeństwo", "Wsparcie zdalne", "Administracja sprzętem"];
+    const items = [
+      "Infrastruktura IT", "Rozwiązania chmurowe", "Kopie zapasowe i Disaster Recovery", 
+      "Cyberbezpieczeństwo firmowe", "Wsparcie techniczne zdalne & onsite", "Administracja serwerami", 
+      "Zarządzanie sieciami LAN/WAN", "Audyty bezpieczeństwa IT", "Ochrona danych i RODO",
+      "Wirtualizacja i konteneryzacja", "Monitorowanie usług 24/7", "Zarządzanie licencjami",
+      "Helpdesk IT dla pracowników", "Konfiguracja VPN", "Zarządzanie flotą sprzętową"
+    ];
     const track = document.getElementById('marqueeTrack');
     let html = "";
     for(let r=0; r<2; r++) {
@@ -715,13 +823,14 @@
     `).join("");
   })();
 
-  /* KALKULATOR STANOWISK */
+  /* KALKULATOR STANOWISK + DYNAMICZNE ZAPYTANIE MAILTO */
   (function(){
     const slider = document.getElementById('machineSlider');
     const label = document.getElementById('machineCountLabel');
     const perMachineEl = document.getElementById('perMachinePrice');
     const totalEl = document.getElementById('totalPrice');
     const scrollBar = document.getElementById('scrollProgress');
+    const mailtoBtn = document.getElementById('queryMailtoBtn');
 
     function plural(n) {
       if(n === 1) return 'stanowisko';
@@ -731,23 +840,41 @@
 
     function calculate() {
       const n = parseInt(slider.value, 10);
-      label.textContent = `${n} ${plural(n)}`;
+      const suffix = plural(n);
+      label.textContent = `${n} ${suffix}`;
+      
       const perMachine = Math.round(250 - (n - 1) * (50 / 39));
       const total = perMachine * n;
       perMachineEl.innerHTML = `${perMachine} <small>zł</small>`;
       totalEl.innerHTML = `${total.toLocaleString('pl-PL')} <small>zł</small>`;
+      
+      // Aktualizacja linku mailto z dedykowaną, atrakcyjną treścią
+      const emailRecipient = "kjankowski@sirk.cloud";
+      const emailSubject = encodeURIComponent(`Zapytanie ofertowe - Obsługa IT dla firmy (${n} ${suffix})`);
+      const emailBody = encodeURIComponent(
+        `Dzień dobry,\n\nchciałbym/chciałabym zapytać o ofertę kompleksowej opieki i wsparcia IT dla naszej firmy.\n\n` +
+        `Wstępnie zweryfikowaliśmy zapotrzebowanie za pomocą kalkulatora na Państwa stronie.\n` +
+        `Liczba stanowisk w naszej firmie pod nadzór IT: ${n} ${suffix}.\n` +
+        `Szacowany koszt miesięczny z kalkulatora: ${total.toLocaleString('pl-PL')} zł netto.\n\n` +
+        `Proszę o kontakt w celu omówienia szczegółów i przygotowania spersonalizowanej oferty.\n\n` +
+        `Pozdrawiam,\n[Twoje Imię i Nazwisko / Nazwa Firmy]\n[Numer Telefonu]`
+      );
+      
+      mailtoBtn.setAttribute("href", `mailto:${emailRecipient}?subject=${emailSubject}&body=${emailBody}`);
     }
+    
     slider.addEventListener('input', calculate);
     window.addEventListener('scroll', () => {
       const h = document.documentElement;
       scrollBar.style.width = ((h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100) + '%';
     }, {passive:true});
+    
     calculate();
   })();
 
-  /* PRZECHYŁ 3D GSAP */
+  /* PRZECHYŁ 3D GSAP (Wykluczenie bento-card - teraz są statyczne z CSS hover) */
   if(!window.matchMedia('(hover: none)').matches) {
-    document.querySelectorAll('.bento-card, .price-card, .contact-method').forEach(card => {
+    document.querySelectorAll('.price-card, .contact-method').forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
