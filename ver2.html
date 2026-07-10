@@ -46,19 +46,16 @@
     line-height: 1.1;
   }
 
-  /* Zapobieganie chowaniu się nagłówków pod navbar przy przewijaniu */
   section {
     scroll-margin-top: 80px;
   }
 
-  /* Niebieski pasek postępu */
   .scroll-progress {
     position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 100;
     background: linear-gradient(90deg, var(--cyan), var(--blue));
     box-shadow: 0 0 15px var(--blue);
   }
 
-  /* Niebieska poświata za kursorem */
   .cursor-glow {
     position: fixed; top: 0; left: 0; width: 450px; height: 450px; border-radius: 50%;
     background: radial-gradient(circle, rgba(10, 245, 192, 0.08), rgba(6, 182, 212, 0.03) 45%, transparent 70%);
@@ -109,7 +106,7 @@
   }
   .nav-cta:hover span.shine { left: 130%; }
 
-  /* HERO (Symetryczny podział 1fr i start od góry) */
+  /* HERO */
   .hero { position: relative; min-height: auto; display: flex; align-items: center; padding: 120px 0 40px; z-index: 2; }
   .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
   @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; } }
@@ -120,24 +117,35 @@
   }
   .hero h1 { font-size: clamp(2.4rem, 4.5vw, 4.2rem); font-weight: 700; margin-bottom: 20px; }
   .hero h1 .accent { color: var(--blue); }
-  .hero p.sub { font-size: 18px; color: var(--ink-dim); max-width: 540px; margin-bottom: 24px; line-height: 1.65; }
-  @media (max-width: 1024px) { .hero p.sub { margin: 16px auto 24px; } }
+  .hero p.sub { font-size: 18px; color: var(--ink-dim); max-width: 540px; margin-bottom: 20px; line-height: 1.65; }
+  @media (max-width: 1024px) { .hero p.sub { margin: 16px auto 20px; } }
 
-  /* Elementy anty-pustkowe w lewej kolumnie na start */
+  /* Elementy anty-pustkowe w lewej kolumnie */
   .hero-live-status {
     display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02);
     border: 1px solid var(--border); padding: 10px 16px; border-radius: 8px; font-family: var(--font-mono);
-    font-size: 11px; color: var(--ink-dim); margin-bottom: 32px;
+    font-size: 11px; color: var(--ink-dim); margin-bottom: 24px;
   }
   .status-pulse-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; animation: pulseGlow 1.8s infinite; }
   @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.4; } }
 
-  .hero-ctas { display: flex; gap: 16px; margin-bottom: 32px; }
+  .hero-ctas { display: flex; gap: 16px; margin-bottom: 24px; }
   @media (max-width: 1024px) { .hero-ctas { justify-content: center; } }
 
-  .hero-tags-box { display: flex; flex-wrap: wrap; gap: 8px; max-width: 500px; }
-  @media (max-width: 1024px) { .hero-tags-box { justify-content: center; margin: 0 auto; } }
+  .hero-tags-box { display: flex; flex-wrap: wrap; gap: 8px; max-width: 500px; margin-bottom: 24px; }
+  @media (max-width: 1024px) { .hero-tags-box { justify-content: center; margin: 0 auto 24px; } }
   .hero-tag-pill { font-family: var(--font-mono); font-size: 11px; color: rgba(250,250,250,0.4); background: rgba(19,19,22,0.6); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
+
+  /* NOWY PANEL: Live Security Feed (Wypełniacz dolnej przestrzeni) */
+  .hero-security-feed {
+    background: rgba(19, 19, 22, 0.4); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 18px; max-width: 500px; text-align: left; font-family: var(--font-mono); font-size: 11px;
+  }
+  @media (max-width: 1024px) { .hero-security-feed { margin: 0 auto; } }
+  .feed-title { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .feed-log-line { line-height: 1.6; color: var(--ink-dim); overflow: hidden; height: 18px; white-space: nowrap; text-overflow: ellipsis; }
+  .feed-log-line .time { color: var(--cyan); margin-right: 6px; }
+  .feed-log-line .event-ok { color: #4ade80; }
 
   .btn {
     padding: 16px 32px; border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none;
@@ -148,7 +156,7 @@
   .btn-ghost { color: var(--ink); border: 1px solid var(--border); background: rgba(255,255,255,0.01); }
   .btn-ghost:hover { transform: translateY(-3px); border-color: var(--blue); background: rgba(255,255,255,0.03); }
 
-  /* KONSOLA I KARTA MONITORINGU (Szerokość 100% kolumny) */
+  /* KONSOLA I KARTA MONITORINGU */
   .hero-consoles-wrapper { width: 100%; display: flex; flex-direction: column; gap: 20px; }
   
   .terminal-window {
@@ -171,7 +179,7 @@
   .terminal-hidden-input { position: absolute; opacity: 0; pointer-events: none; left: -9999px; }
   .terminal-editable-text { white-space: pre-wrap; word-break: break-all; color: var(--ink); }
 
-  /* INFRA MONITOR VISUAL (Szerokość dopasowana 100%) */
+  /* INFRA MONITOR VISUAL */
   .infra-card { background: rgba(19, 19, 22, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 22px; width: 100%; backdrop-filter: blur(12px); }
   .infra-svg { width: 100%; height: auto; display: block; overflow: visible; }
   .infra-hub-ring { fill: none; stroke: rgba(10,245,192,0.35); stroke-width: 1; animation: hubPulse 2.4s ease-out infinite; transform-origin: center; }
@@ -371,13 +379,12 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container hero-grid">
-    <!-- LEWA KOLUMNA (Zaczyna się idealnie od góry, wypełniona danymi na start) -->
+    <!-- LEWA KOLUMNA -->
     <div>
       <div class="eyebrow"><span class="logo-mark" style="width:6px; height:6px; box-shadow:none; margin-right:2px; background:var(--blue);"></span> Obsługa IT · Łódź &amp; cała Polska</div>
       <h1>Twoje IT, <br><span class="accent">ogarnięte</span> na spokojnie.</h1>
       <p class="sub">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały – bez straszenia technologią i niepotrzebnych komplikacji.</p>
       
-      <!-- Wskaźnik Live operacji eliminujący pustkę -->
       <div class="hero-live-status">
         <div class="status-pulse-dot"></div>
         <span>MONITORING INFRASTRUKTURY: ACTIVE // HEARTRATE_OK</span>
@@ -388,7 +395,6 @@
         <a data-target="kontakt" class="btn btn-ghost">Napisz do nas</a>
       </div>
 
-      <!-- Dodatkowe klocki technologiczne na start pod przyciskami -->
       <div class="hero-tags-box">
         <span class="hero-tag-pill">SLA 99.9%</span>
         <span class="hero-tag-pill">Helpdesk 24/7</span>
@@ -396,9 +402,20 @@
         <span class="hero-tag-pill">NextGen Security</span>
         <span class="hero-tag-pill">DevOps</span>
       </div>
+
+      <!-- NOWY PANEL: Live Security Feed (Wypełniacz dolnej przestrzeni) -->
+      <div class="hero-security-feed">
+        <div class="feed-title">
+          <span>Shield Live Logs</span>
+          <span style="color:var(--blue);">sec_audit.log</span>
+        </div>
+        <div id="liveSecurityLog" class="feed-log-line">
+          <span class="time">[14:32:01]</span> <span class="event-ok">INTEGRITY_CHECK: PASS</span> — No threats detected.
+        </div>
+      </div>
     </div>
     
-    <!-- PRAWA KOLUMNA (Konsole o równej szerokości 100%) -->
+    <!-- PRAWA KOLUMNA -->
     <div class="hero-consoles-wrapper">
       <!-- TERMINAL BASH -->
       <div class="terminal-window" id="terminalWindow">
@@ -604,7 +621,7 @@
 
       <h3>III INFORMACJA O PLIKACH COOKIES</h3>
       <p>Serwis korzysta z plików cookies.</p>
-      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone sunt do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
+      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
       <p>Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu.</p>
       <p>Pliki cookies wykorzystywane są w następujących celach:</p>
       <ul>
@@ -612,7 +629,7 @@
         <li>utrzymania stanów lokalnych (np. zapamiętanie decyzji o zamknięciu okna), dzięki czemu interaktywne elementy strony nie wymagają ponownej konfiguracji przy odświeżeniu;</li>
         <li>określania profilu użytkownika w celu wyświetlania mu dopasowanych materiałów technicznych w sieciach reklamowych, w szczególności sieci Google.</li>
       </ul>
-      <p>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne” (session cookies) oraz „stałe” (persistent cookies). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez czas określony w parametrach plików cookies lub do czasu ich usunięcia przez Użytkownika.</p>
+      <p>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne” (session cookies) oraz „stałe” (persistent cookies). Cookies „sesyjne” are plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez czas określony w parametrach plików cookies lub do czasu ich usunięcia przez Użytkownika.</p>
       <p>Oprogramowanie do przeglądania stron internetowych (przeglądarka internetowa) zazwyczaj domyślnie dopuszcza przechowywanie plików cookies w urządzeniu końcowym Użytkownika. Użytkownicy Serwisu mogą dokonać zmiany ustawień w tym zakresie. Przeglądarka internetowa umożliwia usunięcie plików cookies. Możliwe jest także automatyczne blokowanie plików cookies. Szczegółowe informacje na ten temat zawiera pomoc lub dokumentacja przeglądarki internetowej.</p>
       <p>Ograniczenia stosowania plików cookies mogą wpłynąć na niektóre zaawansowane funkcjonalności kalkulatora i klocków Bento na stronach internetowych Serwisu.</p>
       <p>Zalecamy przeczytanie polityki ochrony prywatności firm trzecich, aby poznać zasady korzystania z plików cookies wykorzystywane w statystykach: Polityka ochrony prywatności Google Analytics.</p>
@@ -666,7 +683,6 @@
 </footer>
 
 <script>
-  // Inicjalizacja podstawowych ikon Lucide
   lucide.createIcons();
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -784,6 +800,32 @@
     let mx = window.innerWidth/2, my = window.innerHeight/2;
     window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; glow.style.opacity = '1'; }, {passive:true});
     gsap.ticker.add(() => { gsap.set(glow, {x: mx, y: my}); });
+  })();
+
+  /* SYSTREMA LIVE LOGS (Dynamiczne uzupełnianie dolnej pustki) */
+  (function(){
+    const logBox = document.getElementById('liveSecurityLog');
+    const secureEvents = [
+      { text: "DDoS_SHIELD: STABLE — Traffic inspected.", ok: true },
+      { text: "BRUTE_FORCE_GUARD: IP 194.22.10.4 dropped.", ok: false },
+      { text: "BACKUP_ENGINE: Cron verification [OK]", ok: true },
+      { text: "SPAM_FILTER: 14 unsolicited emails deflected.", ok: true },
+      { text: "SSL_CHECK: Gateway certificates validated.", ok: true },
+      { text: "FIREWALL: Malformed packets dropped on IF0.", ok: false },
+      { text: "SIEM_AGENT: Threat matrix index 0.00 (Perfect)", ok: true }
+    ];
+    
+    setInterval(() => {
+      const now = new Date();
+      const timeStr = `[${now.toTimeString().split(' ')[0]}]`;
+      const ev = secureEvents[Math.floor(Math.random() * secureEvents.length)];
+      
+      logBox.style.opacity = 0;
+      setTimeout(() => {
+        logBox.innerHTML = `<span class="time">${timeStr}</span> <span class="${ev.ok ? 'event-ok' : ''}" style="${!ev.ok ? 'color:#ef4444;' : ''}">${ev.text}</span>`;
+        logBox.style.opacity = 1;
+      }, 200);
+    }, 2500);
   })();
 
   /* SEKWENCJA STARTOWA I INPUT TERMINALA */
@@ -981,7 +1023,7 @@
         `Wstępnie zweryfikowaliśmy zapotrzebowanie za pomocą kalkulatora na Państwa stronie.\n` +
         `Liczba stanowisk w naszej firmie pod nadzór IT: ${n} ${suffix}.\n` +
         `Szacowany koszt miesięczny z kalkulatora: ${total.toLocaleString('pl-PL')} zł netto.\n\n` +
-        `Proszę o kontakt w celu omówienia szczegółów i przygotowania spersonalizowanej oferty.\n\n` +
+        `Proszę o kontakt w celu omówienia szczegółów i przygotowania spersonalizei oferty.\n\n` +
         `Pozdrawiam,\n[Twoje Imię i Nazwisko / Nazwa Firmy]\n[Numer Telefonu]`
       );
       mailtoBtn.setAttribute("href", `mailto:${emailRecipient}?subject=${emailSubject}&body=${emailBody}`);
@@ -995,7 +1037,7 @@
     calculate();
   })();
 
-  /* PRZECHYŁ 3D GSAP (Tylko sekcja kontaktowa) */
+  /* PRZECHYŁ 3D GSAP */
   if(!window.matchMedia('(hover: none)').matches) {
     document.querySelectorAll('.contact-method').forEach(card => {
       card.addEventListener('mousemove', (e) => {
