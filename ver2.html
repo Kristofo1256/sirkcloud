@@ -109,22 +109,35 @@
   }
   .nav-cta:hover span.shine { left: 130%; }
 
-  /* HERO (Zmniejszona górna przerwa od menu ze 160px na 110px) */
-  .hero { position: relative; min-height: auto; display: flex; align-items: center; padding: 110px 0 40px; z-index: 2; }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
-  @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; } }
+  /* HERO (Symetryczny podział 1fr i start od góry) */
+  .hero { position: relative; min-height: auto; display: flex; align-items: center; padding: 120px 0 40px; z-index: 2; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; } }
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue);
     border: 1px solid rgba(10, 245, 192, 0.2); padding: 8px 16px; border-radius: 999px; background: rgba(10, 245, 192, 0.04); margin-bottom: 20px;
   }
-  .hero h1 { font-size: clamp(2.4rem, 5.5vw, 4.5rem); font-weight: 700; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(2.4rem, 4.5vw, 4.2rem); font-weight: 700; margin-bottom: 20px; }
   .hero h1 .accent { color: var(--blue); }
-  .hero p.sub { font-size: 18px; color: var(--ink-dim); max-width: 540px; margin-bottom: 30px; line-height: 1.65; }
-  @media (max-width: 1024px) { .hero p.sub { margin: 16px auto 30px; } }
+  .hero p.sub { font-size: 18px; color: var(--ink-dim); max-width: 540px; margin-bottom: 24px; line-height: 1.65; }
+  @media (max-width: 1024px) { .hero p.sub { margin: 16px auto 24px; } }
 
-  .hero-ctas { display: flex; gap: 16px; }
+  /* Elementy anty-pustkowe w lewej kolumnie na start */
+  .hero-live-status {
+    display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); padding: 10px 16px; border-radius: 8px; font-family: var(--font-mono);
+    font-size: 11px; color: var(--ink-dim); margin-bottom: 32px;
+  }
+  .status-pulse-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; animation: pulseGlow 1.8s infinite; }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.4; } }
+
+  .hero-ctas { display: flex; gap: 16px; margin-bottom: 32px; }
   @media (max-width: 1024px) { .hero-ctas { justify-content: center; } }
+
+  .hero-tags-box { display: flex; flex-wrap: wrap; gap: 8px; max-width: 500px; }
+  @media (max-width: 1024px) { .hero-tags-box { justify-content: center; margin: 0 auto; } }
+  .hero-tag-pill { font-family: var(--font-mono); font-size: 11px; color: rgba(250,250,250,0.4); background: rgba(19,19,22,0.6); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
 
   .btn {
     padding: 16px 32px; border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none;
@@ -135,11 +148,13 @@
   .btn-ghost { color: var(--ink); border: 1px solid var(--border); background: rgba(255,255,255,0.01); }
   .btn-ghost:hover { transform: translateY(-3px); border-color: var(--blue); background: rgba(255,255,255,0.03); }
 
-  /* TERMINAL BASH */
+  /* KONSOLA I KARTA MONITORINGU (Szerokość 100% kolumny) */
+  .hero-consoles-wrapper { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+  
   .terminal-window {
     background: rgba(19, 19, 22, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 22px;
     box-shadow: 0 30px 60px rgba(0,0,0,0.5); font-family: var(--font-mono); font-size: 13px; color: var(--ink); text-align: left;
-    height: 240px; max-height: 240px; overflow-y: auto; backdrop-filter: blur(12px); display: flex; flex-direction: column; cursor: text;
+    height: 240px; width: 100%; max-height: 240px; overflow-y: auto; backdrop-filter: blur(12px); display: flex; flex-direction: column; cursor: text;
   }
   .terminal-header { display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-shrink: 0; }
   .term-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
@@ -156,8 +171,8 @@
   .terminal-hidden-input { position: absolute; opacity: 0; pointer-events: none; left: -9999px; }
   .terminal-editable-text { white-space: pre-wrap; word-break: break-all; color: var(--ink); }
 
-  /* INFRA MONITOR VISUAL */
-  .infra-card { background: rgba(19, 19, 22, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 22px; width: 100%; max-width: 440px; margin-top: 20px; backdrop-filter: blur(12px); }
+  /* INFRA MONITOR VISUAL (Szerokość dopasowana 100%) */
+  .infra-card { background: rgba(19, 19, 22, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 22px; width: 100%; backdrop-filter: blur(12px); }
   .infra-svg { width: 100%; height: auto; display: block; overflow: visible; }
   .infra-hub-ring { fill: none; stroke: rgba(10,245,192,0.35); stroke-width: 1; animation: hubPulse 2.4s ease-out infinite; transform-origin: center; }
   @keyframes hubPulse { 0% { r: 9; opacity: 0.9; } 100% { r: 26; opacity: 0; } }
@@ -170,7 +185,7 @@
   .infra-metric .val { font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); font-weight: 600; }
   .infra-metric .label { font-family: var(--font-mono); font-size: 9px; color: var(--ink-dim); text-transform: uppercase; margin-top: 4px; display: block; }
 
-  /* KARUZELA MARQUEE (Zmniejszony margines od góry z 60px na 24px) */
+  /* KARUZELA MARQUEE */
   .marquee {
     position: relative; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
     background: rgba(19, 19, 22, 0.4); padding: 16px 0; margin-top: 24px; z-index: 2; width: 100%;
@@ -186,7 +201,7 @@
   .marquee span { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; }
   .marquee .sep { color: var(--blue); }
 
-  /* OGÓLNE ODSTĘPY SEKCJI (Zmniejszone ze 140px na 75px dla zwięzłości) */
+  /* OGÓLNE ODSTĘPY SEKCJI */
   .section-pad { padding: 75px 0; position: relative; z-index: 2; }
   .section-head { max-width: 650px; margin-bottom: 36px; }
   .section-tag { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 8px; display: block; font-family: var(--font-mono); }
@@ -221,7 +236,6 @@
   .slider-header { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-dim); margin-bottom: 10px; }
   .slider-header b { color: var(--ink); font-family: var(--font-display); font-size: 16px; }
   
-  /* Szerszy suwak */
   #machineSlider {
     -webkit-appearance: none; width: 100%; height: 8px; border-radius: 999px;
     background: var(--border); outline: none; margin: 8px 0; cursor: pointer;
@@ -357,18 +371,36 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container hero-grid">
+    <!-- LEWA KOLUMNA (Zaczyna się idealnie od góry, wypełniona danymi na start) -->
     <div>
       <div class="eyebrow"><span class="logo-mark" style="width:6px; height:6px; box-shadow:none; margin-right:2px; background:var(--blue);"></span> Obsługa IT · Łódź &amp; cała Polska</div>
       <h1>Twoje IT, <br><span class="accent">ogarnięte</span> na spokojnie.</h1>
       <p class="sub">Pomagamy firmom ogarniać IT w sposób prosty i zrozumiały – bez straszenia technologią i niepotrzebnych komplikacji.</p>
+      
+      <!-- Wskaźnik Live operacji eliminujący pustkę -->
+      <div class="hero-live-status">
+        <div class="status-pulse-dot"></div>
+        <span>MONITORING INFRASTRUKTURY: ACTIVE // HEARTRATE_OK</span>
+      </div>
+
       <div class="hero-ctas">
         <a data-target="uslugi" class="btn btn-primary">Sprawdź ofertę →</a>
         <a data-target="kontakt" class="btn btn-ghost">Napisz do nas</a>
       </div>
+
+      <!-- Dodatkowe klocki technologiczne na start pod przyciskami -->
+      <div class="hero-tags-box">
+        <span class="hero-tag-pill">SLA 99.9%</span>
+        <span class="hero-tag-pill">Helpdesk 24/7</span>
+        <span class="hero-tag-pill">Cloud Hybrid</span>
+        <span class="hero-tag-pill">NextGen Security</span>
+        <span class="hero-tag-pill">DevOps</span>
+      </div>
     </div>
     
-    <!-- TERMINAL BASH -->
-    <div>
+    <!-- PRAWA KOLUMNA (Konsole o równej szerokości 100%) -->
+    <div class="hero-consoles-wrapper">
+      <!-- TERMINAL BASH -->
       <div class="terminal-window" id="terminalWindow">
         <div class="terminal-header">
           <span class="term-dot r"></span>
@@ -380,6 +412,7 @@
         </div>
       </div>
 
+      <!-- MONITOR INFRASTRUKTURY -->
       <div class="infra-card">
         <div class="terminal-header" style="margin-bottom:12px; padding-bottom:8px;">
           <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
@@ -571,12 +604,12 @@
 
       <h3>III INFORMACJA O PLIKACH COOKIES</h3>
       <p>Serwis korzysta z plików cookies.</p>
-      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
+      <p>Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone sunt do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.</p>
       <p>Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu.</p>
       <p>Pliki cookies wykorzystywane są w następujących celach:</p>
       <ul>
         <li>tworzenia anonimowych statystyk, które pomagają zrozumieć, w jaki sposób Użytkownicy Serwisu korzystają ze stron internetowych, co umożliwia ulepszanie ich struktury, responsywności i zawartości;</li>
-        <li>utrzymania stanów lokalnych (np. zapamiętanie decyzji o zamknięciu okna), dzięki czemu interaktywne elementy strony nie wymagają ponownej konfiguracji przy edświeżeniu;</li>
+        <li>utrzymania stanów lokalnych (np. zapamiętanie decyzji o zamknięciu okna), dzięki czemu interaktywne elementy strony nie wymagają ponownej konfiguracji przy odświeżeniu;</li>
         <li>określania profilu użytkownika w celu wyświetlania mu dopasowanych materiałów technicznych w sieciach reklamowych, w szczególności sieci Google.</li>
       </ul>
       <p>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne” (session cookies) oraz „stałe” (persistent cookies). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez czas określony w parametrach plików cookies lub do czasu ich usunięcia przez Użytkownika.</p>
@@ -646,7 +679,7 @@
       
       if(targetElement) {
         const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - 75; // Zmniejszony offset pasujący do nowego paddingu
+        const offsetPosition = elementPosition + window.scrollY - 75;
         
         window.scrollTo({
           top: offsetPosition,
@@ -759,9 +792,8 @@
     const windowEl = document.getElementById('terminalWindow');
     const initialPrompt = document.getElementById('initialPrompt');
     
-    const commandText = "./start_support --init-plugin";
+    const commandText = "./sirk-support --bootstrap";
     const logs = [
-      "&gt; Inicjalizacja systemu wsparcia IT...",
       "&gt; Obszar działania: cała Polska",
       "&gt; Status: <span class='t-success'>online</span>"
     ];
@@ -785,14 +817,51 @@
         } else {
           const lineCursor = typingLine.querySelector('.term-cursor');
           if(lineCursor) lineCursor.remove();
-          setTimeout(printLogs, 600);
+          setTimeout(initSystemLine, 600);
         }
       }
       typeChar();
     }, 4000);
     
+    function initSystemLine() {
+      const d = document.createElement('div');
+      d.style.marginBottom = "4px";
+      d.innerHTML = "&gt; Inicjalizacja systemu wsparcia IT...";
+      term.appendChild(d);
+      windowEl.scrollTop = windowEl.scrollHeight;
+      
+      setTimeout(startProgressBar, 500);
+    }
+    
+    function startProgressBar() {
+      const progressLine = document.createElement('div');
+      progressLine.style.marginBottom = "6px";
+      progressLine.style.color = "var(--blue)";
+      term.appendChild(progressLine);
+      
+      const totalSteps = 20;
+      let currentStep = 0;
+      const duration = 3000;
+      const intervalTime = duration / totalSteps;
+      
+      const interval = setInterval(() => {
+        currentStep++;
+        const percent = Math.round((currentStep / totalSteps) * 100);
+        const bars = "█".repeat(currentStep);
+        const spaces = " ".repeat(totalSteps - currentStep);
+        
+        progressLine.textContent = `[${bars}${spaces}] ${percent}%`;
+        windowEl.scrollTop = windowEl.scrollHeight;
+        
+        if (currentStep >= totalSteps) {
+          clearInterval(interval);
+          setTimeout(printRemainingLogs, 600);
+        }
+      }, intervalTime);
+    }
+    
     let logIdx = 0;
-    function printLogs() {
+    function printRemainingLogs() {
       if(logIdx < logs.length) {
         const d = document.createElement('div');
         d.style.marginBottom = "6px";
@@ -800,7 +869,7 @@
         term.appendChild(d);
         logIdx++;
         windowEl.scrollTop = windowEl.scrollHeight;
-        setTimeout(printLogs, 1000);
+        setTimeout(printRemainingLogs, 800);
       } else {
         createInteractiveInput();
       }
@@ -848,7 +917,7 @@
     }
   })();
 
-  /* ROZBUDOWANA I ZWOLNIONA KARUZELA MARQUEE */
+  /* KARUZELA MARQUEE */
   (function(){
     const items = [
       "Infrastruktura IT", "Rozwiązania chmurowe", "Kopie zapasowe i Disaster Recovery", 
@@ -926,7 +995,7 @@
     calculate();
   })();
 
-  /* PRZECHYŁ 3D GSAP */
+  /* PRZECHYŁ 3D GSAP (Tylko sekcja kontaktowa) */
   if(!window.matchMedia('(hover: none)').matches) {
     document.querySelectorAll('.contact-method').forEach(card => {
       card.addEventListener('mousemove', (e) => {
