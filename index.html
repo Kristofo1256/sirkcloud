@@ -107,7 +107,6 @@
   /* HERO */
   .hero { position: relative; min-height: auto; display: flex; align-items: center; padding: 120px 0 40px; z-index: 2; }
   .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-  @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; } }
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue);
@@ -116,7 +115,6 @@
   .hero h1 { font-size: clamp(2.4rem, 4.5vw, 4.2rem); font-weight: 700; margin-bottom: 20px; }
   .hero h1 .accent { color: var(--blue); }
   .hero p.sub { font-size: 18px; color: var(--ink-dim); max-width: 540px; margin-bottom: 20px; line-height: 1.65; }
-  @media (max-width: 1024px) { .hero p.sub { margin: 16px auto 20px; } }
 
   .hero-live-status {
     display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02);
@@ -127,15 +125,12 @@
   @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.4; } }
 
   .hero-ctas { display: flex; gap: 16px; margin-bottom: 24px; }
-  @media (max-width: 1024px) { .hero-ctas { justify-content: center; } }
 
   .hero-tags-box { display: flex; flex-wrap: wrap; gap: 8px; max-width: 500px; margin-bottom: 24px; }
-  @media (max-width: 1024px) { .hero-tags-box { justify-content: center; margin: 0 auto 24px; } }
   .hero-tag-pill { font-family: var(--font-mono); font-size: 11px; color: rgba(250,250,250,0.4); background: rgba(19,19,22,0.6); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
 
   /* PANEL METRYK BIZNESOWYCH (DÓŁ LEWEJ KOLUMNY) */
   .variant-container { max-width: 500px; width: 100%; font-family: var(--font-mono); text-align: left; }
-  @media (max-width: 1024px) { .variant-container { margin: 0 auto; } }
   .v1-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .v1-box { background: rgba(19,19,22,0.4); border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
   .v1-val { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
@@ -169,7 +164,6 @@
   
   .t-progress-container { width: 100%; white-space: nowrap; overflow: hidden; display: block; color: var(--blue); font-family: var(--font-mono); }
 
-  /* SYSTEMOWE, BINARNE MRUGANIE KURSORA (0-1-0-1 bez wygładzania barw i poświaty) */
   .term-cursor { display: inline-block; width: 8px; height: 15px; background: var(--blue); margin-left: 2px; animation: binBlink 1s infinite steps(1); vertical-align: middle; }
   @keyframes binBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
   
@@ -207,7 +201,7 @@
   .marquee span { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; }
   .marquee .sep { color: var(--blue); }
 
-  /* OGÓLNE ODSTĘPY SEKCJI */
+  /* OGÓLNE ODSTĘPS SEKCJI */
   .section-pad { padding: 75px 0; position: relative; z-index: 2; }
   .section-head { max-width: 650px; margin-bottom: 36px; }
   .section-tag { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 8px; display: block; font-family: var(--font-mono); }
@@ -344,6 +338,36 @@
   .modal-content ul li::before { content: "—"; position: absolute; left: 0; color: var(--blue); }
   .modal-content a { color: var(--blue); text-decoration: none; }
   .modal-content a:hover { text-decoration: underline; }
+
+  /* ========================================================================= */
+  /* DEDYKOWANE FIXY DLA WERSJI MOBILNEJ (Zapobiegają rozjeżdżaniu układu)      */
+  /* ========================================================================= */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+    .hero p.sub { margin: 16px auto 20px; }
+    .hero-ctas { justify-content: center; }
+    .hero-tags-box { justify-content: center; margin: 0 auto 24px; }
+    .variant-container { margin: 0 auto; }
+
+    /* Fix menu w headerze - zmniejszenie fontów i odstępów, by wszystko było w 1 linii */
+    .nav-inner { padding: 12px 14px; }
+    .nav-right { gap: 12px; }
+    .nav-links { gap: 6px; font-size: 11px; }
+    .nav-links a { padding: 5px 8px; border-radius: 4px; }
+    .nav-cta { font-size: 11px; padding: 8px 14px; border-radius: 4px; }
+    .logo-img { height: 34px; }
+
+    /* Fix progress baru w terminalu - zapobiega rozpychaniu okna na telefonach */
+    .t-progress-container {
+      font-size: clamp(9px, 2.8vw, 12px) !important;
+      letter-spacing: -0.02em;
+    }
+
+    /* Fix stopki - elastyczne zawijanie linków i numeru telefonu */
+    .footer-inner { flex-direction: column; text-align: center; gap: 16px; }
+    .footer-socials { flex-wrap: wrap; justify-content: center; gap: 16px; width: 100%; }
+    .footer-socials a { font-size: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -393,7 +417,6 @@
         <a data-target="kontakt" class="btn btn-ghost">Napisz do nas</a>
       </div>
 
-      <!-- Zmieniono powtórzony tag SLA na CyberResilience -->
       <div class="hero-tags-box">
         <span class="hero-tag-pill">CyberResilience</span>
         <span class="hero-tag-pill">Helpdesk 24/7</span>
@@ -402,7 +425,7 @@
         <span class="hero-tag-pill">DevOps</span>
       </div>
 
-      <!-- Zaufane metryki biznesowe (Statyczne i czytelne) -->
+      <!-- Zaufane metryki biznesowe -->
       <div class="variant-container">
         <div class="v1-grid">
           <div class="v1-box"><div class="v1-val">&lt; 15m</div><div class="v1-lbl">Średni czas reakcji</div></div>
@@ -629,7 +652,7 @@
       <p>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne” (session cookies) oraz „stałe” (persistent cookies). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez czas określony w parametrach plików cookies lub do czasu ich usunięcia przez Użytkownika.</p>
       <p>Oprogramowanie do przeglądania stron internetowych (przeglądarka internetowa) zazwyczaj domyślnie dopuszcza przechowywanie plików cookies w urządzeniu końcowym Użytkownika. Użytkownicy Serwisu mogą dokonać zmiany ustawień w tym zakresie. Przeglądarka internetowa umożliwia usunięcie plików cookies. Możliwe jest także automatyczne blokowanie plików cookies. Szczegółowe informacje na ten temat zawiera pomoc lub dokumentacja przeglądarki internetowej.</p>
       <p>Ograniczenia stosowania plików cookies mogą wpłynąć na niektóre zaawansowane funkcjonalności kalkulatora i klocków Bento na stronach internetowych Serwisu.</p>
-      <p>Zalecamy przeczytanie polityki ochrony prywatności firm trzecich, aby poznać zasady korzystania z plików cookies wykorzystywane w statystykach: Polityka ochrony prywatności Google Analytics.</p>
+      <p>Zalecamy przeczytanie polityki ochrony prywatności firm trzecich, aby poznnać zasady korzystania z plików cookies wykorzystywane w statystykach: Polityka ochrony prywatności Google Analytics.</p>
 
       <h3>IV ZARZĄDZANIE PLIKAMI COOKIES – JAK W PRAKTYCE WYRAŻAĆ I COFAĆ ZGODĘ?</h3>
       <p>Jeśli użytkownik nie chce otrzymywać plików cookies, może zmienić ustawienia przeglądarki. Zastrzegamy, że wyłączenie obsługi plików cookies niezbędnych dla procesów bezpieczeństwa i utrzymania preferencji użytkownika może utrudnić korzystanie ze stron www.</p>
@@ -774,7 +797,7 @@
           if(dist < 140) {
             ctx.strokeStyle = `rgba(37, 99, 235, ${0.16 * (1 - dist/140)})`;
             ctx.lineWidth = 0.6;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); stroke();
           }
         }
         let mDist = Math.hypot(a.x - mouse.x, a.y - mouse.y);
@@ -1031,3 +1054,5 @@
 </script>
 </body>
 </html>
+
+```
